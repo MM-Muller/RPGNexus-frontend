@@ -1,0 +1,14 @@
+<nav class="navbar-center">
+  <div class="nav-items">
+    <div
+      class="nav-item"
+      [class.active]="item.active"
+      *ngFor="let item of navItems; trackBy: trackByFn"
+      (click)="onNavItemClick(item)"
+    >
+      <svg viewBox="0 0 24 24" class="nav-icon">
+        <path [attr.d]="item.icon"></path>
+      </svg>
+    </div>
+  </div>
+</nav>

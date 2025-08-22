@@ -6,10 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
-  title = 'NEXUS';
-  subtitle = 'GALÁCTICO';
-  description =
-    '"No vasto oceano cósmico do Nexus Galáctico, cada estrela é uma linha de possibilidades, e cada descoberta é um passo em direção à compreensão de nosso lugar no infinito."';
-
-  constructor() {}
+  title: string = 'COSMOS';
+  subtitle: string = 'EXPLORAÇÃO';
+  description: string =
+    'A jornada de mil anos luz começa com um único passo em direção às estrelas distantes que aguardam nossa chegada.';
 }
