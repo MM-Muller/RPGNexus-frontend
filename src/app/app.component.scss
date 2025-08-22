@@ -1,0 +1,104 @@
+.main-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.navbar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 80px;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+
+  .nav-icons {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .nav-item {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+
+    svg {
+      width: 24px;
+      height: 24px;
+      color: rgba(255, 255, 255, 0.6);
+      transition: all 0.3s ease;
+    }
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+
+      svg {
+        color: #fff;
+        transform: scale(1.1);
+      }
+
+      &::before {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    &.active {
+      background: rgba(59, 130, 246, 0.2);
+      border-color: rgba(59, 130, 246, 0.4);
+
+      svg {
+        color: #3b82f6;
+      }
+    }
+    &::before {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: 60px;
+      top: 50%;
+      transform: translateY(-50%) translateX(-10px);
+      background: rgba(0, 0, 0, 0.9);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+
+      &::after {
+        content: "";
+        position: absolute;
+        right: 100%;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 6px solid transparent;
+        border-right-color: rgba(0, 0, 0, 0.9);
+      }
+    }
+  }
+}
+
+.main-content {
+  flex: 1;
+  margin-left: 80px;
+}
