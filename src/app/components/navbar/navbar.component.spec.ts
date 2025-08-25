@@ -8,7 +8,7 @@ describe('NavbarComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [NavbarComponent]
+      declarations: [NavbarComponent],
     });
     fixture = TestBed.createComponent(NavbarComponent);
     component = fixture.componentInstance;
@@ -17,5 +17,16 @@ describe('NavbarComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should set the clicked item as active', () => {
+    expect(component.navItems[0].active).toBe(true);
+    expect(component.navItems[1].active).toBe(false);
+
+    const secondItem = component.navItems[1];
+    component.onNavItemClick(secondItem);
+
+    expect(component.navItems[0].active).toBe(false);
+    expect(component.navItems[1].active).toBe(true);
   });
 });
