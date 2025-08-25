@@ -9,14 +9,17 @@
   position: relative;
 }
 
-// Main Content
 .main-content {
-  flex: 1;
-  position: relative;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  left: calc(50% - 100px);
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 80px;
+  padding: 0;
 }
 
 // Enhanced Stars Background with Nebula Effect
@@ -70,7 +73,6 @@
   opacity: 0.6;
 }
 
-// Add nebula effect
 .stars-background::before {
   content: "";
   position: absolute;
@@ -116,7 +118,6 @@
   }
 }
 
-// Content Wrapper - Perfectly Centered with More Space
 .content-wrapper {
   max-width: 900px;
   z-index: 2;
@@ -132,7 +133,6 @@
   padding: 0 60px;
 }
 
-// Title Section - Futuristic
 .title-section {
   margin-bottom: 60px;
   position: relative;
@@ -330,7 +330,6 @@
   }
 }
 
-// Description Section - Quote Style
 .description-section {
   margin-bottom: 80px;
   text-align: center;
@@ -375,7 +374,6 @@
   }
 }
 
-// Progress Section - Enhanced Futuristic with More Space
 .progress-section {
   display: flex;
   flex-direction: column;
@@ -527,7 +525,6 @@
   }
 }
 
-// Responsive Design
 @media (max-width: 1024px) {
   .main-content {
     justify-content: center;
