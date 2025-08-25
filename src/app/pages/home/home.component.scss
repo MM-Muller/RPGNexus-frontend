@@ -13,7 +13,7 @@
   width: 100vw;
   height: 100vh;
   position: absolute;
-  left: calc(50% - 100px);
+  left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   display: flex;
@@ -121,10 +121,6 @@
 .content-wrapper {
   max-width: 900px;
   z-index: 2;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -526,11 +522,6 @@
 }
 
 @media (max-width: 1024px) {
-  .main-content {
-    justify-content: center;
-    padding: 40px;
-  }
-
   .content-wrapper {
     max-width: 750px;
     padding: 0 40px;
@@ -574,9 +565,9 @@
   }
 
   .description {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     padding: 0 20px;
-    max-width: 400px;
+    max-width: 450px;
 
     &::before {
       left: -15px;
@@ -609,6 +600,10 @@
 }
 
 @media (max-width: 480px) {
+  .content-wrapper {
+    padding: 20px;
+  }
+
   .main-title {
     font-size: 2.8rem;
   }
@@ -620,7 +615,8 @@
 
   .description {
     font-size: 1rem;
-    max-width: 300px;
+    max-width: 320px;
+    padding: 0 10px;
 
     &::before {
       left: -10px;
@@ -637,6 +633,53 @@
 
   .tech-line {
     width: 200px;
+  }
+
+  .progress-section {
+    padding: 0 30px;
+  }
+
+  .progress-container {
+    max-width: 300px;
+  }
+
+  .title-section {
+    margin-bottom: 40px;
+  }
+
+  .description-section {
+    margin-bottom: 60px;
+    padding: 0 15px;
+  }
+}
+
+@media (max-width: 360px) {
+  .content-wrapper {
+    padding: 15px;
+  }
+
+  .main-title {
+    font-size: 2.4rem;
+    letter-spacing: 0.05em;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+  }
+
+  .description {
+    font-size: 0.9rem;
+    max-width: 280px;
+
+    &::before,
+    &::after {
+      font-size: 1.5rem;
+    }
+  }
+
+  .tech-line {
+    width: 150px;
   }
 
   .progress-section {
