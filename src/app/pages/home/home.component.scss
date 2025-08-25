@@ -1,9 +1,15 @@
+@import "src/styles/variables";
+
 .home-container {
   display: flex;
   width: 100vw;
   height: 100vh;
-  background: radial-gradient(ellipse at center, #0a0a1a 0%, #000000 70%);
-  color: #fff;
+  background: radial-gradient(
+    ellipse at center,
+    #0a0a1a 0%,
+    $dark-background 70%
+  );
+  color: $text-color;
   font-family: "Orbitron", "Arial", monospace;
   overflow: hidden;
   position: relative;
@@ -22,51 +28,47 @@
   padding: 0;
 }
 
-// Enhanced Stars Background with Nebula Effect
 .stars-background {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
-    // Distant stars
-    radial-gradient(1px 1px at 20px 30px, #fff, transparent),
+  background: radial-gradient(1px 1px at 20px 30px, $text-color, transparent),
     radial-gradient(1px 1px at 40px 70px, rgba(255, 255, 255, 0.8), transparent),
-    radial-gradient(2px 2px at 90px 40px, #fff, transparent),
+    radial-gradient(2px 2px at 90px 40px, $text-color, transparent),
     radial-gradient(
       1px 1px at 130px 80px,
       rgba(255, 255, 255, 0.6),
       transparent
     ),
-    radial-gradient(1px 1px at 160px 30px, #fff, transparent),
+    radial-gradient(1px 1px at 160px 30px, $text-color, transparent),
     radial-gradient(
       2px 2px at 200px 90px,
       rgba(255, 255, 255, 0.8),
       transparent
     ),
-    radial-gradient(1px 1px at 240px 50px, #fff, transparent),
+    radial-gradient(1px 1px at 240px 50px, $text-color, transparent),
     radial-gradient(
       1px 1px at 280px 120px,
       rgba(255, 255, 255, 0.7),
       transparent
     ),
-    radial-gradient(2px 2px at 320px 20px, #fff, transparent),
+    radial-gradient(2px 2px at 320px 20px, $text-color, transparent),
     radial-gradient(
       1px 1px at 360px 100px,
       rgba(255, 255, 255, 0.9),
       transparent
     ),
-    radial-gradient(1px 1px at 400px 60px, #fff, transparent),
+    radial-gradient(1px 1px at 400px 60px, $text-color, transparent),
     radial-gradient(
       2px 2px at 450px 140px,
       rgba(255, 255, 255, 0.6),
       transparent
     ),
-    // Colored nebula stars
-    radial-gradient(1px 1px at 100px 200px, #00f5ff, transparent),
-    radial-gradient(1px 1px at 300px 150px, #ff00ff, transparent),
-    radial-gradient(1px 1px at 500px 80px, #00ff88, transparent);
+    radial-gradient(1px 1px at 100px 200px, $primary-color, transparent),
+    radial-gradient(1px 1px at 300px 150px, $secondary-color, transparent),
+    radial-gradient(1px 1px at 500px 80px, $tertiary-color, transparent);
   background-repeat: repeat;
   background-size: 600px 300px;
   animation: stars-move 30s linear infinite;
@@ -142,11 +144,11 @@
   margin: 0;
   background: linear-gradient(
     135deg,
-    #ffffff 0%,
-    #00f5ff 25%,
-    #ff00ff 50%,
-    #00ff88 75%,
-    #ffffff 100%
+    $text-color 0%,
+    $primary-color 25%,
+    $secondary-color 50%,
+    $tertiary-color 75%,
+    $text-color 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -184,7 +186,7 @@
   letter-spacing: 1em;
   margin: 20px 0 0 0;
   opacity: 0.9;
-  color: #00f5ff;
+  color: $primary-color;
   font-family: "Orbitron", monospace;
   text-transform: uppercase;
   text-align: center;
@@ -199,7 +201,12 @@
     transform: translateX(-50%);
     width: 100px;
     height: 1px;
-    background: linear-gradient(90deg, transparent, #00f5ff, transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      $primary-color,
+      transparent
+    );
     animation: line-expand 2s ease-in-out infinite;
   }
 }
@@ -210,9 +217,9 @@
   background: linear-gradient(
     90deg,
     transparent,
-    #00f5ff,
-    #ff00ff,
-    #00f5ff,
+    $primary-color,
+    $secondary-color,
+    $primary-color,
     transparent
   );
   margin: 30px auto 0;
@@ -227,7 +234,7 @@
     top: -5px;
     width: 8px;
     height: 13px;
-    background: #00f5ff;
+    background: $primary-color;
     border-radius: 50%;
     animation: tech-dots 3s ease-in-out infinite alternate;
     box-shadow: 0 0 15px rgba(0, 245, 255, 0.8);
@@ -386,7 +393,7 @@
 
 .progress-label {
   font-size: 1rem;
-  color: #00f5ff;
+  color: $primary-color;
   margin-bottom: 15px;
   font-family: "Orbitron", monospace;
   letter-spacing: 0.3em;
@@ -413,10 +420,10 @@
   height: 100%;
   background: linear-gradient(
     90deg,
-    #00f5ff 0%,
-    #ff00ff 30%,
-    #00ff88 60%,
-    #00f5ff 100%
+    $primary-color 0%,
+    $secondary-color 30%,
+    $tertiary-color 60%,
+    $primary-color 100%
   );
   border-radius: 3px;
   position: relative;
@@ -460,7 +467,7 @@
 
 .progress-percentage {
   font-size: 0.9rem;
-  color: #00f5ff;
+  color: $primary-color;
   font-family: "Orbitron", monospace;
   opacity: 0.8;
   margin-top: 5px;
