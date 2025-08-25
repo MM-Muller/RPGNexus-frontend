@@ -1,11 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HistoriaComponent } from './pages/historia/historia.component';
 import { HomeComponent } from './pages/home/home.component';
+import { ObjetivoComponent } from './pages/objetivo/objetivo.component';
+import { PersonagensComponent } from './pages/personagens/personagens.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  // Adicione outras rotas aqui conforme necessário
+  { path: 'historia', component: HistoriaComponent },
+  { path: 'personagens', component: PersonagensComponent },
+  { path: 'objetivo', component: ObjetivoComponent },
 ];
 
 @NgModule({

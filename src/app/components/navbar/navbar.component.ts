@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -10,29 +11,34 @@ export class NavbarComponent {
     {
       id: 'home',
       name: 'Universo',
-      // Alterado de 'icon' para 'iconUrl' com o caminho do arquivo
       iconUrl: 'assets/icons/universo.svg',
+      route: '/home',
       active: true,
     },
     {
       id: 'historia',
       name: 'História',
       iconUrl: 'assets/icons/historia.svg',
+      route: '/historia',
       active: false,
     },
     {
       id: 'personagens',
       name: 'Personagens',
       iconUrl: 'assets/icons/personagens.svg',
+      route: '/personagens',
       active: false,
     },
     {
       id: 'objetivo',
       name: 'Objetivo',
       iconUrl: 'assets/icons/objetivo.svg',
+      route: '/objetivo',
       active: false,
     },
   ];
+
+  constructor(private router: Router) {}
 
   trackByFn(index: number, item: any): any {
     return item.id;
@@ -41,6 +47,6 @@ export class NavbarComponent {
   onNavItemClick(clickedItem: any): void {
     this.navItems.forEach((item) => (item.active = false));
     clickedItem.active = true;
-    console.log(`Navigando para: ${clickedItem.name} (${clickedItem.id})`);
+    this.router.navigate([clickedItem.route]);
   }
 }
