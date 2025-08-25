@@ -1,0 +1,51 @@
+// ========================================
+// COLOR PALETTE - RPGNexus Theme
+// ========================================
+
+// Primary Colors
+$primary-color: #00f5ff; // Ciano brilhante
+$secondary-color: #ff00ff; // Magenta vibrante
+$tertiary-color: #00ff88; // Verde neon
+
+// Base Colors
+$text-color: #fff; // Branco puro
+$dark-background: #000; // Preto absoluto
+
+// Additional Shades
+$primary-alpha-10: rgba(0, 245, 255, 0.1);
+$primary-alpha-20: rgba(0, 245, 255, 0.2);
+$primary-alpha-30: rgba(0, 245, 255, 0.3);
+$primary-alpha-40: rgba(0, 245, 255, 0.4);
+$primary-alpha-50: rgba(0, 245, 255, 0.5);
+
+$secondary-alpha-10: rgba(255, 0, 255, 0.1);
+$secondary-alpha-20: rgba(255, 0, 255, 0.2);
+$secondary-alpha-30: rgba(255, 0, 255, 0.3);
+
+$tertiary-alpha-10: rgba(0, 255, 136, 0.1);
+$tertiary-alpha-20: rgba(0, 255, 136, 0.2);
+$tertiary-alpha-30: rgba(0, 255, 136, 0.3);
+
+// Background Variations
+$dark-blue-bg: rgba(0, 10, 26, 0.4);
+$gradient-bg: radial-gradient(
+  ellipse at center,
+  #0a0a1a 0%,
+  #{$dark-background} 70%
+);
+
+// ========================================
+// SPACING & SIZING
+// ========================================
+$navbar-width: 80px;
+$navbar-gap: 25px;
+$navbar-padding: 20px 15px;
+$navbar-border-radius: 25px;
+
+// ========================================
+// BREAKPOINTS
+// ========================================
+$breakpoint-xl: 1024px;
+$breakpoint-lg: 768px;
+$breakpoint-md: 480px;
+$breakpoint-sm: 360px;
