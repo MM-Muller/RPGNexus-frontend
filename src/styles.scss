@@ -1,4 +1,5 @@
-/* Global Styles */
+@import "app/styles/variables";
+
 * {
   margin: 0;
   padding: 0;
@@ -8,7 +9,6 @@
 html,
 body {
   height: 100%;
-  overflow: hidden;
 }
 
 body {
@@ -17,25 +17,46 @@ body {
   color: #fff;
 }
 
-// Remove outline padrão dos elementos focados
 *:focus {
   outline: none;
 }
 
-// Scrollbar customizada
+// Para navegadores baseados em WebKit (Chrome, Safari, Edge)
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 12px;
 }
 
+// O fundo da barra de rolagem (a trilha)
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(
+    10,
+    10,
+    26,
+    0.4
+  ); // Um fundo escuro, similar ao da sua navbar
+  border-radius: 10px;
+  border: 1px solid $primary-alpha-10;
 }
 
+// A parte que o usuário arrasta (o polegar)
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 4px;
-}
+  background: linear-gradient(
+    45deg,
+    $primary-color,
+    $secondary-color,
+    $tertiary-color
+  );
+  border-radius: 10px;
+  border: 2px solid rgba(10, 10, 26, 0.8);
+  box-shadow: 0 0 10px $primary-color, 0 0 20px $secondary-color;
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
+  &:hover {
+    background: linear-gradient(
+      45deg,
+      lighten($primary-color, 10%),
+      lighten($secondary-color, 10%),
+      lighten($tertiary-color, 10%)
+    );
+    box-shadow: 0 0 15px $primary-color, 0 0 30px $secondary-color;
+  }
 }

@@ -8,7 +8,7 @@ describe('HistoriaComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [HistoriaComponent]
+      declarations: [HistoriaComponent],
     });
     fixture = TestBed.createComponent(HistoriaComponent);
     component = fixture.componentInstance;
@@ -17,5 +17,11 @@ describe('HistoriaComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render the main title "HISTÓRIA"', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const titleElement = compiled.querySelector('.page-title');
+    expect(titleElement?.textContent).toContain('HISTÓRIA');
   });
 });
