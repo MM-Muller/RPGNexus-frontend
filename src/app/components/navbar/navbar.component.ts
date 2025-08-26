@@ -47,6 +47,8 @@ export class NavbarComponent {
   onNavItemClick(clickedItem: any): void {
     this.navItems.forEach((item) => (item.active = false));
     clickedItem.active = true;
-    this.router.navigate([clickedItem.route]);
+    this.router.navigate([clickedItem.route], {
+      fragment: 'page-title',
+    });
   }
 }

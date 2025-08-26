@@ -5,9 +5,9 @@
       [class.active]="item.active"
       *ngFor="let item of navItems; trackBy: trackByFn"
       (click)="onNavItemClick(item)"
-      [title]="item.name"
     >
       <img [src]="item.iconUrl" class="nav-icon" [alt]="item.name" />
+      <span class="nav-tooltip">{{ item.name }}</span>
     </div>
   </div>
 </nav>
