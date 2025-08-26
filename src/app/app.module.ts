@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CharacterCardComponent } from './components/character-card/character-card.component'; // <-- 1. IMPORTE AQUI
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { HistoriaComponent } from './pages/historia/historia.component';
 import { HomeComponent } from './pages/home/home.component';
@@ -17,6 +18,7 @@ import { PersonagensComponent } from './pages/personagens/personagens.component'
     HistoriaComponent,
     PersonagensComponent,
     ObjetivoComponent,
+    CharacterCardComponent,
   ],
   imports: [BrowserModule, AppRoutingModule],
   providers: [],

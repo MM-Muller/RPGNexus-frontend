@@ -1,0 +1,20 @@
+<div class="card" [ngClass]="type + '-' + subtype">
+  <div class="character-icon">
+    <div [ngClass]="subtype + '-figure'">
+      <div *ngIf="subtype === 'synthetic'" class="led"></div>
+      <div *ngIf="subtype === 'hybrid'" class="bio-glow"></div>
+      <div *ngIf="subtype === 'expatriate'" class="space-suit"></div>
+      <div *ngIf="subtype === 'scientist'">
+        <div class="glasses"></div>
+        <div class="device"></div>
+      </div>
+      <div *ngIf="subtype === 'pilot'" class="helmet"></div>
+      <div *ngIf="subtype === 'diplomat'" class="badge"></div>
+      <div *ngIf="subtype === 'adventurer'" class="gear"></div>
+    </div>
+  </div>
+  <div class="heading">{{ title }}</div>
+  <div class="description">
+    {{ description }}
+  </div>
+</div>

@@ -211,45 +211,6 @@
   }
 }
 
-.tech-line {
-  width: 300px;
-  height: 3px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    $primary-color,
-    $secondary-color,
-    $primary-color,
-    transparent
-  );
-  margin: 30px auto 0;
-  position: relative;
-  border-radius: 2px;
-  animation: tech-line-pulse 2s ease-in-out infinite;
-
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    top: -5px;
-    width: 8px;
-    height: 13px;
-    background: $primary-color;
-    border-radius: 50%;
-    animation: tech-dots 3s ease-in-out infinite alternate;
-    box-shadow: 0 0 15px rgba(0, 245, 255, 0.8);
-  }
-
-  &::before {
-    left: -10px;
-  }
-
-  &::after {
-    right: -10px;
-    animation-delay: 1.5s;
-  }
-}
-
 @keyframes cosmic-text {
   0%,
   100% {
