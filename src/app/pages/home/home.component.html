@@ -14,12 +14,18 @@
       </div>
 
       <div class="progress-section">
-        <div class="progress-container">
+        <div class="progress-container" *ngIf="isLoading">
           <div class="progress-label">INICIALIZANDO SISTEMA</div>
           <div class="progress-bar">
-            <div class="progress-fill"></div>
+            <div class="progress-fill" [style.width.%]="progress"></div>
           </div>
-          <div class="progress-percentage">69%</div>
+          <div class="progress-percentage">{{ progress }}%</div>
+        </div>
+
+        <div class="play-button-container" *ngIf="showPlayButton" [@fadeInUp]>
+          <button class="play-button" (click)="onPlayGame()">
+            JOGAR AGORA
+          </button>
         </div>
       </div>
     </div>
