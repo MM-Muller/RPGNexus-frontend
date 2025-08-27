@@ -1,0 +1,23 @@
+// Mixin para o efeito de gradiente no texto
+@mixin gradient-text {
+  background: linear-gradient(
+    135deg,
+    $text-color 0%,
+    $primary-color 25%,
+    $secondary-color 50%,
+    $tertiary-color 75%,
+    $text-color 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 300% 300%;
+  animation: text-gradient 6s ease infinite;
+}
+
+// Mixin para centralizar itens com flexbox
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

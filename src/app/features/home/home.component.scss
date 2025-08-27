@@ -1,4 +1,5 @@
 @import "../../styles/variables";
+@import "../../styles/mixins";
 
 .home-container {
   display: flex;
@@ -142,22 +143,12 @@
   font-weight: 900;
   letter-spacing: 0.15em;
   margin: 0;
-  background: linear-gradient(
-    135deg,
-    $text-color 0%,
-    $primary-color 25%,
-    $secondary-color 50%,
-    $tertiary-color 75%,
-    $text-color 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  background-size: 300% 300%;
   text-shadow: 0 0 40px rgba(0, 245, 255, 0.4);
-  animation: cosmic-text 4s ease-in-out infinite, text-gradient 6s ease infinite;
   font-family: "Orbitron", monospace;
   position: relative;
+
+  @include gradient-text;
+  animation: cosmic-text 4s ease-in-out infinite, text-gradient 6s ease infinite;
 
   &::before {
     content: attr(data-text);
