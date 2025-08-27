@@ -22,6 +22,10 @@
           <div class="progress-percentage">{{ progress }}%</div>
         </div>
 
+        <div class="progress-container" *ngIf="showCompleted" [@fadeInUp]>
+          <div class="progress-label completed">CONCLUÍDO</div>
+        </div>
+
         <div class="play-button-container" *ngIf="showPlayButton" [@fadeInUp]>
           <button class="play-button" (click)="onPlayGame()">
             JOGAR AGORA

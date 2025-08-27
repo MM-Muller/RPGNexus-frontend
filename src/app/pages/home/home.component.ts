@@ -1,9 +1,21 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  animations: [
+    trigger('fadeInUp', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(30px)' }),
+        animate(
+          '0.8s ease-out',
+          style({ opacity: 1, transform: 'translateY(0)' })
+        ),
+      ]),
+    ]),
+  ],
 })
 export class HomeComponent implements OnInit, OnDestroy {
   title: string = 'NEXUS';
@@ -13,6 +25,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   progress: number = 0;
   isLoading: boolean = true;
+  showCompleted: boolean = false;
   showPlayButton: boolean = false;
   private progressInterval?: any;
 
@@ -36,12 +49,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       if (this.progress >= 100) {
         this.progress = 100;
-        this.isLoading = false;
         clearInterval(this.progressInterval);
+        this.isLoading = false;
+        this.showCompleted = true;
 
         setTimeout(() => {
+          this.showCompleted = false;
           this.showPlayButton = true;
-        }, 500);
+        }, 1000);
       }
     }, intervalTime);
   }
@@ -53,6 +68,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   restartAnimation(): void {
     this.progress = 0;
     this.isLoading = true;
+    this.showCompleted = false;
     this.showPlayButton = false;
     this.startProgressAnimation();
   }
