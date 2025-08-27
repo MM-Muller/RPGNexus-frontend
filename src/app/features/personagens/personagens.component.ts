@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Character } from '../../models/character.model';
 
 @Component({
   selector: 'app-personagens',
@@ -6,7 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./personagens.component.scss'],
 })
 export class PersonagensComponent {
-  races = [
+  races: Character[] = [
     {
       subtype: 'human',
       title: 'HUMANO',
