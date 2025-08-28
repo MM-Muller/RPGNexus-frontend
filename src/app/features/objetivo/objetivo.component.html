@@ -1,1 +1,38 @@
-<p>objetivo works!</p>
+<div class="objetivo-container" (mousemove)="onMouseMove($event)">
+  <div class="stars-background"></div>
+
+  <div class="content-wrapper">
+    <div class="page-header" id="page-title">
+      <h1 class="main-title">OBJETIVOS CÓSMICOS</h1>
+      <h2 class="subtitle">Nexus Galáctico</h2>
+      <div class="tech-line"></div>
+    </div>
+
+    <div class="galactic-map-columns">
+      <div class="objective-section">
+        <div class="section-header">
+          <h2 class="section-title">Horizontes Próximos</h2>
+        </div>
+        <div class="constellation">
+          <app-objective-node
+            *ngFor="let objective of shortTermObjectives"
+            [objective]="objective"
+          ></app-objective-node>
+        </div>
+      </div>
+
+      <div class="objective-section">
+        <div class="section-header">
+          <h2 class="section-title">Destinos Transcendentes</h2>
+        </div>
+        <div class="constellation">
+          <app-objective-node
+            *ngFor="let objective of longTermObjectives"
+            [objective]="objective"
+          ></app-objective-node>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tech-line"></div>
+</div>

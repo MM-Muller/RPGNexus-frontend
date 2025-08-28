@@ -1,0 +1,15 @@
+<div class="objective-node">
+  <div class="orbital-icon">
+    <div class="orbital-ring"></div>
+    <div class="orbital-ring"></div>
+    <div class="orbital-core"></div>
+  </div>
+  <h3 class="objective-title">{{ objective.title }}</h3>
+  <p class="objective-desc">{{ objective.description }}</p>
+  <div class="quantum-progress">
+    <div class="progress-label">PROGRESSO QUÂNTICO</div>
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="objective.progress"></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,187 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+:host {
+  width: 100%;
+}
+
+.objetivo-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  padding: 60px 20px;
+  font-family: "Orbitron", "Arial", monospace;
+  overflow-y: auto;
+}
+
+.stars-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(1px 1px at 20px 30px, $text-color, transparent),
+    radial-gradient(1px 1px at 40px 70px, rgba(255, 255, 255, 0.8), transparent),
+    radial-gradient(2px 2px at 90px 40px, $text-color, transparent),
+    radial-gradient(
+      1px 1px at 130px 80px,
+      rgba(255, 255, 255, 0.6),
+      transparent
+    ),
+    radial-gradient(1px 1px at 160px 30px, $text-color, transparent),
+    radial-gradient(
+      2px 2px at 200px 90px,
+      rgba(255, 255, 255, 0.8),
+      transparent
+    );
+  background-repeat: repeat;
+  background-size: 600px 300px;
+  animation: stars-move 30s linear infinite;
+  opacity: 0.4;
+  z-index: 0;
+}
+
+.stars-background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+      ellipse 400px 300px at 30% 40%,
+      rgba(0, 245, 255, 0.1),
+      transparent
+    ),
+    radial-gradient(
+      ellipse 350px 250px at 70% 60%,
+      rgba(255, 0, 255, 0.08),
+      transparent
+    ),
+    radial-gradient(
+      ellipse 500px 200px at 50% 80%,
+      rgba(0, 255, 136, 0.06),
+      transparent
+    );
+  animation: nebula-drift 40s ease-in-out infinite alternate;
+}
+
+.content-wrapper {
+  position: relative;
+  z-index: 2;
+  max-width: 1600px;
+  margin: 0 auto;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.main-title {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  margin-bottom: 20px;
+  @include gradient-text;
+  animation: text-gradient 6s ease infinite, cosmic-text 4s ease-in-out infinite;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: $primary-color;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.galactic-map-columns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 80px;
+  align-items: flex-start;
+}
+
+@media (min-width: 1024px) {
+  .galactic-map-columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+  }
+}
+
+.objective-section {
+  position: relative;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.section-title {
+  font-size: 2rem;
+  color: $primary-color;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 10px;
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      $primary-color,
+      transparent
+    );
+  }
+}
+
+.constellation {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+  justify-items: center;
+}
+
+/* Animações (já devem estar no seu CSS global) */
+@keyframes stars-move {
+  from {
+    transform: translateY(0px) translateX(0px);
+  }
+  to {
+    transform: translateY(-300px) translateX(-60px);
+  }
+}
+
+@keyframes nebula-drift {
+  from {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.3;
+  }
+  to {
+    transform: rotate(360deg) scale(1.1);
+    opacity: 0.5;
+  }
+}
+
+@keyframes cosmic-text {
+  0%,
+  100% {
+    text-shadow: 0 0 20px rgba(0, 245, 255, 0.3),
+      0 0 40px rgba(0, 245, 255, 0.2);
+  }
+  50% {
+    text-shadow: 0 0 30px rgba(0, 245, 255, 0.5),
+      0 0 60px rgba(255, 0, 255, 0.3);
+  }
+}
