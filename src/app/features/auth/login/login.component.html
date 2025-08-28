@@ -1,0 +1,89 @@
+<div class="auth-container">
+  <div class="stars-background"></div>
+  <div class="nebula-effects"></div>
+
+  <div class="content-wrapper">
+    <div class="auth-header">
+      <h1 class="main-title">NEXUS</h1>
+      <h2 class="subtitle">GALÁCTICO</h2>
+      <div class="tech-line"></div>
+    </div>
+
+    <div class="auth-forms-container">
+      <div class="rotating-border">
+        <span
+          *ngFor="let i of [].constructor(50); index as idx"
+          class="border-element"
+          [style.--i]="idx"
+        ></span>
+      </div>
+
+      <div class="forms-wrapper">
+        <div class="form-container login-form">
+          <div class="form-content">
+            <div class="form-header">
+              <div class="form-title">
+                <span class="glitch-text">ACESSE SEU</span>
+              </div>
+              <div class="title-cosmic"><span>ESPAÇO</span></div>
+            </div>
+
+            <form
+              (ngSubmit)="onLogin(loginEmail.value, loginPassword.value)"
+              class="auth-form"
+            >
+              <div class="shooting-stars">
+                <span class="star" *ngFor="let star of [1, 2, 3, 4]"></span>
+              </div>
+
+              <div class="input-container">
+                <input
+                  type="email"
+                  #loginEmail
+                  required
+                  class="cosmic-input"
+                  placeholder=" "
+                />
+                <label class="floating-label">Email Galáctico</label>
+              </div>
+
+              <div class="input-container">
+                <input
+                  type="password"
+                  #loginPassword
+                  required
+                  class="cosmic-input"
+                  placeholder=" "
+                />
+                <label class="floating-label">Código de Acesso</label>
+              </div>
+
+              <div class="forgot-section">
+                <a
+                  href="#"
+                  (click)="onForgotPassword(); $event.preventDefault()"
+                  class="forgot-link"
+                  >Perdeu seu código de acesso?</a
+                >
+              </div>
+
+              <button type="submit" class="cosmic-button login-btn">
+                <span class="button-text">INICIAR CONEXÃO</span>
+              </button>
+
+              <div class="switch-mode">
+                <span>Novo explorador? </span>
+                <a
+                  href="#"
+                  (click)="navigateToSignup(); $event.preventDefault()"
+                  class="switch-link"
+                  >Registre-se!</a
+                >
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

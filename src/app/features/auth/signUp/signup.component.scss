@@ -1,0 +1,11 @@
+@import "../../../styles/auth";
+@import "../../../styles/variables";
+
+.signup-btn {
+  border-color: $tertiary-color;
+
+  &:hover {
+    background: $tertiary-alpha-10;
+    box-shadow: 0 0 30px $tertiary-alpha-20;
+  }
+}

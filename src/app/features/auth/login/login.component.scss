@@ -1,0 +1,11 @@
+@import "../../../styles/auth";
+@import "../../../styles/variables";
+
+.login-btn {
+  border-color: $primary-color;
+
+  &:hover {
+    background: $primary-alpha-10;
+    box-shadow: 0 0 30px $primary-alpha-30;
+  }
+}

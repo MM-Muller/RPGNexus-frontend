@@ -1,0 +1,108 @@
+<div class="auth-container">
+  <div class="stars-background"></div>
+  <div class="nebula-effects"></div>
+
+  <div class="content-wrapper">
+    <div class="auth-header">
+      <h1 class="main-title">NEXUS</h1>
+      <h2 class="subtitle">GALÁCTICO</h2>
+      <div class="tech-line"></div>
+    </div>
+
+    <div class="auth-forms-container">
+      <div class="rotating-border">
+        <span
+          *ngFor="let i of [].constructor(50); index as idx"
+          class="border-element"
+          [style.--i]="idx"
+        ></span>
+      </div>
+      <div class="forms-wrapper">
+        <div class="form-container signup-form">
+          <div class="form-content">
+            <div class="form-header">
+              <div class="form-title">
+                <span class="glitch-text">JUNTE-SE AO</span>
+              </div>
+              <div class="title-cosmic"><span>NEXUS</span></div>
+            </div>
+
+            <form
+              (ngSubmit)="
+                onSignup(
+                  signupUsername.value,
+                  signupEmail.value,
+                  signupPassword.value,
+                  confirmPassword.value
+                )
+              "
+              class="auth-form"
+            >
+              <div class="shooting-stars">
+                <span class="star" *ngFor="let star of [1, 2, 3, 4]"></span>
+              </div>
+
+              <div class="input-container">
+                <input
+                  type="text"
+                  #signupUsername
+                  required
+                  class="cosmic-input"
+                  placeholder=" "
+                />
+                <label class="floating-label">Nome de Explorador</label>
+              </div>
+
+              <div class="input-container">
+                <input
+                  type="email"
+                  #signupEmail
+                  required
+                  class="cosmic-input"
+                  placeholder=" "
+                />
+                <label class="floating-label">Email Galáctico</label>
+              </div>
+
+              <div class="input-container">
+                <input
+                  type="password"
+                  #signupPassword
+                  required
+                  class="cosmic-input"
+                  placeholder=" "
+                />
+                <label class="floating-label">Código Secreto</label>
+              </div>
+
+              <div class="input-container">
+                <input
+                  type="password"
+                  #confirmPassword
+                  required
+                  class="cosmic-input"
+                  placeholder=" "
+                />
+                <label class="floating-label">Confirmar Código</label>
+              </div>
+
+              <button type="submit" class="cosmic-button signup-btn">
+                <span class="button-text">INICIAR JORNADA</span>
+              </button>
+
+              <div class="switch-mode">
+                <span>Já possui acesso? </span>
+                <a
+                  href="#"
+                  (click)="navigateToLogin(); $event.preventDefault()"
+                  class="switch-link"
+                  >Entre aqui!</a
+                >
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

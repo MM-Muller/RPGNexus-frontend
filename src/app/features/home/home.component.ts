@@ -1,5 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -28,6 +29,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   showCompleted: boolean = false;
   showPlayButton: boolean = false;
   private progressInterval?: any;
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.startProgressAnimation();
@@ -62,7 +65,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   onPlayGame(): void {
-    console.log('Iniciando jogo...');
+    this.router.navigate(['/login']);
   }
 
   restartAnimation(): void {
