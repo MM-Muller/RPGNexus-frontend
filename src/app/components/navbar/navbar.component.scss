@@ -52,7 +52,7 @@
       opacity: 1;
       background: $primary-alpha-20;
       box-shadow: 0 0 25px $primary-alpha-40;
-      border-color: rgba(0, 245, 255, 0.6);
+      border-color: $text-color;
 
       &::before {
         content: "";
