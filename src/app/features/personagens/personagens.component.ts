@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Character } from '../../models/character.model';
 
 @Component({
@@ -6,7 +6,7 @@ import { Character } from '../../models/character.model';
   templateUrl: './personagens.component.html',
   styleUrls: ['./personagens.component.scss'],
 })
-export class PersonagensComponent {
+export class PersonagensComponent implements OnInit {
   races: Character[] = [
     {
       subtype: 'human',
@@ -60,4 +60,34 @@ export class PersonagensComponent {
         'Equilibrado em todas as habilidades e altamente adaptável. Combina múltiplas competências para qualquer situação.',
     },
   ];
+
+  ngOnInit(): void {
+    this.createStars();
+  }
+
+  createStars(): void {
+    const starsContainer = document.getElementById('starsContainer');
+    if (starsContainer) {
+      // Limpa estrelas existentes para evitar duplicação na navegação
+      starsContainer.innerHTML = '';
+      const numberOfStars = 150;
+
+      for (let i = 0; i < numberOfStars; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+
+        const size = Math.random() * 3 + 1;
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+
+        star.style.animationDelay = Math.random() * 3 + 's';
+        star.style.animationDuration = Math.random() * 3 + 2 + 's';
+
+        starsContainer.appendChild(star);
+      }
+    }
+  }
 }
