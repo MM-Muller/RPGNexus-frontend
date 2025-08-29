@@ -1,6 +1,4 @@
-@import "app/styles/animations";
 @import "app/styles/variables";
-@import "app/styles/base";
 @import "app/styles/mixins";
 
 * {
@@ -15,9 +13,10 @@ body {
 }
 
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: #000;
-  color: #fff;
+  font-family: "Exo 2", sans-serif;
+  background: $dark-background;
+  color: $text-color;
+  overflow-x: hidden;
 }
 
 *:focus {
@@ -29,7 +28,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(10, 10, 26, 0.4);
+  background: rgba(10, 10, 46, 0.4);
   border-radius: 10px;
   border: 1px solid $primary-alpha-10;
 }
@@ -42,7 +41,7 @@ body {
     $tertiary-color
   );
   border-radius: 10px;
-  border: 2px solid rgba(10, 10, 26, 0.8);
+  border: 2px solid rgba(10, 10, 46, 0.8);
   box-shadow: 0 0 10px $primary-color, 0 0 20px $secondary-color;
 
   &:hover {
@@ -82,7 +81,7 @@ body {
     background: $primary-color;
     border-radius: 50%;
     animation: tech-dots 3s ease-in-out infinite alternate;
-    box-shadow: 0 0 15px rgba(0, 245, 255, 0.8);
+    box-shadow: 0 0 15px $primary-alpha-20;
   }
 
   &::before {

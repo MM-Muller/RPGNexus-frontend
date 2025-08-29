@@ -3,36 +3,35 @@
 // ========================================
 
 // Primary Colors
-$primary-color: #00f5ff; // Ciano brilhante
-$secondary-color: #ff00ff; // Magenta vibrante
-$tertiary-color: #00ff88; // Verde neon
+$primary-color: #ffd700; // Ouro
+$secondary-color: #da70d6; // Orquídea
+$tertiary-color: #4169e1; // Azul Real
 
 // Base Colors
-$text-color: #fff; // Branco puro
-$dark-background: #000; // Preto absoluto
+$text-color: #ffffff; // Branco puro
+$dark-background: #000000; // Preto absoluto
+$dark-blue-bg: #0a0a2e; // Azul escuro para fundos
 
-// Additional Shades
-$primary-alpha-10: rgba(0, 245, 255, 0.1);
-$primary-alpha-20: rgba(0, 245, 255, 0.2);
-$primary-alpha-30: rgba(0, 245, 255, 0.3);
-$primary-alpha-40: rgba(0, 245, 255, 0.4);
-$primary-alpha-50: rgba(0, 245, 255, 0.5);
+// Additional Shades & Alphas
+$primary-alpha-10: rgba(255, 215, 0, 0.1);
+$primary-alpha-20: rgba(255, 215, 0, 0.2);
+$primary-alpha-30: rgba(255, 215, 0, 0.3);
+$primary-alpha-40: rgba(255, 215, 0, 0.4);
+$primary-alpha-50: rgba(255, 215, 0, 0.5);
 
-$secondary-alpha-10: rgba(255, 0, 255, 0.1);
-$secondary-alpha-20: rgba(255, 0, 255, 0.2);
-$secondary-alpha-30: rgba(255, 0, 255, 0.3);
+$secondary-alpha-10: rgba(218, 112, 214, 0.1);
+$secondary-alpha-20: rgba(218, 112, 214, 0.2);
+$secondary-alpha-30: rgba(218, 112, 214, 0.3);
 
-$tertiary-alpha-10: rgba(0, 255, 136, 0.1);
-$tertiary-alpha-20: rgba(0, 255, 136, 0.2);
-$tertiary-alpha-30: rgba(0, 255, 136, 0.3);
+$tertiary-alpha-10: rgba(65, 105, 225, 0.1);
+$tertiary-alpha-20: rgba(65, 105, 225, 0.2);
+$tertiary-alpha-30: rgba(65, 105, 225, 0.3);
 
 // Background Variations
-$dark-blue-bg: rgba(0, 10, 26, 0.4);
-$gradient-bg: radial-gradient(
-  ellipse at center,
-  #0a0a1a 0%,
-  #{$dark-background} 70%
-);
+$purple-glow-bg: rgba(138, 43, 226, 0.15);
+$indigo-glow-bg: rgba(75, 0, 130, 0.1);
+$midnight-blue-bg: rgba(25, 25, 112, 0.2);
+$gradient-bg: linear-gradient(180deg, #000 0%, #0a0a2e 50%, #000 100%);
 
 // ========================================
 // SPACING & SIZING
