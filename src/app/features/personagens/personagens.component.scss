@@ -212,17 +212,37 @@
   letter-spacing: 1px;
   z-index: 10;
 }
+
 .hud-top-left {
   top: 20px;
   left: 20px;
 }
+
 .hud-top-right {
   top: 20px;
   right: 20px;
   text-align: right;
 }
+
+.hud-bottom-left {
+  bottom: 20px;
+  left: 20px;
+}
+
+.hud-bottom-right {
+  bottom: 20px;
+  right: 20px;
+  text-align: right;
+}
+
 .hud-data {
   margin: 5px 0;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.hud-data:hover {
+  opacity: 1;
 }
 
 .section {
