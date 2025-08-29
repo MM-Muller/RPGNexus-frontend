@@ -1,0 +1,39 @@
+@import "../../styles/variables";
+
+.objective-item {
+  margin-bottom: 20px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.4);
+  border-left: 3px solid $primary-color;
+  border-radius: 8px;
+  position: relative;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba($primary-color, 0.1);
+    transform: translateX(10px);
+    border-left-color: #8a2be2;
+  }
+
+  &::before {
+    content: "▸";
+    position: absolute;
+    left: -15px;
+    color: $primary-color;
+    animation: pulse 2s infinite;
+  }
+}
+
+.objective-title {
+  font-size: 1.1em;
+  margin-bottom: 8px;
+  color: #fff;
+  font-weight: 300;
+}
+
+.objective-desc {
+  font-size: 0.9em;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+}

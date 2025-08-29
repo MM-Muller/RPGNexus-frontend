@@ -1,38 +1,57 @@
 <div class="objetivo-container" (mousemove)="onMouseMove($event)">
-  <div class="stars-background"></div>
+  <div class="universe-bg"></div>
+  <div class="stars" id="starfield"></div>
+  <div class="nebula"></div>
 
-  <div class="content-wrapper">
-    <div class="page-header" id="page-title">
-      <h1 class="main-title">OBJETIVOS CÓSMICOS</h1>
-      <h2 class="subtitle">Nexus Galáctico</h2>
-      <div class="tech-line"></div>
-    </div>
+  <div class="main-interface">
+    <div class="hologram-container">
+      <div class="hologram-frame">
+        <div class="scanline"></div>
 
-    <div class="galactic-map-columns">
-      <div class="objective-section">
-        <div class="section-header">
-          <h2 class="section-title">Horizontes Próximos</h2>
+        <div class="corner-decoration corner-top-left"></div>
+        <div class="corner-decoration corner-top-right"></div>
+        <div class="corner-decoration corner-bottom-left"></div>
+        <div class="corner-decoration corner-bottom-right"></div>
+
+        <header class="header">
+          <h1 class="title" data-text="OBJETIVOS">OBJETIVOS</h1>
+          <p class="subtitle">Nexus Galáctico</p>
+        </header>
+
+        <div class="objectives-grid">
+          <app-objective-panel
+            [title]="'Curto Prazo'"
+            [iconType]="'portal'"
+            [objectives]="shortTermObjectives"
+          ></app-objective-panel>
+          <app-objective-panel
+            [title]="'Longo Prazo'"
+            [iconType]="'constellation'"
+            [objectives]="longTermObjectives"
+          ></app-objective-panel>
         </div>
-        <div class="constellation">
-          <app-objective-node
-            *ngFor="let objective of shortTermObjectives"
-            [objective]="objective"
-          ></app-objective-node>
+
+        <div class="energy-bar">
+          <div class="energy-fill"></div>
         </div>
       </div>
 
-      <div class="objective-section">
-        <div class="section-header">
-          <h2 class="section-title">Destinos Transcendentes</h2>
-        </div>
-        <div class="constellation">
-          <app-objective-node
-            *ngFor="let objective of longTermObjectives"
-            [objective]="objective"
-          ></app-objective-node>
-        </div>
-      </div>
+      <div
+        class="floating-particle"
+        style="top: 20%; left: 10%; animation-delay: 0s"
+      ></div>
+      <div
+        class="floating-particle"
+        style="top: 70%; left: 85%; animation-delay: 2s"
+      ></div>
+      <div
+        class="floating-particle"
+        style="top: 40%; left: 5%; animation-delay: 4s"
+      ></div>
+      <div
+        class="floating-particle"
+        style="top: 80%; left: 90%; animation-delay: 6s"
+      ></div>
     </div>
   </div>
-  <div class="tech-line"></div>
 </div>

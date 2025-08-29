@@ -14,64 +14,62 @@ import { Objective } from '../../models/objective.model';
   styleUrls: ['./objetivo.component.scss'],
 })
 export class ObjetivoComponent implements OnInit, OnDestroy {
-  title: string = 'OBJETIVOS CÓSMICOS';
-  subtitle: string = 'Nexus Galáctico';
-
   shortTermObjectives: Objective[] = [
     {
-      title: 'Exploração Estelar',
+      title: 'Exploração do Setor Alfa-7',
       description:
-        'Descobrir sistemas solares desconhecidos e mapear anomalias espaciais no braço exterior da galáxia.',
-      progress: 35,
+        'Mapeie sistemas estelares desconhecidos e estabeleça postos avançados para expansão territorial.',
+      progress: 0,
     },
     {
-      title: 'Primeiros Contatos',
+      title: 'Primeiro Contato Xenológico',
       description:
-        'Estabelecer comunicação pacífica com inteligências alienígenas através de protocolos diplomáticos.',
-      progress: 20,
+        'Inicie protocolos diplomáticos com a civilização Etherean detectada no quadrante exterior.',
+      progress: 0,
     },
     {
-      title: 'Arqueologia Cósmica',
+      title: 'Descoberta de Artefatos Quânticos',
       description:
-        'Recuperar artefatos e tecnologias únicas de civilizações perdidas nas Estruturas Guardiãs.',
-      progress: 45,
+        'Recupere tecnologia ancestral das ruínas de Kepler-442b para avanços científicos.',
+      progress: 0,
     },
     {
-      title: 'Sobrevivência Nexus',
+      title: 'Estabilização de Rotas Comerciais',
       description:
-        'Navegar com segurança através das anomalias temporais e singularidades artificiais.',
-      progress: 60,
+        'Proteja corredores hiperespaciais contra piratas e anomalias gravitacionais.',
+      progress: 0,
     },
   ];
 
   longTermObjectives: Objective[] = [
     {
-      title: 'Segredo dos Guardiões',
+      title: 'Decifrar o Código dos Antigos',
       description:
-        'Desvendar o mistério completo das Estruturas Guardiãs e sua conexão com a transcendência cósmica.',
-      progress: 15,
+        'Desvende os segredos da civilização precursora que moldou a galáxia há eons.',
+      progress: 0,
     },
     {
-      title: 'Ponte Galáctica',
+      title: 'Construir o Portal Intergaláctico',
       description:
-        'Construir alianças duradouras entre civilizações através das Correntes Harmônicas.',
-      progress: 25,
+        'Complete a megaestrutura que permitirá viagens instantâneas entre galáxias vizinhas.',
+      progress: 0,
     },
     {
-      title: 'Ascensão Evolutiva',
+      title: 'Alcançar a Singularidade Coletiva',
       description:
-        'Descobrir o destino das espécies transcendentes e o caminho para a evolução cósmica.',
-      progress: 10,
+        'Uma consciências orgânicas e sintéticas em uma rede neural galáctica transcendente.',
+      progress: 0,
     },
     {
-      title: 'Cartografia Harmônica',
+      title: 'Prevenir o Colapso Entrópico',
       description:
-        'Mapear completamente as Correntes Harmônicas e dominar a navegação dimensional.',
-      progress: 30,
+        'Desenvolva tecnologia para reverter a morte térmica do universo e garantir a eternidade.',
+      progress: 0,
     },
   ];
 
-  private observer!: IntersectionObserver;
+  private intervalId: any;
+  private unlistenMouseMove!: () => void;
 
   constructor(
     private renderer: Renderer2,
@@ -79,13 +77,94 @@ export class ObjetivoComponent implements OnInit, OnDestroy {
     private ngZone: NgZone
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.generateStarfield();
+    this.startGlitchEffect();
+    this.setupParallax();
+  }
 
   ngOnDestroy(): void {
-    if (this.observer) {
-      this.observer.disconnect();
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+    if (this.unlistenMouseMove) {
+      this.unlistenMouseMove();
     }
   }
 
-  onMouseMove(e: MouseEvent): void {}
+  private generateStarfield(): void {
+    this.ngZone.runOutsideAngular(() => {
+      const starfield = this.el.nativeElement.querySelector('#starfield');
+      if (starfield) {
+        for (let i = 0; i < 200; i++) {
+          const star = this.renderer.createElement('div');
+          this.renderer.addClass(star, 'star');
+          this.renderer.setStyle(star, 'left', `${Math.random() * 100}%`);
+          this.renderer.setStyle(star, 'top', `${Math.random() * 100}%`);
+          this.renderer.setStyle(
+            star,
+            'animationDelay',
+            `${Math.random() * 3}s`
+          );
+          this.renderer.setStyle(
+            star,
+            'opacity',
+            `${Math.random() * 0.8 + 0.2}`
+          );
+          this.renderer.appendChild(starfield, star);
+        }
+      }
+    });
+  }
+
+  private startGlitchEffect(): void {
+    const title = this.el.nativeElement.querySelector('.title');
+    if (title) {
+      this.intervalId = setInterval(() => {
+        this.renderer.setStyle(title, 'animation', 'glitch 0.3s');
+        setTimeout(() => {
+          this.renderer.setStyle(
+            title,
+            'animation',
+            'energyFlow 3s infinite linear'
+          );
+        }, 300);
+      }, 10000);
+    }
+  }
+
+  private setupParallax(): void {
+    this.ngZone.runOutsideAngular(() => {
+      this.unlistenMouseMove = this.renderer.listen(
+        'document',
+        'mousemove',
+        (e: MouseEvent) => {
+          const x = (e.clientX / window.innerWidth - 0.5) * 20;
+          const y = (e.clientY / window.innerHeight - 0.5) * 20;
+
+          const nebula = this.el.nativeElement.querySelector('.nebula');
+          const stars = this.el.nativeElement.querySelector('.stars');
+
+          if (nebula) {
+            this.renderer.setStyle(
+              nebula,
+              'transform',
+              `translate(${x}px, ${y}px)`
+            );
+          }
+          if (stars) {
+            this.renderer.setStyle(
+              stars,
+              'transform',
+              `translate(${-x * 0.5}px, ${-y * 0.5}px)`
+            );
+          }
+        }
+      );
+    });
+  }
+
+  onMouseMove(event: MouseEvent) {
+    // This empty method is needed for the (mousemove) event binding in the template
+  }
 }
