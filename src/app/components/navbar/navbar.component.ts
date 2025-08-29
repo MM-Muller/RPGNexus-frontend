@@ -60,9 +60,7 @@ export class NavbarComponent implements OnInit {
   }
 
   onNavItemClick(clickedItem: any): void {
-    this.router.navigate([clickedItem.route], {
-      fragment: 'page-title',
-    });
+    this.router.navigate([clickedItem.route]);
   }
 
   private updateActiveState(currentUrl: string): void {
