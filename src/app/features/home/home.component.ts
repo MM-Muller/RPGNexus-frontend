@@ -21,8 +21,6 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit, OnDestroy {
   title: string = 'NEXUS';
   subtitle: string = 'GALÁCTICO';
-  description: string =
-    'No vasto oceano cósmico do Nexus Galáctico, cada estrela é uma ilha de possibilidades, e cada descoberta é um passo em direção à compreensão de nosso lugar no infinito.';
 
   progress: number = 0;
   isLoading: boolean = true;
@@ -34,11 +32,31 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.startProgressAnimation();
+    this.createStars();
   }
 
   ngOnDestroy(): void {
     if (this.progressInterval) {
       clearInterval(this.progressInterval);
+    }
+  }
+
+  private createStars(): void {
+    const container = document.getElementById('starsContainer');
+    if (container) {
+      const starCount = 150;
+      for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        star.style.left = `${Math.random() * 100}%`;
+        star.style.top = `${Math.random() * 100}%`;
+        const size = Math.random() * 2 + 1;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.animationDelay = `${Math.random() * 3}s`;
+        star.style.animationDuration = `${Math.random() * 2 + 3}s`;
+        container.appendChild(star);
+      }
     }
   }
 

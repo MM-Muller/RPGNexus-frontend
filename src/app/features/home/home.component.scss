@@ -1,307 +1,95 @@
 @import "../../styles/variables";
 @import "../../styles/mixins";
 
-.home-container {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  background: radial-gradient(
-    ellipse at center,
-    #0a0a1a 0%,
-    $dark-background 70%
-  );
-  color: $text-color;
-  font-family: "Orbitron", "Arial", monospace;
-  overflow: hidden;
-  position: relative;
+:host {
+  width: 100%;
 }
 
-.main-content {
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+.home-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  padding: 60px 20px;
+  font-family: "Orbitron", "Arial", monospace;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0;
-}
-
-.stars-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(1px 1px at 20px 30px, $text-color, transparent),
-    radial-gradient(1px 1px at 40px 70px, rgba(255, 255, 255, 0.8), transparent),
-    radial-gradient(2px 2px at 90px 40px, $text-color, transparent),
-    radial-gradient(
-      1px 1px at 130px 80px,
-      rgba(255, 255, 255, 0.6),
-      transparent
-    ),
-    radial-gradient(1px 1px at 160px 30px, $text-color, transparent),
-    radial-gradient(
-      2px 2px at 200px 90px,
-      rgba(255, 255, 255, 0.8),
-      transparent
-    ),
-    radial-gradient(1px 1px at 240px 50px, $text-color, transparent),
-    radial-gradient(
-      1px 1px at 280px 120px,
-      rgba(255, 255, 255, 0.7),
-      transparent
-    ),
-    radial-gradient(2px 2px at 320px 20px, $text-color, transparent),
-    radial-gradient(
-      1px 1px at 360px 100px,
-      rgba(255, 255, 255, 0.9),
-      transparent
-    ),
-    radial-gradient(1px 1px at 400px 60px, $text-color, transparent),
-    radial-gradient(
-      2px 2px at 450px 140px,
-      rgba(255, 255, 255, 0.6),
-      transparent
-    ),
-    radial-gradient(1px 1px at 100px 200px, $primary-color, transparent),
-    radial-gradient(1px 1px at 300px 150px, $secondary-color, transparent),
-    radial-gradient(1px 1px at 500px 80px, $tertiary-color, transparent);
-  background-repeat: repeat;
-  background-size: 600px 300px;
-  animation: stars-move 30s linear infinite;
-  opacity: 0.6;
-}
-
-.stars-background::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(
-      ellipse 400px 300px at 30% 40%,
-      rgba(0, 245, 255, 0.1),
-      transparent
-    ),
-    radial-gradient(
-      ellipse 350px 250px at 70% 60%,
-      rgba(255, 0, 255, 0.08),
-      transparent
-    ),
-    radial-gradient(
-      ellipse 500px 200px at 50% 80%,
-      rgba(0, 255, 136, 0.06),
-      transparent
-    );
-  animation: nebula-drift 40s ease-in-out infinite alternate;
-}
-
-@keyframes stars-move {
-  from {
-    transform: translateY(0px) translateX(0px);
-  }
-  to {
-    transform: translateY(-300px) translateX(-60px);
-  }
-}
-
-@keyframes nebula-drift {
-  from {
-    transform: rotate(0deg) scale(1);
-    opacity: 0.3;
-  }
-  to {
-    transform: rotate(360deg) scale(1.1);
-    opacity: 0.5;
-  }
+  z-index: 2;
 }
 
 .content-wrapper {
-  max-width: 900px;
+  position: relative;
   z-index: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
   text-align: center;
-  padding: 0 60px;
 }
 
-.title-section {
-  margin-bottom: 60px;
-  position: relative;
+.page-header {
   text-align: center;
+  margin-bottom: 80px;
 }
 
 .main-title {
   font-size: 6rem;
   font-weight: 900;
   letter-spacing: 0.15em;
-  margin: 0;
-  text-shadow: 0 0 40px rgba(0, 245, 255, 0.4);
-  font-family: "Orbitron", monospace;
-  position: relative;
+  margin-bottom: 20px;
 
   @include gradient-text;
-  animation: cosmic-text 4s ease-in-out infinite, text-gradient 6s ease infinite;
-
-  &::before {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      135deg,
-      transparent 30%,
-      rgba(0, 245, 255, 0.1) 50%,
-      transparent 70%
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: hologram-sweep 3s ease-in-out infinite;
-    z-index: -1;
-  }
+  animation: text-gradient 6s ease infinite, cosmic-text 4s ease-in-out infinite;
 }
 
 .subtitle {
   font-size: 2rem;
-  font-weight: 300;
-  letter-spacing: 1em;
-  margin: 20px 0 0 0;
-  opacity: 0.9;
   color: $primary-color;
-  font-family: "Orbitron", monospace;
+  letter-spacing: 0.5em;
   text-transform: uppercase;
-  text-align: center;
+  opacity: 0.9;
   animation: subtitle-glow 2s ease-in-out infinite alternate;
-  position: relative;
+}
 
+.favicon {
+  width: 100px;
+  height: 100px;
+}
+
+.tech-line {
+  width: 300px;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    $primary-color,
+    $secondary-color,
+    $primary-color,
+    transparent
+  );
+  margin: 30px auto 0;
+  position: relative;
+  border-radius: 2px;
+  animation: tech-line-pulse 2s ease-in-out infinite;
+
+  &::before,
   &::after {
     content: "";
     position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100px;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      $primary-color,
-      transparent
-    );
-    animation: line-expand 2s ease-in-out infinite;
+    top: -5px;
+    width: 8px;
+    height: 13px;
+    background: $primary-color;
+    border-radius: 50%;
+    animation: tech-dots 3s ease-in-out infinite alternate;
+    box-shadow: 0 0 15px rgba(0, 245, 255, 0.8);
   }
-}
-
-@keyframes cosmic-text {
-  0%,
-  100% {
-    text-shadow: 0 0 20px rgba(0, 245, 255, 0.3),
-      0 0 40px rgba(0, 245, 255, 0.2), 0 0 60px rgba(0, 245, 255, 0.1);
-  }
-  50% {
-    text-shadow: 0 0 30px rgba(0, 245, 255, 0.5),
-      0 0 60px rgba(255, 0, 255, 0.3), 0 0 90px rgba(0, 255, 136, 0.2);
-  }
-}
-
-@keyframes text-gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-@keyframes hologram-sweep {
-  0%,
-  100% {
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  50% {
-    transform: translateX(100%);
-    opacity: 1;
-  }
-}
-
-@keyframes subtitle-glow {
-  from {
-    text-shadow: 0 0 10px rgba(0, 245, 255, 0.3);
-    opacity: 0.8;
-  }
-  to {
-    text-shadow: 0 0 20px rgba(0, 245, 255, 0.6);
-    opacity: 1;
-  }
-}
-
-@keyframes line-expand {
-  0%,
-  100% {
-    width: 50px;
-    opacity: 0.5;
-  }
-  50% {
-    width: 150px;
-    opacity: 1;
-  }
-}
-
-.description-section {
-  margin-bottom: 80px;
-  text-align: center;
-  position: relative;
-  padding: 0 40px;
-}
-
-.description {
-  font-size: 1.4rem;
-  line-height: 1.9;
-  opacity: 0.85;
-  margin: 0;
-  color: #c0d6ff;
-  font-weight: 400;
-  font-family: "Georgia", "Times New Roman", serif;
-  font-style: italic;
-  max-width: 650px;
-  text-align: center;
-  position: relative;
-  letter-spacing: 0.02em;
 
   &::before {
-    content: '"';
-    position: absolute;
-    left: -30px;
-    top: -15px;
-    font-size: 4rem;
-    color: rgba(0, 245, 255, 0.4);
-    font-family: "Georgia", serif;
-    line-height: 1;
+    left: -10px;
   }
 
   &::after {
-    content: '"';
-    position: absolute;
-    right: -30px;
-    bottom: -35px;
-    font-size: 4rem;
-    color: rgba(0, 245, 255, 0.4);
-    font-family: "Georgia", serif;
-    line-height: 1;
+    right: -10px;
+    animation-delay: 1.5s;
   }
 }
 
@@ -310,20 +98,20 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding: 0 60px;
+  margin-top: 60px;
 }
 
 .progress-container {
   width: 100%;
   max-width: 500px;
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .progress-label {
   font-size: 1rem;
   color: $primary-color;
   margin-bottom: 15px;
-  font-family: "Orbitron", monospace;
   letter-spacing: 0.3em;
   opacity: 0.9;
   text-transform: uppercase;
@@ -361,46 +149,11 @@
   animation: progress-cosmic 3s ease-in-out infinite;
   box-shadow: 0 0 15px rgba(0, 245, 255, 0.6);
   transition: width 0.1s ease-out;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      rgba(255, 255, 255, 0.8) 50%,
-      transparent 100%
-    );
-    animation: cosmic-scan 4s ease-in-out infinite;
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    top: -1px;
-    left: -1px;
-    right: -1px;
-    bottom: -1px;
-    background: linear-gradient(
-      45deg,
-      rgba(0, 245, 255, 0.4),
-      rgba(255, 0, 255, 0.4),
-      rgba(0, 255, 136, 0.4)
-    );
-    border-radius: 4px;
-    z-index: -1;
-    animation: progress-border 2s ease-in-out infinite;
-  }
 }
 
 .progress-percentage {
   font-size: 0.9rem;
   color: $primary-color;
-  font-family: "Orbitron", monospace;
   opacity: 0.8;
   margin-top: 5px;
   animation: percentage-pulse 1.5s ease-in-out infinite;
@@ -411,6 +164,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+  margin-top: 20px;
 }
 
 .play-button {
@@ -472,6 +226,266 @@
   }
 }
 
+.hud-element {
+  position: fixed;
+  font-family: "Orbitron", monospace;
+  font-size: 10px;
+  color: $primary-alpha-40;
+  letter-spacing: 1px;
+  z-index: 10;
+  padding: 10px;
+  background: rgba(0, 10, 26, 0.2);
+  backdrop-filter: blur(5px);
+}
+
+.hud-top-left {
+  top: 20px;
+  left: 20px;
+}
+
+.hud-top-right {
+  top: 20px;
+  right: 20px;
+  text-align: right;
+}
+
+.hud-bottom-left {
+  bottom: 20px;
+  left: 20px;
+}
+
+.hud-bottom-right {
+  bottom: 20px;
+  right: 20px;
+  text-align: right;
+}
+
+.hud-data {
+  margin: 5px 0;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.galaxy-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+      ellipse at 30% 20%,
+      $purple-glow-bg 0%,
+      transparent 50%
+    ),
+    radial-gradient(ellipse at 70% 80%, $indigo-glow-bg 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, $midnight-blue-bg 0%, transparent 70%),
+    $gradient-bg;
+  z-index: -3;
+}
+
+.stars {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -2;
+}
+
+.star {
+  position: absolute;
+  background: $text-color;
+  border-radius: 50%;
+  animation: twinkle 3s infinite;
+}
+
+.harmonic-streams {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.stream {
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    $primary-alpha-30,
+    rgba(138, 43, 226, 0.5),
+    transparent
+  );
+  animation: flow 8s linear infinite;
+}
+
+.stream1 {
+  width: 300px;
+  top: 20%;
+  left: -300px;
+  transform: rotate(25deg);
+}
+
+.stream2 {
+  width: 400px;
+  bottom: 30%;
+  right: -400px;
+  transform: rotate(-15deg);
+  animation-delay: -3s;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes stars-move {
+  from {
+    transform: translateY(0px) translateX(0px);
+  }
+  to {
+    transform: translateY(-300px) translateX(-60px);
+  }
+}
+
+@keyframes nebula-drift {
+  from {
+    transform: rotate(0deg) scale(1);
+    opacity: 0.3;
+  }
+  to {
+    transform: rotate(360deg) scale(1.1);
+    opacity: 0.5;
+  }
+}
+
+@keyframes cosmic-text {
+  0%,
+  100% {
+    text-shadow: 0 0 20px rgba(0, 245, 255, 0.3),
+      0 0 40px rgba(0, 245, 255, 0.2);
+  }
+  50% {
+    text-shadow: 0 0 30px rgba(0, 245, 255, 0.5),
+      0 0 60px rgba(255, 0, 255, 0.3);
+  }
+}
+
+@keyframes text-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes subtitle-glow {
+  from {
+    text-shadow: 0 0 10px rgba(0, 245, 255, 0.3);
+  }
+  to {
+    text-shadow: 0 0 20px rgba(0, 245, 255, 0.6);
+  }
+}
+
+@keyframes label-flicker {
+  0%,
+  100% {
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes progress-cosmic {
+  0%,
+  100% {
+    opacity: 0.8;
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    filter: hue-rotate(180deg);
+    box-shadow: 0 0 25px rgba(0, 245, 255, 0.8);
+  }
+}
+
+@keyframes percentage-pulse {
+  0%,
+  100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes flow {
+  0% {
+    transform: translateX(0) rotate(25deg);
+  }
+  100% {
+    transform: translateX(calc(100vw + 300px)) rotate(25deg);
+  }
+}
+
+.stream2 {
+  animation-name: flow2;
+}
+
+@keyframes flow2 {
+  0% {
+    transform: translateX(0) rotate(-15deg);
+  }
+  100% {
+    transform: translateX(calc(-100vw - 400px)) rotate(-15deg);
+  }
+}
+
+@keyframes tech-line-pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scaleX(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleX(1.05);
+  }
+}
+
+@keyframes tech-dots {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+}
+
 @keyframes glitch_4011 {
   0% {
     clip-path: var(--move1);
@@ -516,253 +530,5 @@
   100% {
     clip-path: var(--move1);
     transform: translate(0);
-  }
-}
-
-@keyframes label-flicker {
-  0%,
-  100% {
-    opacity: 0.9;
-  }
-  50% {
-    opacity: 0.6;
-  }
-}
-
-@keyframes progress-cosmic {
-  0%,
-  100% {
-    opacity: 0.8;
-    filter: hue-rotate(0deg);
-  }
-  50% {
-    opacity: 1;
-    filter: hue-rotate(180deg);
-    box-shadow: 0 0 25px rgba(0, 245, 255, 0.8);
-  }
-}
-
-@keyframes cosmic-scan {
-  0% {
-    transform: translateX(-150%);
-  }
-  100% {
-    transform: translateX(550%);
-  }
-}
-
-@keyframes progress-border {
-  0%,
-  100% {
-    opacity: 0.3;
-  }
-  50% {
-    opacity: 0.7;
-  }
-}
-
-@keyframes percentage-pulse {
-  0%,
-  100% {
-    opacity: 0.8;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
-}
-
-@media (max-width: 1024px) {
-  .content-wrapper {
-    max-width: 750px;
-    padding: 0 40px;
-  }
-
-  .main-title {
-    font-size: 4.5rem;
-  }
-
-  .description {
-    max-width: 550px;
-
-    &::before {
-      left: -25px;
-      top: -12px;
-      font-size: 3.5rem;
-    }
-
-    &::after {
-      right: -25px;
-      bottom: -30px;
-      font-size: 3.5rem;
-    }
-  }
-
-  .play-button {
-    padding: 12px 40px;
-    font-size: 16px;
-
-    &::after {
-      padding: 12px 40px;
-      font-size: 16px;
-    }
-  }
-}
-
-@media (max-width: 768px) {
-  .content-wrapper {
-    padding: 20px 30px;
-    max-width: 100%;
-  }
-
-  .main-title {
-    font-size: 3.5rem;
-    letter-spacing: 0.1em;
-  }
-
-  .subtitle {
-    font-size: 1.4rem;
-    letter-spacing: 0.5em;
-  }
-
-  .description {
-    font-size: 1.2rem;
-    padding: 0 20px;
-    max-width: 450px;
-
-    &::before {
-      left: -15px;
-      top: -8px;
-      font-size: 2.5rem;
-    }
-
-    &::after {
-      right: -15px;
-      bottom: -20px;
-      font-size: 2.5rem;
-    }
-  }
-
-  .description-section {
-    padding: 0 20px;
-  }
-
-  .progress-section {
-    padding: 0 40px;
-  }
-
-  .progress-container {
-    max-width: 400px;
-  }
-
-  .play-button {
-    padding: 10px 35px;
-    font-size: 15px;
-
-    &::after {
-      padding: 10px 35px;
-      font-size: 15px;
-    }
-  }
-}
-
-@media (max-width: 480px) {
-  .content-wrapper {
-    padding: 20px;
-  }
-
-  .main-title {
-    font-size: 2.8rem;
-  }
-
-  .subtitle {
-    font-size: 1.1rem;
-    letter-spacing: 0.3em;
-  }
-
-  .description {
-    font-size: 1rem;
-    max-width: 320px;
-    padding: 0 10px;
-
-    &::before {
-      left: -10px;
-      top: -5px;
-      font-size: 2rem;
-    }
-
-    &::after {
-      right: -10px;
-      bottom: -15px;
-      font-size: 2rem;
-    }
-  }
-
-  .progress-section {
-    padding: 0 30px;
-  }
-
-  .progress-container {
-    max-width: 300px;
-  }
-
-  .title-section {
-    margin-bottom: 40px;
-  }
-
-  .description-section {
-    margin-bottom: 60px;
-    padding: 0 15px;
-  }
-
-  .play-button {
-    padding: 8px 30px;
-    font-size: 14px;
-
-    &::after {
-      padding: 8px 30px;
-      font-size: 14px;
-    }
-  }
-}
-
-@media (max-width: 360px) {
-  .content-wrapper {
-    padding: 15px;
-  }
-
-  .main-title {
-    font-size: 2.4rem;
-    letter-spacing: 0.05em;
-  }
-
-  .subtitle {
-    font-size: 1rem;
-    letter-spacing: 0.2em;
-  }
-
-  .description {
-    font-size: 0.9rem;
-    max-width: 280px;
-
-    &::before,
-    &::after {
-      font-size: 1.5rem;
-    }
-  }
-
-  .progress-section {
-    padding: 0 20px;
-  }
-
-  .play-button {
-    padding: 8px 25px;
-    font-size: 12px;
-
-    &::after {
-      padding: 8px 25px;
-      font-size: 12px;
-    }
   }
 }

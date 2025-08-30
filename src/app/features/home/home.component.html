@@ -1,37 +1,57 @@
+<div class="galaxy-background"></div>
+
+<div class="stars" id="starsContainer"></div>
+
+<div class="harmonic-streams">
+  <div class="stream stream1"></div>
+  <div class="stream stream2"></div>
+</div>
+
+<div class="hud-element hud-top-left">
+  <div class="hud-data">ARQUIVO HISTÓRICO ATIVO</div>
+  <div class="hud-data">NÍVEL ACESSO: TRANSCENDENTE</div>
+</div>
+
+<div class="hud-element hud-top-right">
+  <div class="hud-data">NEXUS.GALACTIC.ARCHIVE</div>
+  <div class="hud-data">TEMPO CÓSMICO: ∞</div>
+</div>
+
+<div class="hud-element hud-bottom-left">
+  <div class="hud-data">DECODIFICAÇÃO: 100%</div>
+  <div class="hud-data">RESSONÂNCIA QUÂNTICA: ESTÁVEL</div>
+</div>
+
+<div class="hud-element hud-bottom-right">
+  <div class="hud-data">COORDENADAS: BRAÇO EXTERIOR</div>
+  <div class="hud-data">SETOR: NEXUS-PRIME</div>
+</div>
+
 <div class="home-container">
-  <main class="main-content">
-    <div class="stars-background"></div>
+  <div class="content-wrapper">
+    <div class="page-header" id="page-title">
+      <img src="favicon.ico" alt="Favicon" class="favicon" />
+      <h1 class="main-title">{{ title }}</h1>
+      <h2 class="subtitle">{{ subtitle }}</h2>
+      <div class="tech-line"></div>
+    </div>
 
-    <div class="content-wrapper">
-      <div class="title-section" id="page-title">
-        <h1 class="main-title">{{ title }}</h1>
-        <h2 class="subtitle">{{ subtitle }}</h2>
-        <div class="tech-line"></div>
+    <div class="progress-section">
+      <div class="progress-container" *ngIf="isLoading">
+        <div class="progress-label">INICIALIZANDO SISTEMA</div>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="progress"></div>
+        </div>
+        <div class="progress-percentage">{{ progress }}%</div>
       </div>
 
-      <div class="description-section">
-        <p class="description">{{ description }}</p>
+      <div class="progress-container" *ngIf="showCompleted" [@fadeInUp]>
+        <div class="progress-label completed">CONCLUÍDO</div>
       </div>
 
-      <div class="progress-section">
-        <div class="progress-container" *ngIf="isLoading">
-          <div class="progress-label">INICIALIZANDO SISTEMA</div>
-          <div class="progress-bar">
-            <div class="progress-fill" [style.width.%]="progress"></div>
-          </div>
-          <div class="progress-percentage">{{ progress }}%</div>
-        </div>
-
-        <div class="progress-container" *ngIf="showCompleted" [@fadeInUp]>
-          <div class="progress-label completed">CONCLUÍDO</div>
-        </div>
-
-        <div class="play-button-container" *ngIf="showPlayButton" [@fadeInUp]>
-          <button class="play-button" (click)="onPlayGame()">
-            JOGAR AGORA
-          </button>
-        </div>
+      <div class="play-button-container" *ngIf="showPlayButton" [@fadeInUp]>
+        <button class="play-button" (click)="onPlayGame()">JOGAR AGORA</button>
       </div>
     </div>
-  </main>
+  </div>
 </div>
