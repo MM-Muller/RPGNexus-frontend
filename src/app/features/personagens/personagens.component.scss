@@ -1,34 +1,39 @@
 @use "sass:math";
+@import "../../styles/auth";
 @import "../../styles/variables";
 @import "../../styles/mixins";
 
 :host {
   width: 100%;
-  overflow: hidden; /* Garante que a animação não saia da tela */
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
-.galaxy-background {
+:host > .cosmic-background,
+:host > .energy-grid,
+:host > #neuralCanvas,
+:host > .scanlines,
+:host > .shooting-stars,
+:host > .stars,
+:host > .harmonic-streams {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -3;
-  background: radial-gradient(
-      ellipse at 30% 20%,
-      $purple-glow-bg 0%,
-      transparent 50%
-    ),
-    radial-gradient(ellipse at 70% 80%, $indigo-glow-bg 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, $midnight-blue-bg 0%, transparent 70%),
-    $gradient-bg;
+  pointer-events: none;
 }
 
-.stars {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  z-index: -2;
+.main-container {
+  position: relative;
+  height: 275vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  z-index: 1;
+  overflow-y: auto;
 }
 
 .star {
@@ -96,15 +101,6 @@
   }
 }
 
-.main-container {
-  position: relative;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px;
-  z-index: 1;
-}
 .holographic-header {
   text-align: center;
   margin-bottom: 50px;
@@ -533,16 +529,6 @@
   background: radial-gradient(circle, #f44336, transparent 70%);
 }
 
-.harmonic-streams {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  pointer-events: none;
-}
-
 .stream {
   position: absolute;
   height: 2px;
@@ -571,18 +557,7 @@
   animation-delay: -3s;
 }
 
-.shooting-stars {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 0;
-}
-
 .star {
-  position: absolute;
   width: 4px;
   height: 4px;
   background: $text-color;
