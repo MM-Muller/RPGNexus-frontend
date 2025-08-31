@@ -1,8 +1,12 @@
-@import "../../../app/styles/variables";
+@import "../../styles/auth";
+@import "../../styles/variables";
 @import "../../styles/mixins";
 
 :host {
   width: 100%;
+  display: block;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .galaxy-background {
@@ -149,12 +153,13 @@
 
 .main-container {
   position: relative;
-  min-height: 100vh;
+  height: 295vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 40px 20px;
   z-index: 1;
+  overflow-y: auto;
 }
 
 .holographic-header {
@@ -614,7 +619,6 @@
   opacity: 1;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .holographic-panel {
     padding: 30px 20px;
