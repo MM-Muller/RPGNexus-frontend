@@ -1,108 +1,119 @@
-<div class="auth-container">
-  <div class="stars-background"></div>
-  <div class="nebula-effects"></div>
+<div class="cosmic-background"></div>
+<div class="energy-grid"></div>
+<canvas id="neuralCanvas"></canvas>
+<div class="scanlines"></div>
+<div class="shooting-stars">
+  <span class="star" *ngFor="let star of [1, 2, 3, 4]"></span>
+</div>
 
-  <div class="content-wrapper">
-    <div class="auth-header">
-      <h1 class="main-title">NEXUS</h1>
-      <h2 class="subtitle">GALÁCTICO</h2>
-      <div class="tech-line"></div>
+<div class="main-container">
+  <div class="login-panel">
+    <div class="security-indicators">
+      <div class="security-dot"></div>
+      <div class="security-dot"></div>
+      <div class="security-dot"></div>
     </div>
 
-    <div class="auth-forms-container">
-      <div class="rotating-border">
-        <span
-          *ngFor="let i of [].constructor(50); index as idx"
-          class="border-element"
-          [style.--i]="idx"
-        ></span>
+    <div class="hud-corner top-left"></div>
+    <div class="hud-corner top-right"></div>
+    <div class="hud-corner bottom-left"></div>
+    <div class="hud-corner bottom-right"></div>
+
+    <div class="holographic-logo">
+      <div class="logo-3d">
+        <div class="logo-layer"></div>
+        <div class="logo-layer"></div>
+        <div class="logo-layer"></div>
       </div>
-      <div class="forms-wrapper">
-        <div class="form-container signup-form">
-          <div class="form-content">
-            <div class="form-header">
-              <div class="form-title">
-                <span class="glitch-text">JUNTE-SE AO</span>
-              </div>
-              <div class="title-cosmic"><span>NEXUS</span></div>
-            </div>
+      <h1 class="portal-title">NEXUS GALÁCTICO</h1>
+      <p class="portal-subtitle">Portal de Acesso Quântico</p>
+    </div>
 
-            <form
-              (ngSubmit)="
-                onSignup(
-                  signupUsername.value,
-                  signupEmail.value,
-                  signupPassword.value,
-                  confirmPassword.value
-                )
-              "
-              class="auth-form"
-            >
-              <div class="shooting-stars">
-                <span class="star" *ngFor="let star of [1, 2, 3, 4]"></span>
-              </div>
+    <div class="auth-tabs">
+      <button class="tab-button" (click)="navigateToLogin()">Acessar</button>
+      <button class="tab-button active">Registrar</button>
+    </div>
 
-              <div class="input-container">
-                <input
-                  type="text"
-                  #signupUsername
-                  required
-                  class="cosmic-input"
-                  placeholder=" "
-                />
-                <label class="floating-label">Nome de Explorador</label>
-              </div>
-
-              <div class="input-container">
-                <input
-                  type="email"
-                  #signupEmail
-                  required
-                  class="cosmic-input"
-                  placeholder=" "
-                />
-                <label class="floating-label">Email Galáctico</label>
-              </div>
-
-              <div class="input-container">
-                <input
-                  type="password"
-                  #signupPassword
-                  required
-                  class="cosmic-input"
-                  placeholder=" "
-                />
-                <label class="floating-label">Código Secreto</label>
-              </div>
-
-              <div class="input-container">
-                <input
-                  type="password"
-                  #confirmPassword
-                  required
-                  class="cosmic-input"
-                  placeholder=" "
-                />
-                <label class="floating-label">Confirmar Código</label>
-              </div>
-
-              <button type="submit" class="cosmic-button signup-btn">
-                <span class="button-text">INICIAR JORNADA</span>
-              </button>
-
-              <div class="switch-mode">
-                <span>Já possui acesso? </span>
-                <a
-                  href="#"
-                  (click)="navigateToLogin(); $event.preventDefault()"
-                  class="switch-link"
-                  >Entre aqui!</a
-                >
-              </div>
-            </form>
-          </div>
+    <form
+      id="registerForm"
+      class="form-content active"
+      (ngSubmit)="
+        onSignup(
+          signupUsername.value,
+          signupEmail.value,
+          signupPassword.value,
+          confirmPassword.value
+        )
+      "
+    >
+      <div class="input-group">
+        <div class="input-container">
+          <svg class="input-icon icon-user" viewBox="0 0 24 24">
+            <circle cx="12" cy="7" r="4" />
+            <path d="M12 14c-5 0-8 2-8 6v1h16v-1c0-4-3-6-8-6z" />
+          </svg>
+          <input
+            type="text"
+            class="input-field"
+            placeholder="Nome do Explorador"
+            #signupUsername
+          />
+          <div class="field-border"></div>
         </div>
       </div>
-    </div>
+
+      <div class="input-group">
+        <div class="input-container">
+          <svg class="input-icon icon-mail" viewBox="0 0 24 24">
+            <rect x="2" y="4" width="20" height="16" rx="2" />
+            <path d="M22 6l-10 7L2 6" />
+          </svg>
+          <input
+            type="email"
+            class="input-field"
+            placeholder="Frequência de Comunicação"
+            #signupEmail
+          />
+          <div class="field-border"></div>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <div class="input-container">
+          <svg class="input-icon icon-lock" viewBox="0 0 24 24">
+            <rect x="5" y="11" width="14" height="10" rx="2" />
+            <path d="M7 11V7a5 5 0 0110 0v4" />
+            <circle cx="12" cy="16" r="1" />
+          </svg>
+          <input
+            type="password"
+            class="input-field"
+            placeholder="Criar Chave Quântica"
+            #signupPassword
+          />
+          <div class="field-border"></div>
+        </div>
+      </div>
+      <div class="input-group">
+        <div class="input-container">
+          <svg class="input-icon icon-lock" viewBox="0 0 24 24">
+            <rect x="5" y="11" width="14" height="10" rx="2" />
+            <path d="M7 11V7a5 5 0 0110 0v4" />
+            <circle cx="12" cy="16" r="1" />
+          </svg>
+          <input
+            type="password"
+            class="input-field"
+            placeholder="Confirmar Chave Quântica"
+            #confirmPassword
+          />
+          <div class="field-border"></div>
+        </div>
+      </div>
+
+      <button class="submit-button" type="submit">
+        <span class="button-text">Criar Registro</span>
+      </button>
+    </form>
   </div>
 </div>
