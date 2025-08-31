@@ -31,17 +31,16 @@
 }
 
 .main-title {
-  font-size: 6rem;
+  font-size: 7rem;
   font-weight: 900;
   letter-spacing: 0.15em;
-  margin-bottom: 20px;
-
+  margin-bottom: 10px;
   @include gradient-text;
   animation: text-gradient 6s ease infinite, cosmic-text 4s ease-in-out infinite;
 }
 
 .subtitle {
-  font-size: 2rem;
+  font-size: 2.5rem;
   color: $primary-color;
   letter-spacing: 0.5em;
   text-transform: uppercase;
@@ -50,12 +49,18 @@
 }
 
 .favicon {
-  width: 100px;
-  height: 100px;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 150px;
+  z-index: 20;
 }
 
 .tech-line {
-  width: 300px;
+  width: 100%;
+  margin-bottom: 20px;
   height: 3px;
   background: linear-gradient(
     90deg,
@@ -65,7 +70,6 @@
     $primary-color,
     transparent
   );
-  margin: 30px auto 0;
   position: relative;
   border-radius: 2px;
   animation: tech-line-pulse 2s ease-in-out infinite;
@@ -213,16 +217,16 @@
     animation: glitch_4011 1s;
     text-shadow: 10px 10px 10px black;
     animation-timing-function: steps(2, end);
-    text-shadow: -3px -3px 0px #1df2f0, 3px 3px 0px #e94be8;
+    text-shadow: -3px -3px 0px $primary-color, 3px 3px 0px $secondary-color;
     background-color: transparent;
-    border: 3px solid rgb(0, 255, 213);
+    border: 3px solid $tertiary-color;
   }
 
   &:hover {
-    text-shadow: -1px -1px 0px #1df2f0, 1px 1px 0px #e94be8;
+    text-shadow: -1px -1px 0px $primary-color, 1px 1px 0px $secondary-color;
     background-color: transparent;
-    border: 1px solid rgb(0, 255, 213);
-    box-shadow: 0px 10px 10px -10px rgb(0, 255, 213);
+    border: 1px solid $tertiary-color;
+    box-shadow: 0px 10px 10px -10px $tertiary-color;
   }
 }
 
