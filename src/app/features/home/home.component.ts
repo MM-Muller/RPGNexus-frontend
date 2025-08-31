@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   showCompleted: boolean = false;
   showPlayButton: boolean = false;
   private progressInterval?: any;
-  private animationFrameId?: number; // Para controlar o loop de animação do canvas
+  private animationFrameId?: number;
 
   constructor(private router: Router, private el: ElementRef) {}
 
@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.initNeuralCanvas(); // Inicializa o canvas neural após a view ser carregada
+    this.initNeuralCanvas();
   }
 
   ngOnDestroy(): void {
@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       clearInterval(this.progressInterval);
     }
     if (this.animationFrameId) {
-      cancelAnimationFrame(this.animationFrameId); // Limpa a animação do canvas ao destruir o componente
+      cancelAnimationFrame(this.animationFrameId);
     }
   }
 
@@ -79,7 +79,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onPlayGame(): void {
-    this.router.navigate(['/login']); // Exemplo de navegação, ajuste conforme necessário
+    this.router.navigate(['/login']);
   }
 
   restartAnimation(): void {
@@ -99,7 +99,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     canvas.height = window.innerHeight;
 
     let particles: any[] = [];
-    // Ajuste o número de partículas se necessário para performance ou densidade
+
     const particleCount = Math.floor((canvas.width * canvas.height) / 15000);
 
     class Particle {
@@ -112,13 +112,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       constructor() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2 + 1; // Tamanho das partículas
-        this.speedX = Math.random() * 1 - 0.5; // Velocidade em X (-0.5 a 0.5)
-        this.speedY = Math.random() * 1 - 0.5; // Velocidade em Y (-0.5 a 0.5)
+        this.size = Math.random() * 2 + 1;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.speedY = Math.random() * 1 - 0.5;
       }
 
       update() {
-        // Inverte a direção se a partícula atingir as bordas
         if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
         if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
         this.x += this.speedX;
@@ -126,7 +125,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
       draw() {
-        ctx.fillStyle = 'rgba(255, 215, 0, 0.8)'; // Cor dourada/amarelada das partículas
+        ctx.fillStyle = 'rgba(255, 215, 0, 0.8)';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -148,10 +147,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             Math.pow(particles[a].x - particles[b].x, 2) +
               Math.pow(particles[a].y - particles[b].y, 2)
           );
-          // Conecta partículas se estiverem próximas o suficiente
+
           if (distance < 100) {
             opacityValue = 1 - distance / 100;
-            // Cor das linhas que conectam as partículas (roxo/magenta)
             ctx.strokeStyle = `rgba(138, 43, 226, ${opacityValue})`;
             ctx.lineWidth = 1;
             ctx.beginPath();
@@ -164,19 +162,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     };
 
     const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpa o canvas a cada frame
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (const particle of particles) {
         particle.update();
         particle.draw();
       }
       connectParticles();
-      this.animationFrameId = requestAnimationFrame(animate); // Continua o loop de animação
+      this.animationFrameId = requestAnimationFrame(animate);
     };
 
-    initParticles(); // Inicializa as partículas
-    animate(); // Inicia a animação
+    initParticles();
+    animate();
 
-    // Redimensiona o canvas e reinicia as partículas ao redimensionar a janela
     window.addEventListener('resize', () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;

@@ -1,4 +1,4 @@
-@import "../../styles/auth"; // Importa todos os estilos de fundo e animações da autenticação
+@import "../../styles/auth";
 @import "../../styles/variables";
 @import "../../styles/mixins";
 
@@ -6,25 +6,22 @@
   width: 100%;
   height: 100vh;
   overflow: hidden;
-  /* Removed duplicate background settings from :host to use _auth.scss */
 }
 
-/* Ensure neuralCanvas and scanlines have correct z-index */
 #neuralCanvas {
-  z-index: 1; /* Match _auth.scss */
-  opacity: 0.6; /* Match _auth.scss */
+  z-index: 1;
+  opacity: 0.6;
 }
 
 .scanlines {
-  z-index: 15; /* Match _auth.scss */
-  opacity: 0.03; /* Match _auth.scss */
+  z-index: 15;
+  opacity: 0.03;
 }
 
 .shooting-stars {
-  z-index: 2; /* Match _auth.scss */
+  z-index: 2;
 }
 
-/* Override or add specific home styles */
 .home-container {
   position: relative;
   width: 100%;
@@ -34,7 +31,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 20; /* Ensure home content is above all background elements */
+  z-index: 20;
 }
 
 .content-wrapper {
@@ -143,7 +140,7 @@
 }
 
 .progress-label.completed {
-  color: $tertiary-color;
+  color: $secondary-color;
 }
 
 .progress-bar {
@@ -245,8 +242,8 @@
   &:hover {
     text-shadow: -1px -1px 0px $primary-color, 1px 1px 0px $secondary-color;
     background-color: transparent;
-    border: 1px solid $tertiary-color;
-    box-shadow: 0px 10px 10px -10px $tertiary-color;
+    border: 1px solid $primary-color;
+    box-shadow: 0px 10px 10px -10px $secondary-color;
   }
 }
 
@@ -293,7 +290,6 @@
   }
 }
 
-/* Animations that were not in _auth.scss but were in home.component.scss */
 @keyframes cosmic-text {
   0%,
   100% {
