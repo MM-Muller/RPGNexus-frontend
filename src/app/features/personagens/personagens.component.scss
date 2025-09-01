@@ -26,7 +26,7 @@
 
 .main-container {
   position: relative;
-  height: 275vh;
+  height: 152vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -167,7 +167,7 @@
     rgba(25, 25, 112, 0.1);
   border: 1px solid $primary-alpha-20;
   border-radius: 20px;
-  padding: 60px;
+  padding: 40px;
   position: relative;
   backdrop-filter: blur(10px);
   box-shadow: 0 0 50px rgba(138, 43, 226, 0.2),
@@ -355,18 +355,14 @@
 
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 60px;
+  grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+  gap: 20px;
   justify-items: center;
-
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 .card-scene {
-  width: 350px;
-  height: 480px;
+  width: 255px;
+  height: 400px;
   perspective: 1500px;
   cursor: pointer;
 }
@@ -403,7 +399,7 @@
 
   &--back {
     transform: rotateY(180deg);
-    padding: 30px;
+    padding: 25px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -488,8 +484,8 @@
 }
 
 .character-art {
-  width: 280px;
-  height: 280px;
+  width: 200px;
+  height: 200px;
   margin-bottom: 25px;
   position: relative;
   z-index: 2;
@@ -513,7 +509,7 @@
 
 .character-title {
   font-family: "Orbitron", monospace;
-  font-size: 2rem;
+  font-size: 1.7rem;
   font-weight: 700;
   color: $text-color;
   text-shadow: 0 0 10px $primary-color;
@@ -526,13 +522,13 @@
   h3 {
     font-family: "Orbitron", monospace;
     color: $primary-color;
-    font-size: 1.8rem;
+    font-size: 1.7rem;
     margin-bottom: 15px;
     text-shadow: 0 0 5px $primary-color;
   }
   p {
-    font-size: 1.1rem;
-    line-height: 1.7;
+    font-size: 0.95rem;
+    line-height: 1.6;
     color: rgba(255, 255, 255, 0.85);
   }
 }
