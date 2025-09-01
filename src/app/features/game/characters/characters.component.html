@@ -1,4 +1,66 @@
-<div class="content-panel">
-  <h1>Meus Personagens</h1>
-  <p>Crie e gerencie seus personagens aqui.</p>
+<div class="characters-container">
+  <div class="corner-decoration corner-tl"></div>
+  <div class="corner-decoration corner-tr"></div>
+  <div class="corner-decoration corner-bl"></div>
+  <div class="corner-decoration corner-br"></div>
+
+  <div class="characters-header">
+    <h1 class="characters-title">SEUS PERSONAGENS</h1>
+    <p class="characters-subtitle">Heróis do Nexus Galáctico</p>
+  </div>
+
+  <div class="character-grid">
+    <div class="character-card" *ngFor="let char of characters">
+      <div class="status-indicators">
+        <div
+          class="status-dot"
+          [ngClass]="char.status"
+          [title]="char.status"
+        ></div>
+      </div>
+
+      <div class="character-avatar">
+        <div class="avatar-frame"></div>
+        <div class="avatar-inner">{{ char.avatar }}</div>
+      </div>
+
+      <div class="character-info">
+        <h3 class="character-name">{{ char.name }}</h3>
+        <p class="character-class">{{ char.class }}</p>
+        <p class="character-level">
+          Nível <span class="level-badge">{{ char.level }}</span>
+        </p>
+        <div class="experience-bar">
+          <div class="exp-fill" [style.width.%]="char.expPercentage"></div>
+        </div>
+      </div>
+
+      <div class="character-stats">
+        <div class="stat">
+          <div class="stat-label">Poder</div>
+          <div class="stat-value">{{ char.power }}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Defesa</div>
+          <div class="stat-value">{{ char.defense }}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Energia</div>
+          <div class="stat-value">{{ char.energy }}</div>
+        </div>
+      </div>
+
+      <div class="character-actions">
+        <button class="action-btn">Detalhes</button>
+        <button class="action-btn primary">Jogar</button>
+      </div>
+      <!-- TESTE APAGAR DEPOIS -->
+      <a routerLink="/game/worlds" routerLinkActive="active">Jogar</a>
+    </div>
+
+    <div class="character-card create-character-card">
+      <div class="create-icon">+</div>
+      <div class="create-text">Criar Personagem</div>
+    </div>
+  </div>
 </div>
