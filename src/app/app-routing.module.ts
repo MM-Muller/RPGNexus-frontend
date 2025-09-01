@@ -13,6 +13,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./features/auth/auth.module').then((m) => m.AuthModule),
   },
+  {
+    path: 'game',
+    loadChildren: () =>
+      import('./features/game/game.module').then((m) => m.GameModule),
+  },
   { path: 'historia', component: HistoriaComponent },
   { path: 'personagens', component: PersonagensComponent },
   { path: 'objetivo', component: ObjetivoComponent },
