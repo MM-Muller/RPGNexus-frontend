@@ -79,7 +79,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onPlayGame(): void {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 
   restartAnimation(): void {

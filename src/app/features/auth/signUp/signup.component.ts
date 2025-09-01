@@ -38,7 +38,7 @@ export class SignupComponent implements AfterViewInit, OnDestroy {
   }
 
   navigateToLogin(): void {
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 
   private initNeuralCanvas(): void {
