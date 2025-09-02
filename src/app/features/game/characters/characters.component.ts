@@ -26,7 +26,7 @@ export class CharactersComponent {
       power: '3.1K',
       defense: '2.2K',
       energy: '4.5K',
-      status: 'in-game',
+      status: 'online',
       avatar: '🔬',
     },
   ];
