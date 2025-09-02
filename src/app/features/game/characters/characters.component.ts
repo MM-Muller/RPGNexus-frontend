@@ -9,7 +9,7 @@ export class CharactersComponent {
   characters = [
     {
       name: 'Zephyr Nova',
-      class: 'Guardião Estelar',
+      class: 'Aventureiro',
       level: 42,
       expPercentage: 65,
       power: '2.5K',
@@ -20,14 +20,14 @@ export class CharactersComponent {
     },
     {
       name: 'Kaelen Vortex',
-      class: 'Arquiteto do Vazio',
+      class: 'Cientista',
       level: 58,
       expPercentage: 80,
       power: '3.1K',
       defense: '2.2K',
       energy: '4.5K',
       status: 'in-game',
-      avatar: '🔮',
+      avatar: '🔬',
     },
   ];
 }

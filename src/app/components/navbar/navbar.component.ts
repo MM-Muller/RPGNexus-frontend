@@ -8,7 +8,9 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./navbar.component.scss'],
 })
 export class NavbarComponent implements OnInit {
-  navItems = [
+  isLoggedIn: boolean = false;
+
+  mainNavItems = [
     {
       id: 'home',
       name: 'Universo',
@@ -39,6 +41,25 @@ export class NavbarComponent implements OnInit {
     },
   ];
 
+  gameNavItems = [
+    {
+      id: 'account',
+      name: 'Conta',
+      iconUrl: 'assets/icons/config.svg',
+      route: '/game/account',
+      active: false,
+    },
+    {
+      id: 'characters',
+      name: 'Personagens',
+      iconUrl: 'assets/icons/user.svg',
+      route: '/game/characters',
+      active: false,
+    },
+  ];
+
+  navItems = this.mainNavItems;
+
   constructor(private router: Router) {}
 
   ngOnInit(): void {
@@ -49,9 +70,13 @@ export class NavbarComponent implements OnInit {
         )
       )
       .subscribe((event: NavigationEnd) => {
+        this.isLoggedIn = event.urlAfterRedirects.startsWith('/game');
+        this.navItems = this.isLoggedIn ? this.gameNavItems : this.mainNavItems;
         this.updateActiveState(event.urlAfterRedirects);
       });
 
+    this.isLoggedIn = this.router.url.startsWith('/game');
+    this.navItems = this.isLoggedIn ? this.gameNavItems : this.mainNavItems;
     this.updateActiveState(this.router.url);
   }
 
