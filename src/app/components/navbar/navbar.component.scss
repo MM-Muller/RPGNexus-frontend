@@ -12,6 +12,7 @@
   border-radius: $navbar-border-radius;
   padding: $navbar-padding;
   box-shadow: 0 8px 32px $primary-alpha-10;
+  overflow: visible;
 
   .nav-items {
     display: flex;
@@ -33,6 +34,7 @@
     position: relative;
     background: rgba(0, 245, 255, 0.05);
     border: 1px solid $primary-alpha-10;
+    overflow: visible;
 
     &:hover {
       background: rgba(0, 245, 255, 0.15);
@@ -86,7 +88,8 @@
       left: calc(100% + 15px);
       top: 50%;
       transform: translateY(-50%) translateX(-5px);
-      background-color: #12121c;
+      background-color: $dark-blue-bg;
+      backdrop-filter: blur(15px);
       color: $text-color;
       padding: 8px 14px;
       border-radius: 8px;
