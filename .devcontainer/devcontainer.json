@@ -1,0 +1,36 @@
+{
+    "name": "RPGNexus - Frontend",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": ".." 
+    },
+    "workspaceFolder": "/workspace",
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {},
+        "ghcr.io/devcontainers/features/github-cli:1": {}
+    },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "editor.formatOnSave": true
+            },
+            "extensions": [
+                "angular.ng-template",
+                "bradlc.vscode-tailwindcss",
+                "esbenp.prettier-vscode",
+                "ms-vscode.vscode-typescript-next",
+                "formulahendry.auto-rename-tag",
+                "christian-kohler.path-intellisense",
+                "ms-vscode.vscode-json",
+                "redhat.vscode-yaml"
+            ]
+        }
+    },
+    "forwardPorts": [4200],
+    
+    "postCreateCommand": "sudo chown -R vscode:vscode /workspace/.angular",
+
+    "postStartCommand": "npm start",
+    "remoteUser": "vscode"
+}
