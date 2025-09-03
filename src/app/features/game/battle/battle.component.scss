@@ -167,6 +167,15 @@
   flex-shrink: 0;
   z-index: 100;
   margin-bottom: 20px;
+  text-align: center;
+}
+
+.timer {
+    font-family: 'Orbitron', monospace;
+    font-size: 20px;
+    color: rgba(255, 215, 0, 0.8);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    margin-top: 10px;
 }
 
 /* Battle Field */
@@ -429,24 +438,7 @@
 .action-btn.special:hover { border-color: rgba(138, 43, 226, 0.8); box-shadow: 0 5px 20px rgba(138, 43, 226, 0.4); }
 .action-btn.defend { border-color: rgba(100, 255, 100, 0.5); }
 .action-btn.defend:hover { border-color: rgba(100, 255, 100, 0.8); box-shadow: 0 5px 20px rgba(100, 255, 100, 0.4); }
-.combat-effect {
-    position: absolute;
-    pointer-events: none;
-    z-index: 50;
-}
-.damage-text {
-    font-family: 'Orbitron', monospace;
-    font-size: 24px;
-    font-weight: 900;
-    color: #ff4444;
-    text-shadow: 0 0 10px rgba(255, 68, 68, 0.8);
-    animation: damage-pop 1s ease-out forwards;
-}
-@keyframes damage-pop {
-    0% { opacity: 0; transform: translateY(0) scale(0.5); }
-    50% { opacity: 1; transform: translateY(-30px) scale(1.2); }
-    100% { opacity: 0; transform: translateY(-60px) scale(1); }
-}
+
 .turn-indicator {
     width: 80px;
     height: 80px;
@@ -455,14 +447,43 @@
     justify-content: center;
     z-index: 10;
 }
+
+.turn-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: auto; 
+    min-width: 150px; 
+    height: 120px;
+    z-index: 10;
+}
+
+.turn-text {
+    font-family: 'Orbitron', monospace;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center; 
+}
+
 .turn-arrow {
-    width: 100%;
-    height: 100%;
+    width: 80px;
+    height: 80px;
     border: 3px solid rgba(255, 215, 0, 0.5);
     border-radius: 50%;
     position: relative;
-    animation: turn-spin 2s linear infinite;
+    transform: rotate(180deg);
+    transition: transform 0.5s ease-in-out;
 }
+
+.turn-arrow.enemy-turn {
+    transform: rotate(0deg);
+}
+
 .turn-arrow::before {
     content: '➜';
     position: absolute;
@@ -473,6 +494,7 @@
     color: rgba(255, 215, 0, 0.8);
     filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
 }
+
 @keyframes turn-spin {
     from { transform: rotate(180deg); }
     to { transform: rotate(180deg); }

@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-battle',
   templateUrl: './battle.component.html',
   styleUrls: ['./battle.component.scss']
 })
-export class BattleComponent implements OnInit {
+export class BattleComponent implements OnInit, OnDestroy {
 
   activeMenu: string | null = null;
   selectedAction: string = '';
@@ -14,10 +14,34 @@ export class BattleComponent implements OnInit {
   item: string = 'Poção de Cura: +500 de vida';
   private menuTimeout: any;
 
+  timeLeft: number = 90;
+  timerDisplay: string = '1:30';
+  isPlayerTurn: boolean = true;
+  private interval: any;
+
   constructor() { }
 
   ngOnInit(): void {
     this.createStars();
+    this.startTimer();
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.interval); 
+  }
+
+  startTimer(): void {
+    this.interval = setInterval(() => {
+      if (this.timeLeft > 0) {
+        this.timeLeft--;
+        const minutes = Math.floor(this.timeLeft / 60);
+        const seconds = this.timeLeft % 60;
+        this.timerDisplay = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+      } else {
+        this.isPlayerTurn = !this.isPlayerTurn;
+        this.timeLeft = 90; 
+      }
+    }, 1000);
   }
 
   createStars(): void {
@@ -50,6 +74,7 @@ export class BattleComponent implements OnInit {
   }
 
   showMenu(menu: string): void {
+    if (!this.isPlayerTurn) return;
     clearTimeout(this.menuTimeout);
     this.activeMenu = menu;
   }
@@ -57,10 +82,11 @@ export class BattleComponent implements OnInit {
   hideMenu(): void {
     this.menuTimeout = setTimeout(() => {
       this.activeMenu = null;
-    }, 200);
+    }, 200); 
   }
 
   selectAction(action: string): void {
+    if (!this.isPlayerTurn) return;
     this.selectedAction = action.split(':')[0];
     this.hideMenu();
   }
