@@ -1,3 +1,5 @@
+@import '../../../styles/variables';
+
 .characters-container {
   width: 1200px;
   background: linear-gradient(
@@ -466,4 +468,81 @@
   .character-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.hud-element {
+  position: fixed;
+  font-family: "Orbitron", monospace;
+  font-size: 10px;
+  color: $primary-alpha-40;
+  letter-spacing: 1px;
+  z-index: 10;
+}
+
+.hud-top-left {
+  top: 20px;
+  left: 20px;
+}
+
+.hud-top-right {
+  top: 20px;
+  right: 20px;
+  text-align: right;
+}
+
+.hud-bottom-left {
+  bottom: 20px;
+  left: 20px;
+}
+
+.hud-bottom-right {
+  bottom: 20px;
+  right: 20px;
+  text-align: right;
+}
+
+.hud-data {
+  margin: 5px 0;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.hud-data:hover {
+  opacity: 1;
+}
+
+.harmonic-streams {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.stream {
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    $primary-alpha-30,
+    rgba(138, 43, 226, 0.5),
+    transparent
+  );
+  animation: flow 8s linear infinite;
+}
+
+.stream1 {
+  width: 300px;
+  top: 20%;
+  left: -300px;
+  transform: rotate(25deg);
+}
+
+.stream2 {
+  width: 400px;
+  bottom: 30%;
+  right: -400px;
+  transform: rotate(-15deg);
+  animation-delay: -3s;
 }
