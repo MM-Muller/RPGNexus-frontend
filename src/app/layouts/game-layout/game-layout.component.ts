@@ -8,7 +8,6 @@ export class GameLayoutComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    // Adiciona um pequeno atraso para garantir que a view foi renderizada
     setTimeout(() => {
       this.createStars();
       this.initNeuralCanvas();
@@ -18,7 +17,7 @@ export class GameLayoutComponent implements OnInit {
   createStars(): void {
     const starsContainer = document.getElementById('starsContainer');
     if (starsContainer) {
-      starsContainer.innerHTML = ''; // Evita duplicar estrelas
+      starsContainer.innerHTML = ''; 
       const numberOfStars = 150;
 
       for (let i = 0; i < numberOfStars; i++) {
