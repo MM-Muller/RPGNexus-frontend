@@ -7,11 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BattleComponent implements OnInit {
 
+  activeMenu: string | null = null;
+  selectedAction: string = '';
+  specialAttack: string = 'Raio Cósmico: 35 de dano';
+  defendAction: string = 'Barreira Quântica: Reduz 50% do dano';
+  item: string = 'Poção de Cura: +500 de vida';
+  private menuTimeout: any;
+
   constructor() { }
 
   ngOnInit(): void {
     this.createStars();
-    this.setupEventListeners();
   }
 
   createStars(): void {
@@ -43,35 +49,19 @@ export class BattleComponent implements OnInit {
     document.head.appendChild(style);
   }
 
-  setupEventListeners(): void {
-    document.querySelectorAll('.action-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const button = btn as HTMLElement;
-        button.style.animation = 'none';
-        setTimeout(() => {
-            button.style.animation = '';
-        }, 10);
-
-        if (button.classList.contains('attack')) {
-            this.showDamage();
-        }
-      });
-    });
+  showMenu(menu: string): void {
+    clearTimeout(this.menuTimeout);
+    this.activeMenu = menu;
   }
 
-  showDamage(): void {
-    const damageText = document.createElement('div');
-    damageText.className = 'combat-effect damage-text';
-    damageText.textContent = '-' + Math.floor(Math.random() * 500 + 200);
-    damageText.style.left = '70%';
-    damageText.style.top = '40%';
-    const battleArena = document.querySelector('.battle-arena');
-    if (battleArena) {
-      battleArena.appendChild(damageText);
-    }
+  hideMenu(): void {
+    this.menuTimeout = setTimeout(() => {
+      this.activeMenu = null;
+    }, 200);
+  }
 
-    setTimeout(() => {
-        damageText.remove();
-    }, 1000);
+  selectAction(action: string): void {
+    this.selectedAction = action.split(':')[0];
+    this.hideMenu();
   }
 }

@@ -163,17 +163,10 @@
 }
 
 /* Top HUD */
-.top-hud, .action-panel {
+.top-hud {
   flex-shrink: 0;
   z-index: 100;
-}
-
-.top-hud {
   margin-bottom: 20px;
-}
-
-.action-panel {
-  margin-top: 20px;
 }
 
 /* Battle Field */
@@ -371,6 +364,11 @@
     color: #fff;
     text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
+
+.action-buttons-container {
+    position: relative;
+}
+
 .action-panel {
     flex-shrink: 0;
     display: flex;
@@ -382,6 +380,11 @@
     border: 1px solid rgba(255, 215, 0, 0.3);
     box-shadow: 0 0 40px rgba(138, 43, 226, 0.3);
     margin-top: 20px;
+}
+.action-btn-wrapper {
+    position: relative;
+    padding-bottom: 10px; /* Adiciona espaço para o mouse */
+    margin-bottom: -10px; /* Compensa o padding */
 }
 .action-btn {
     position: relative;
@@ -474,6 +477,61 @@
     from { transform: rotate(180deg); }
     to { transform: rotate(180deg); }
 }
+.sub-action-panel {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(10, 10, 46, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    z-index: 200;
+    flex-direction: column;
+}
+.sub-action-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.sub-action-btn {
+    background: transparent;
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    color: rgba(255, 255, 255, 0.7);
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Exo 2', sans-serif;
+    white-space: nowrap;
+}
+.sub-action-btn:hover {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: rgba(255, 215, 0, 0.5);
+    color: rgba(255, 215, 0, 0.9);
+}
+.input-container {
+    width: 100%;
+    max-width: 600px;
+    margin-top: 15px;
+}
+.action-input {
+    width: 100%;
+    padding: 12px 20px;
+    background: rgba(25, 25, 112, 0.2);
+    border: 1px solid rgba(138, 43, 226, 0.3);
+    border-radius: 10px;
+    color: #fff;
+    font-size: 14px;
+    font-family: 'Exo 2', sans-serif;
+    text-align: center;
+}
+.action-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
 @media (max-width: 768px) {
     .battle-arena { padding: 10px; }
     .battle-field { flex-direction: column; padding: 0 10px; }
@@ -483,4 +541,5 @@
     .character-container { order: 3; }
     .action-panel { padding: 15px; gap: 10px; }
     .action-btn { padding: 10px; font-size: 10px; }
+    .sub-action-panel { bottom: 120px; }
 }
