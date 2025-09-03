@@ -279,6 +279,10 @@
   align-items: center;
   padding: 120px 20px 40px;
   z-index: 1;
+
+  &.no-padding {
+    padding: 0;
+  }
 }
 
 @keyframes twinkle {

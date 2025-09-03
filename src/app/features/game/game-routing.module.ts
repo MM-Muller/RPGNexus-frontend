@@ -4,8 +4,14 @@ import { GameLayoutComponent } from '../../layouts/game-layout/game-layout.compo
 import { AccountComponent } from './account/account.component';
 import { CharactersComponent } from './characters/characters.component';
 import { WorldsComponent } from './worlds/worlds.component';
+import { BattleComponent } from './battle/battle.component';
 
 const routes: Routes = [
+  {
+    path: 'battle',
+    component: BattleComponent,
+  },
+
   {
     path: '',
     component: GameLayoutComponent,

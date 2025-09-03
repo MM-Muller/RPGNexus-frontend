@@ -178,6 +178,8 @@
   transform: translate(-50%, -50%);
   cursor: pointer;
   z-index: 10;
+  padding-top: 20px;
+  margin-top: -20px;
 }
 
 .galaxy-core {
@@ -252,9 +254,9 @@
 
 .galaxy-info {
   position: absolute;
-  top: -120px;
+  bottom: 100%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(0);
   background: linear-gradient(
     135deg,
     rgba(255, 215, 0, 0.9),
@@ -266,14 +268,14 @@
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
-  pointer-events: none;
+  pointer-events: none; 
   box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
 }
 
 .galaxy-info::after {
   content: "";
   position: absolute;
-  bottom: -10px;
+  top: 100%; 
   left: 50%;
   transform: translateX(-50%);
   width: 0;
@@ -315,6 +317,7 @@
   letter-spacing: 1px;
   cursor: pointer;
   transition: all 0.3s ease;
+  text-decoration: none;
 }
 
 .play-button:hover {
@@ -326,7 +329,8 @@
 .galaxy-location:hover .galaxy-info {
   opacity: 1;
   visibility: visible;
-  top: -130px;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(-10px);
 }
 
 .galaxy-location:hover .galaxy-center {
