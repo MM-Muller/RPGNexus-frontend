@@ -146,7 +146,7 @@
     rgba(0, 0, 0, 0.3);
   border-radius: 15px;
   border: 1px solid rgba(255, 215, 0, 0.1);
-  overflow: hidden;
+  /* overflow: hidden; */ /* Removido para que o tooltip não seja cortado */
 }
 
 .constellation-lines {
@@ -268,14 +268,14 @@
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
-  pointer-events: none; 
+  pointer-events: none;
   box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
 }
 
 .galaxy-info::after {
   content: "";
   position: absolute;
-  top: 100%; 
+  top: 100%;
   left: 50%;
   transform: translateX(-50%);
   width: 0;
