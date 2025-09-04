@@ -1,4 +1,58 @@
-<div class="content-panel">
-  <h1>Conta do Jogador</h1>
-  <p>Informações da sua conta e configurações.</p>
+
+<div class="harmonic-streams">
+  <div class="stream stream1"></div>
+  <div class="stream stream2"></div>
+</div>
+
+<div class="hud-element hud-top-left">
+  <div class="hud-data">ARQUIVO HISTÓRICO ATIVO</div>
+  <div class="hud-data">NÍVEL ACESSO: TRANSCENDENTE</div>
+</div>
+
+<div class="hud-element hud-top-right">
+  <div class="hud-data">NEXUS.GALACTIC.ARCHIVE</div>
+  <div class="hud-data">TEMPO CÓSMICO: ∞</div>
+</div>
+
+<div class="hud-element hud-bottom-left">
+  <div class="hud-data">DECODIFICAÇÃO: 100%</div>
+  <div class="hud-data">RESSONÂNCIA QUÂNTICA: ESTÁVEL</div>
+</div>
+
+<div class="hud-element hud-bottom-right">
+  <div class="hud-data">COORDENADAS: BRAÇO EXTERIOR</div>
+  <div class="hud-data">SETOR: NEXUS-PRIME</div>
+</div>
+
+<div class="account-container">
+  <div class="corner-decoration corner-tl"></div>
+  <div class="corner-decoration corner-tr"></div>
+  <div class="corner-decoration corner-bl"></div>
+  <div class="corner-decoration corner-br"></div>
+
+  <div class="account-header">
+    <h1 class="account-title">PAINEL DE CONTROLE</h1>
+    <p class="account-subtitle">Gerencie suas informações no Nexus</p>
+  </div>
+
+  <div class="account-info">
+    <div class="info-field">
+      <label class="info-label">NOME DE USUÁRIO</label>
+      <div class="info-value">{{ user.name }}</div>
+    </div>
+    <div class="info-field">
+      <label class="info-label">E-MAIL</label>
+      <div class="info-value">{{ user.email }}</div>
+    </div>
+    <div class="info-field">
+      <label class="info-label">SENHA</label>
+      <div class="info-value">●●●●●●●●</div>
+    </div>
+  </div>
+
+  <div class="account-actions">
+    <button class="action-btn" (click)="onEdit()">Editar Perfil</button>
+    <button class="action-btn action-btn-secondary" (click)="onLogout()">Deslogar</button>
+    <button class="action-btn action-btn-danger" (click)="onDelete()">Excluir Conta</button>
+  </div>
 </div>

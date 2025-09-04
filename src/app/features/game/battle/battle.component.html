@@ -1,0 +1,169 @@
+<div class="cosmic-battle-bg"></div>
+<div class="nebula"></div>
+<div class="energy-grid"></div>
+<div class="stars" id="starsContainer"></div>
+
+<div class="battle-arena">
+    <div class="corner-decoration corner-tl"></div>
+    <div class="corner-decoration corner-tr"></div>
+    <div class="corner-decoration corner-bl"></div>
+    <div class="corner-decoration corner-br"></div>
+
+    <div class="top-hud">
+        <h2 class="battle-title">⚡ Batalha Galáctica ⚡</h2>
+        <div class="timer">{{ timerDisplay }}</div>
+    </div>
+
+    <div class="battle-field">
+        <div class="character-container">
+            <div class="character-model">
+                <div class="energy-aura"></div>
+                <div class="character-visual"></div>
+            </div>
+            <div class="status-panel">
+                <h3 class="character-name">Zephyr Nova</h3>
+                <div class="status-bars">
+                    <div class="stat-row">
+                        <div class="stat-icon">❤️</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Vida</div>
+                            <div class="stat-bar">
+                                <div class="stat-fill health" style="width: 75%">
+                                    <span class="stat-value">2250/3000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-icon">⚡</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Energia</div>
+                            <div class="stat-bar">
+                                <div class="stat-fill energy" style="width: 60%">
+                                    <span class="stat-value">1920/3200</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-icon">⚔️</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Poder</div>
+                            <div class="stat-bar">
+                                <div class="stat-fill power" style="width: 85%">
+                                    <span class="stat-value">2125/2500</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-icon">🛡️</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Defesa</div>
+                            <div class="stat-bar">
+                                <div class="stat-fill defense" style="width: 70%">
+                                    <span class="stat-value">1260/1800</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="turn-indicator">
+            <div class="turn-text">{{ isPlayerTurn ? 'Sua vez' : 'Vez do oponente' }}</div>
+            <div class="turn-arrow" [class.enemy-turn]="!isPlayerTurn"></div>
+        </div>
+
+        <div class="enemy-container">
+            <div class="enemy-model">
+                <div class="energy-aura"></div>
+                <div class="enemy-visual"></div>
+            </div>
+            <div class="status-panel">
+                <h3 class="character-name">Sentinela do Vazio</h3>
+                <div class="status-bars">
+                    <div class="stat-row">
+                        <div class="stat-icon">❤️</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Vida</div>
+                            <div class="stat-bar">
+                                <div class="stat-fill health" style="width: 45%">
+                                    <span class="stat-value">2250/5000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-icon">⚡</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Energia</div>
+                            <div class="stat-bar">
+                                <div class="stat-fill energy" style="width: 80%">
+                                    <span class="stat-value">3200/4000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-icon">⚔️</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Poder</div>
+                            <div class="stat-bar">
+                                <div class="stat-fill power" style="width: 90%">
+                                    <span class="stat-value">2700/3000</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <div class="stat-icon">🛡️</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Defesa</div>
+                            <div class="stat-bar">
+                                <div class="stat-fill defense" style="width: 95%">
+                                    <span class="stat-value">2375/2500</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="action-panel">
+        <div class="action-btn-wrapper" (mouseenter)="showMenu('attack')" (mouseleave)="hideMenu()">
+            <button class="action-btn attack" [disabled]="!isPlayerTurn">⚔️ Atacar</button>
+            <div class="sub-action-panel" *ngIf="activeMenu === 'attack'" (mouseenter)="showMenu('attack')">
+                <button class="sub-action-btn" (click)="selectAction('Ataque Básico')">Ataque Básico: 15 de dano</button>
+            </div>
+        </div>
+        <div class="action-btn-wrapper" (mouseenter)="showMenu('special')" (mouseleave)="hideMenu()">
+            <button class="action-btn special" [disabled]="!isPlayerTurn">✨ Especial</button>
+            <div class="sub-action-panel" *ngIf="activeMenu === 'special'" (mouseenter)="showMenu('special')">
+                <button class="sub-action-btn" (click)="selectAction(specialAttack)">{{specialAttack}}</button>
+            </div>
+        </div>
+        <div class="action-btn-wrapper" (mouseenter)="showMenu('defend')" (mouseleave)="hideMenu()">
+            <button class="action-btn defend" [disabled]="!isPlayerTurn">🛡️ Defender</button>
+            <div class="sub-action-panel" *ngIf="activeMenu === 'defend'" (mouseenter)="showMenu('defend')">
+                <button class="sub-action-btn" (click)="selectAction(defendAction)">{{defendAction}}</button>
+            </div>
+        </div>
+        <div class="action-btn-wrapper" (mouseenter)="showMenu('item')" (mouseleave)="hideMenu()">
+            <button class="action-btn" [disabled]="!isPlayerTurn">💊 Item</button>
+            <div class="sub-action-panel" *ngIf="activeMenu === 'item'" (mouseenter)="showMenu('item')">
+                <button class="sub-action-btn" (click)="selectAction(item)">{{item}}</button>
+            </div>
+        </div>
+        <div class="action-btn-wrapper">
+            <button class="action-btn" [disabled]="!isPlayerTurn">🚀 Fugir</button>
+        </div>
+    </div>
+
+    <div class="input-container">
+        <input type="text" class="action-input" placeholder="Ação selecionada..." [(ngModel)]="selectedAction" [disabled]="!isPlayerTurn">
+    </div>
+</div>

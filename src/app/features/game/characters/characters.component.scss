@@ -1,3 +1,5 @@
+@import '../../../styles/variables';
+
 .characters-container {
   width: 1200px;
   background: linear-gradient(
@@ -8,7 +10,7 @@
     rgba(25, 25, 112, 0.1);
   border: 1px solid rgba(138, 43, 226, 0.2);
   border-radius: 20px;
-  padding: 40px; // Reduzido para dar mais espaço interno
+  padding: 40px;
   position: relative;
   backdrop-filter: blur(10px);
   box-shadow: 0 0 50px rgba(138, 43, 226, 0.2),
@@ -34,7 +36,7 @@
 }
 
 .corner-decoration::after {
-  content: "";
+  content: '';
   position: absolute;
   width: 10px;
   height: 10px;
@@ -102,8 +104,8 @@
 }
 
 .characters-title {
-  font-family: "Orbitron", monospace;
-  font-size: 32px;
+  font-family: 'Orbitron', monospace;
+  font-size: 36px;
   font-weight: 900;
   background: linear-gradient(135deg, #ffd700, #da70d6, #4169e1);
   -webkit-background-clip: text;
@@ -125,7 +127,7 @@
 }
 
 .characters-subtitle {
-  font-size: 14px;
+  font-size: 18px;
   color: rgba(147, 112, 219, 0.8);
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -149,7 +151,7 @@
 }
 
 .character-card::before {
-  content: "";
+  content: '';
   position: absolute;
   top: -2px;
   left: -2px;
@@ -234,7 +236,7 @@
 }
 
 .character-name {
-  font-family: "Orbitron", monospace;
+  font-family: 'Orbitron', monospace;
   font-size: 18px;
   font-weight: 700;
   color: rgba(255, 215, 0, 0.9);
@@ -286,7 +288,7 @@
 }
 
 .stat-value {
-  font-family: "Orbitron", monospace;
+  font-family: 'Orbitron', monospace;
   font-size: 20px;
   font-weight: 700;
   color: rgba(255, 215, 0, 0.8);
@@ -305,7 +307,7 @@
   border: 1px solid rgba(255, 215, 0, 0.3);
   border-radius: 8px;
   color: rgba(255, 255, 255, 0.8);
-  font-family: "Orbitron", monospace;
+  font-family: 'Orbitron', monospace;
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -316,7 +318,7 @@
 }
 
 .action-btn::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   left: 50%;
@@ -387,7 +389,7 @@
 }
 
 .create-text {
-  font-family: "Orbitron", monospace;
+  font-family: 'Orbitron', monospace;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.6);
   text-transform: uppercase;
@@ -466,4 +468,254 @@
   .character-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.hud-element {
+  position: fixed;
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  color: $primary-alpha-40;
+  letter-spacing: 1px;
+  z-index: 10;
+}
+
+.hud-top-left {
+  top: 20px;
+  left: 20px;
+}
+
+.hud-top-right {
+  top: 20px;
+  right: 20px;
+  text-align: right;
+}
+
+.hud-bottom-left {
+  bottom: 20px;
+  left: 20px;
+}
+
+.hud-bottom-right {
+  bottom: 20px;
+  right: 20px;
+  text-align: right;
+}
+
+.hud-data {
+  margin: 5px 0;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.hud-data:hover {
+  opacity: 1;
+}
+
+.harmonic-streams {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.stream {
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    $primary-alpha-30,
+    rgba(138, 43, 226, 0.5),
+    transparent
+  );
+  animation: flow 8s linear infinite;
+}
+
+.stream1 {
+  width: 300px;
+  top: 20%;
+  left: -300px;
+  transform: rotate(25deg);
+}
+
+.stream2 {
+  width: 400px;
+  bottom: 30%;
+  right: -400px;
+  transform: rotate(-15deg);
+  animation-delay: -3s;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(5px);
+  z-index: 100;
+}
+
+.modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 550px;
+  background: linear-gradient(
+      135deg,
+      rgba(138, 43, 226, 0.1) 0%,
+      rgba(75, 0, 130, 0.1) 100%
+    ),
+    rgba(10, 10, 46, 0.95);
+  border: 1px solid rgba(138, 43, 226, 0.4);
+  border-radius: 15px;
+  box-shadow: 0 0 60px rgba(138, 43, 226, 0.4),
+    inset 0 0 20px rgba(255, 215, 0, 0.08);
+  z-index: 101;
+  color: #fff;
+  padding: 0;
+  overflow: hidden;
+}
+
+.modal-content {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.modal-header {
+  text-align: center;
+  margin-bottom: 25px;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.25);
+  padding-bottom: 15px;
+}
+
+.modal-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 28px;
+  color: $primary-color;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+  background: linear-gradient(135deg, #ffd700, #da70d6, #4169e1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.modal-body {
+  margin-bottom: 30px;
+  font-size: 16px;
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 15px 20px;
+  align-items: center;
+
+  .info-label-modal {
+    font-family: 'Orbitron', monospace;
+    font-size: 14px;
+    color: $primary-alpha-50;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .info-value-modal {
+    font-size: 17px;
+    color: #fff;
+  }
+
+  .description-field {
+    grid-column: 1 / -1;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 215, 0, 0.1);
+
+    .info-label-modal {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .info-value-modal {
+      font-size: 16px;
+      line-height: 1.6;
+    }
+  }
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 215, 0, 0.15);
+}
+
+// Estilos para os botões dentro do modal
+.modal-footer .action-btn {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  background-color: rgba(75, 0, 130, 0.3);
+  transition: all 0.4s ease;
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  border-radius: 8px;
+  padding: 10px 20px;
+  min-width: 120px;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Orbitron', monospace;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.modal-footer .action-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 215, 0, 0.2) 0%,
+    rgba(255, 215, 0, 0.5) 100%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: -1;
+  border-radius: 8px;
+}
+
+.modal-footer .action-btn:hover::before {
+  transform: translateX(0);
+}
+
+.modal-footer .action-btn:hover {
+  border-color: rgba(255, 215, 0, 0.8);
+  color: #fff;
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+.modal-footer .action-btn-danger {
+  background-color: rgba(139, 0, 0, 0.3);
+  border-color: rgba(255, 82, 82, 0.5);
+}
+
+.modal-footer .action-btn-danger::before {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 82, 82, 0.2) 0%,
+    rgba(255, 82, 82, 0.5) 100%
+  );
+}
+
+.modal-footer .action-btn-danger:hover {
+  border-color: rgba(255, 82, 82, 1);
+  box-shadow: 0 0 25px rgba(255, 82, 82, 0.6);
 }

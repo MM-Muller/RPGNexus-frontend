@@ -9,6 +9,7 @@ import { filter } from 'rxjs/operators';
 })
 export class NavbarComponent implements OnInit {
   isLoggedIn: boolean = false;
+  shouldShowNavbar: boolean = true;
 
   mainNavItems = [
     {
@@ -72,11 +73,13 @@ export class NavbarComponent implements OnInit {
       .subscribe((event: NavigationEnd) => {
         this.isLoggedIn = event.urlAfterRedirects.startsWith('/game');
         this.navItems = this.isLoggedIn ? this.gameNavItems : this.mainNavItems;
+        this.shouldShowNavbar = !event.urlAfterRedirects.startsWith('/game/battle');
         this.updateActiveState(event.urlAfterRedirects);
       });
 
     this.isLoggedIn = this.router.url.startsWith('/game');
     this.navItems = this.isLoggedIn ? this.gameNavItems : this.mainNavItems;
+    this.shouldShowNavbar = !this.router.url.startsWith('/game/battle');
     this.updateActiveState(this.router.url);
   }
 

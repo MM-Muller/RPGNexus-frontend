@@ -279,6 +279,10 @@
   align-items: center;
   padding: 120px 20px 40px;
   z-index: 1;
+
+  &.no-padding {
+    padding: 0;
+  }
 }
 
 @keyframes twinkle {
@@ -290,16 +294,5 @@
   50% {
     opacity: 1;
     transform: scale(1.2);
-  }
-}
-
-@media (max-width: 768px) {
-  .navbar {
-    padding: 10px 20px;
-    gap: 10px;
-  }
-  .nav-item {
-    padding: 8px 15px;
-    font-size: 10px;
   }
 }

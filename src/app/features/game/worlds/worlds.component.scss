@@ -105,7 +105,7 @@
 
 .map-title {
   font-family: "Orbitron", monospace;
-  font-size: 32px;
+  font-size: 40px;
   font-weight: 900;
   background: linear-gradient(135deg, #ffd700, #da70d6, #4169e1);
   -webkit-background-clip: text;
@@ -127,7 +127,7 @@
 }
 
 .map-subtitle {
-  font-size: 14px;
+  font-size: 20px;
   color: rgba(147, 112, 219, 0.8);
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -137,7 +137,7 @@
   position: relative;
   width: 100%;
   aspect-ratio: 16/9;
-  height: 700px;
+  height: 650px;
   background: radial-gradient(
       ellipse at center,
       rgba(138, 43, 226, 0.05),
@@ -146,7 +146,7 @@
     rgba(0, 0, 0, 0.3);
   border-radius: 15px;
   border: 1px solid rgba(255, 215, 0, 0.1);
-  overflow: hidden;
+  /* overflow: hidden; */ /* Removido para que o tooltip não seja cortado */
 }
 
 .constellation-lines {
@@ -178,6 +178,8 @@
   transform: translate(-50%, -50%);
   cursor: pointer;
   z-index: 10;
+  padding-top: 20px;
+  margin-top: -20px;
 }
 
 .galaxy-core {
@@ -252,9 +254,9 @@
 
 .galaxy-info {
   position: absolute;
-  top: -120px;
+  bottom: 100%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(0);
   background: linear-gradient(
     135deg,
     rgba(255, 215, 0, 0.9),
@@ -273,7 +275,7 @@
 .galaxy-info::after {
   content: "";
   position: absolute;
-  bottom: -10px;
+  top: 100%;
   left: 50%;
   transform: translateX(-50%);
   width: 0;
@@ -315,6 +317,7 @@
   letter-spacing: 1px;
   cursor: pointer;
   transition: all 0.3s ease;
+  text-decoration: none;
 }
 
 .play-button:hover {
@@ -326,7 +329,8 @@
 .galaxy-location:hover .galaxy-info {
   opacity: 1;
   visibility: visible;
-  top: -130px;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(-10px);
 }
 
 .galaxy-location:hover .galaxy-center {
