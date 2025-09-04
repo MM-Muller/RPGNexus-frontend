@@ -29,8 +29,6 @@
     },
     "forwardPorts": [4200],
     
-    // --- ALTERAÇÃO IMPORTANTE AQUI ---
-    // Este comando dará ao usuário 'vscode' permissão para escrever nos arquivos do projeto.
     "postCreateCommand": "sudo chown -R vscode:vscode /workspace/.angular",
 
     "postStartCommand": "npm start",

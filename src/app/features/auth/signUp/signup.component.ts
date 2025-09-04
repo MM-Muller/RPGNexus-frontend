@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -9,7 +10,11 @@ import { Router } from '@angular/router';
 export class SignupComponent implements AfterViewInit, OnDestroy {
   private animationFrameId: number | undefined;
 
-  constructor(private router: Router, private el: ElementRef) {}
+  constructor(
+    private router: Router,
+    private el: ElementRef,
+    private authService: AuthService
+  ) {}
 
   ngAfterViewInit(): void {
     this.initNeuralCanvas();
@@ -32,8 +37,15 @@ export class SignupComponent implements AfterViewInit, OnDestroy {
         console.error('As senhas não coincidem!');
         return;
       }
-      console.log('Signup attempt:', { username, email, password });
-      // Implemente lógica de cadastro aqui
+      this.authService.signup({ username, email, password }).subscribe(
+        (response) => {
+          console.log('Signup successful:', response);
+          this.router.navigate(['/auth/login']);
+        },
+        (error) => {
+          console.error('Signup failed:', error);
+        }
+      );
     }
   }
 

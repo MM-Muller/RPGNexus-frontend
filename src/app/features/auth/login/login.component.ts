@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,11 @@ import { Router } from '@angular/router';
 export class LoginComponent implements AfterViewInit, OnDestroy {
   private animationFrameId: number | undefined;
 
-  constructor(private router: Router, private el: ElementRef) {}
+  constructor(
+    private router: Router,
+    private el: ElementRef,
+    private authService: AuthService
+  ) {}
 
   ngAfterViewInit(): void {
     this.initNeuralCanvas();
@@ -21,10 +26,19 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  onLogin(identifier: string, key: string): void {
-    if (identifier && key) {
-      console.log('Login attempt:', { identifier, key });
-      // Implemente lógica de autenticação aqui
+  onLogin(email: string, password: string): void {
+    if (email && password) {
+      this.authService.login({ email, password }).subscribe(
+        (response) => {
+          console.log('Login successful:', response);
+          // Salve o token (ex: no localStorage) e redirecione o usuário
+          localStorage.setItem('token', response.access_token);
+          this.router.navigate(['/game/worlds']);
+        },
+        (error) => {
+          console.error('Login failed:', error);
+        }
+      );
     }
   }
 
