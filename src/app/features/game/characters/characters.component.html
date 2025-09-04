@@ -1,4 +1,3 @@
-
 <div class="harmonic-streams">
   <div class="stream stream1"></div>
   <div class="stream stream2"></div>
@@ -77,16 +76,52 @@
       </div>
 
       <div class="character-actions">
-        <button class="action-btn">Detalhes</button>
+        <button class="action-btn" (click)="showDetails(char)">Detalhes</button>
         <button class="action-btn primary">Jogar</button>
       </div>
-      <!-- TESTE APAGAR DEPOIS -->
       <a routerLink="/game/worlds" routerLinkActive="active">Jogar</a>
     </div>
 
     <div class="character-card create-character-card">
       <div class="create-icon">+</div>
       <div class="create-text">Criar Personagem</div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" *ngIf="isModalVisible" (click)="closeModal()"></div>
+<div class="modal-container" *ngIf="isModalVisible">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 class="modal-title">{{ selectedCharacter?.name }}</h2>
+    </div>
+    <div class="modal-body">
+      <span class="info-label-modal">Raça:</span>
+      <span class="info-value-modal">{{ selectedCharacter?.race }}</span>
+
+      <span class="info-label-modal">Classe:</span>
+      <span class="info-value-modal">{{ selectedCharacter?.class }}</span>
+
+      <span class="info-label-modal">Nível:</span>
+      <span class="info-value-modal">{{ selectedCharacter?.level }}</span>
+
+      <span class="info-label-modal">Poder:</span>
+      <span class="info-value-modal">{{ selectedCharacter?.power }}</span>
+
+      <span class="info-label-modal">Defesa:</span>
+      <span class="info-value-modal">{{ selectedCharacter?.defense }}</span>
+
+      <span class="info-label-modal">Energia:</span>
+      <span class="info-value-modal">{{ selectedCharacter?.energy }}</span>
+
+      <div class="description-field">
+        <strong class="info-label-modal">Descrição:</strong>
+        <span class="info-value-modal">{{ selectedCharacter?.description }}</span>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="action-btn" (click)="closeModal()">Fechar</button>
+      <button class="action-btn action-btn-danger" (click)="deleteCharacter()">Excluir</button>
     </div>
   </div>
 </div>
