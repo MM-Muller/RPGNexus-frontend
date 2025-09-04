@@ -105,7 +105,7 @@
 
 .map-title {
   font-family: "Orbitron", monospace;
-  font-size: 32px;
+  font-size: 40px;
   font-weight: 900;
   background: linear-gradient(135deg, #ffd700, #da70d6, #4169e1);
   -webkit-background-clip: text;
@@ -127,7 +127,7 @@
 }
 
 .map-subtitle {
-  font-size: 14px;
+  font-size: 20px;
   color: rgba(147, 112, 219, 0.8);
   letter-spacing: 3px;
   text-transform: uppercase;
@@ -137,7 +137,7 @@
   position: relative;
   width: 100%;
   aspect-ratio: 16/9;
-  height: 700px;
+  height: 650px;
   background: radial-gradient(
       ellipse at center,
       rgba(138, 43, 226, 0.05),
