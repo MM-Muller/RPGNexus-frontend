@@ -11,8 +11,7 @@
   padding: 20px;
 }
 
-/* Background Elements - Fixed to the viewport */
-.cosmic-battle-bg, .planet, .nebula, .energy-grid, .stars {
+.cosmic-battle-bg, .nebula, .energy-grid, .stars {
   position: fixed;
   top: 0;
   left: 0;
@@ -34,37 +33,6 @@
   0%, 100% { filter: hue-rotate(0deg) brightness(1) contrast(1); }
   33% { filter: hue-rotate(30deg) brightness(1.1) contrast(1.1); }
   66% { filter: hue-rotate(-30deg) brightness(0.9) contrast(1.2); }
-}
-
-.planet {
-  border-radius: 50%;
-  box-shadow: 0 0 50px rgba(138, 43, 226, 0.3);
-  z-index: -3;
-}
-
-.planet1 {
-  width: 200px;
-  height: 200px;
-  top: 10%;
-  right: 10%;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 215, 0, 0.3), rgba(138, 43, 226, 0.1));
-  opacity: 0.3;
-  animation: float-planet 20s ease-in-out infinite;
-}
-
-.planet2 {
-  width: 100px;
-  height: 100px;
-  bottom: 20%;
-  left: 5%;
-  background: radial-gradient(circle at 40% 40%, rgba(75, 0, 130, 0.4), rgba(255, 0, 128, 0.1));
-  opacity: 0.2;
-  animation: float-planet 25s ease-in-out infinite reverse;
-}
-
-@keyframes float-planet {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-20px) scale(1.05); }
 }
 
 .nebula {
@@ -99,8 +67,6 @@
   z-index: -2;
 }
 
-
-/* Battle Arena (Painel Central) */
 .battle-arena {
   position: relative;
   display: flex;
@@ -132,7 +98,6 @@
   50% { transform: scale(1.005); }
 }
 
-/* Decorações dos Cantos */
 .corner-decoration {
   position: absolute;
   width: 40px;
@@ -162,7 +127,6 @@
   50% { transform: scale(1.5); opacity: 1; }
 }
 
-/* Top HUD */
 .top-hud {
   flex-shrink: 0;
   z-index: 100;
@@ -178,7 +142,6 @@
     margin-top: 10px;
 }
 
-/* Battle Field */
 .battle-field {
   flex-grow: 1;
   width: 100%;
@@ -187,7 +150,6 @@
   align-items: center;
 }
 
-/* Character & Enemy Containers */
 .character-container, .enemy-container {
   position: relative;
   flex: 1;
@@ -198,7 +160,6 @@
   padding: 0 20px;
 }
 
-/* ... O resto dos estilos de personagem, painel de status, etc., continua aqui ... */
 .character-model, .enemy-model {
     position: relative;
     width: 250px;
@@ -392,8 +353,8 @@
 }
 .action-btn-wrapper {
     position: relative;
-    padding-bottom: 10px; /* Adiciona espaço para o mouse */
-    margin-bottom: -10px; /* Compensa o padding */
+    padding-bottom: 10px; 
+    margin-bottom: -10px; 
 }
 .action-btn {
     position: relative;
