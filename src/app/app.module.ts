@@ -2,16 +2,18 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
-import { HistoriaComponent } from './features/historia/historia.component';
-import { HomeComponent } from './features/home/home.component';
-import { ObjetivoComponent } from './features/objetivo/objetivo.component';
-import { PersonagensComponent } from './features/personagens/personagens.component';
 import { SharedModule } from './shared/shared.module';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+
+import { HomeComponent } from './features/home/home.component';
+import { HistoriaComponent } from './features/historia/historia.component';
+import { PersonagensComponent } from './features/personagens/personagens.component';
+import { ObjetivoComponent } from './features/objetivo/objetivo.component';
 
 @NgModule({
   declarations: [
@@ -29,9 +31,11 @@ import { SharedModule } from './shared/shared.module';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

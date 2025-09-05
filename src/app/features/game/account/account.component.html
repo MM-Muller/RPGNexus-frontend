@@ -1,11 +1,10 @@
-
 <div class="harmonic-streams">
   <div class="stream stream1"></div>
   <div class="stream stream2"></div>
 </div>
 
 <div class="hud-element hud-top-left">
-  <div class="hud-data">ARQUIVO HISTÓRICO ATIVO</div>
+  <div class="hud-data">ARQUIVO DE PILOTO ATIVO</div>
   <div class="hud-data">NÍVEL ACESSO: TRANSCENDENTE</div>
 </div>
 
@@ -24,7 +23,7 @@
   <div class="hud-data">SETOR: NEXUS-PRIME</div>
 </div>
 
-<div class="account-container">
+<div class="account-container" *ngIf="user; else loading">
   <div class="corner-decoration corner-tl"></div>
   <div class="corner-decoration corner-tr"></div>
   <div class="corner-decoration corner-bl"></div>
@@ -38,7 +37,7 @@
   <div class="account-info">
     <div class="info-field">
       <label class="info-label">NOME DE USUÁRIO</label>
-      <div class="info-value">{{ user.name }}</div>
+      <div class="info-value">{{ user.username }}</div>
     </div>
     <div class="info-field">
       <label class="info-label">E-MAIL</label>
@@ -54,5 +53,11 @@
     <button class="action-btn" (click)="onEdit()">Editar Perfil</button>
     <button class="action-btn action-btn-secondary" (click)="onLogout()">Deslogar</button>
     <button class="action-btn action-btn-danger" (click)="onDelete()">Excluir Conta</button>
-  </div>
+  </div>
 </div>
+
+<ng-template #loading>
+  <div class="account-container">
+    <p class="account-subtitle">Carregando informações do usuário...</p>
+  </div>
+</ng-template>
