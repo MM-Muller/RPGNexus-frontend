@@ -51,7 +51,6 @@
   </div>
 </ng-template>
 
-<!-- MODAL DE EDIÇÃO -->
 <div class="modal-backdrop" *ngIf="isEditModalVisible" (click)="closeEditModal()"></div>
 <div class="modal-container" *ngIf="isEditModalVisible">
   <form [formGroup]="editForm" (ngSubmit)="onSave()">
@@ -69,7 +68,7 @@
           <input type="email" class="input-field" formControlName="email">
         </div>
         <div class="input-group">
-          <label class="info-label-modal">Nova Senha (deixe em branco para não alterar)</label>
+          <label class="info-label-modal">Nova Senha</label>
           <input type="password" class="input-field" formControlName="password">
         </div>
       </div>
@@ -81,7 +80,6 @@
   </form>
 </div>
 
-<!-- NOVO MODAL DE CONFIRMAÇÃO DE EXCLUSÃO -->
 <div class="modal-backdrop" *ngIf="isDeleteModalVisible" (click)="cancelDelete()"></div>
 <div class="modal-container" *ngIf="isDeleteModalVisible">
     <div class="modal-content">
