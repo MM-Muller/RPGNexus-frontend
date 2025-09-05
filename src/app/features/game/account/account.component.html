@@ -24,11 +24,6 @@
 </div>
 
 <div class="account-container" *ngIf="user; else loading">
-  <div class="corner-decoration corner-tl"></div>
-  <div class="corner-decoration corner-tr"></div>
-  <div class="corner-decoration corner-bl"></div>
-  <div class="corner-decoration corner-br"></div>
-
   <div class="account-header">
     <h1 class="account-title">PAINEL DE CONTROLE</h1>
     <p class="account-subtitle">Gerencie suas informações no Nexus</p>
@@ -61,3 +56,32 @@
     <p class="account-subtitle">Carregando informações do usuário...</p>
   </div>
 </ng-template>
+
+<div class="modal-backdrop" *ngIf="isModalVisible" (click)="closeModal()"></div>
+<div class="modal-container" *ngIf="isModalVisible">
+  <form [formGroup]="editForm" (ngSubmit)="onSave()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Editar Perfil</h2>
+      </div>
+      <div class="modal-body">
+        <div class="input-group">
+          <label class="info-label-modal">Nome de Usuário</label>
+          <input type="text" class="input-field" formControlName="username">
+        </div>
+        <div class="input-group">
+          <label class="info-label-modal">Email</label>
+          <input type="email" class="input-field" formControlName="email">
+        </div>
+        <div class="input-group">
+          <label class="info-label-modal">Nova Senha</label>
+          <input type="password" class="input-field" formControlName="password">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="action-btn" (click)="closeModal()">Cancelar</button>
+        <button type="submit" class="action-btn primary" [disabled]="editForm.invalid">Salvar Alterações</button>
+      </div>
+    </div>
+  </form>
+</div>

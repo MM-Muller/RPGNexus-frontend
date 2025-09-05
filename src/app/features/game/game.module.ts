@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // 1. Importe o FormsModule
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { GameRoutingModule } from './game-routing.module';
 
@@ -18,6 +18,7 @@ import { WorldsComponent } from './worlds/worlds.component';
     CharactersComponent,
     BattleComponent,
   ],
-  imports: [CommonModule, GameRoutingModule, FormsModule],
+  
+  imports: [CommonModule, GameRoutingModule, FormsModule, ReactiveFormsModule],
 })
 export class GameModule {}

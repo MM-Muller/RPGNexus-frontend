@@ -7,7 +7,7 @@ import { Observable, tap } from 'rxjs';
 })
 export class AuthService {
   private apiUrl = 'http://localhost:8000/api/v1/auth';
-  private usersApiUrl = 'http://localhost:8000/api/v1';
+  private usersApiUrl = 'http://localhost:8000/api/v1/users';
 
   constructor(private http: HttpClient) {}
 
@@ -44,6 +44,10 @@ export class AuthService {
   }
 
   getCurrentUser(): Observable<any> {
-    return this.http.get(`${this.usersApiUrl}/users/me`);
+    return this.http.get(`${this.usersApiUrl}/me`);
+  }
+
+  updateCurrentUser(userData: any): Observable<any> {
+    return this.http.put(`${this.usersApiUrl}/me`, userData);
   }
 }
