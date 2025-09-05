@@ -50,4 +50,8 @@ export class AuthService {
   updateCurrentUser(userData: any): Observable<any> {
     return this.http.put(`${this.usersApiUrl}/me`, userData);
   }
+
+  deleteCurrentUser(): Observable<any> {
+    return this.http.delete(`${this.usersApiUrl}/me`);
+  }
 }

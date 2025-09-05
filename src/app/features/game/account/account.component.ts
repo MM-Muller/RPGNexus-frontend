@@ -10,7 +10,8 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class AccountComponent implements OnInit {
   user: any;
-  isModalVisible = false;
+  isEditModalVisible = false;
+  isDeleteModalVisible = false;
   editForm: FormGroup;
 
   constructor(
@@ -18,11 +19,10 @@ export class AccountComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder
   ) {
-
     this.editForm = this.fb.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: [''], 
+      password: [''],
     });
   }
 
@@ -47,9 +47,9 @@ export class AccountComponent implements OnInit {
     this.editForm.patchValue({
       username: this.user.username,
       email: this.user.email,
-      password: '', 
+      password: '',
     });
-    this.isModalVisible = true;
+    this.isEditModalVisible = true;
   }
   
   onSave(): void {
@@ -58,7 +58,6 @@ export class AccountComponent implements OnInit {
     }
     
     const formData = this.editForm.value;
-
     const payload: any = {
       username: formData.username,
       email: formData.email,
@@ -69,15 +68,15 @@ export class AccountComponent implements OnInit {
 
     this.authService.updateCurrentUser(payload).subscribe({
       next: (updatedUser) => {
-        this.user = updatedUser; 
-        this.closeModal();
+        this.user = updatedUser;
+        this.closeEditModal();
       },
       error: (err) => console.error('Failed to update user:', err),
     });
   }
 
-  closeModal(): void {
-    this.isModalVisible = false;
+  closeEditModal(): void {
+    this.isEditModalVisible = false;
   }
 
   onLogout(): void {
@@ -86,8 +85,21 @@ export class AccountComponent implements OnInit {
   }
 
   onDelete(): void {
-    if (confirm('Você tem certeza que deseja excluir sua conta permanentemente?')) {
-      alert('Funcionalidade de exclusão a ser implementada!');
-    }
+    this.isDeleteModalVisible = true;
+  }
+
+  cancelDelete(): void {
+    this.isDeleteModalVisible = false;
+  }
+
+  confirmDelete(): void {
+    this.authService.deleteCurrentUser().subscribe({
+      next: () => {
+        console.log('Account deleted successfully');
+        this.authService.logout();
+        this.router.navigate(['/auth/login']);
+      },
+      error: (err) => console.error('Failed to delete account:', err),
+    });
   }
 }
