@@ -1,0 +1,174 @@
+<div class="container">
+  <div class="header">
+    <h1 class="title">Nexus Galáctico</h1>
+    <p class="subtitle">✨ No coração do Nexus Galáctico, nasce um novo explorador... ✨</p>
+  </div>
+  <form [formGroup]="characterForm" (ngSubmit)="confirmCharacter()">
+    <div class="form-group">
+      <label for="name">Nome do Personagem</label>
+      <input type="text" id="name" placeholder="Digite o nome do seu explorador cósmico..." formControlName="name" required>
+    </div>
+    
+    <div class="form-group">
+      <label>Raça</label>
+      <div class="selection-grid">
+        <div class="selection-card" [class.selected]="characterForm.get('race')?.value === 'Humano'" (click)="selectRace('Humano')">
+          <div class="selection-icon">🌍</div>
+          <div class="selection-name">Humano</div>
+        </div>
+        <div class="selection-card" [class.selected]="characterForm.get('race')?.value === 'Sintético'" (click)="selectRace('Sintético')">
+          <div class="selection-icon">🤖</div>
+          <div class="selection-name">Sintético</div>
+        </div>
+        <div class="selection-card" [class.selected]="characterForm.get('race')?.value === 'Híbrido'" (click)="selectRace('Híbrido')">
+          <div class="selection-icon">🧬</div>
+          <div class="selection-name">Híbrido</div>
+        </div>
+        <div class="selection-card" [class.selected]="characterForm.get('race')?.value === 'Expatriado'" (click)="selectRace('Expatriado')">
+          <div class="selection-icon">🚀</div>
+          <div class="selection-name">Expatriado</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label>Classe</label>
+      <div class="selection-grid">
+        <div class="selection-card" [class.selected]="characterForm.get('class')?.value === 'Cientista'" (click)="selectClass('Cientista')">
+          <div class="selection-icon">🔭</div>
+          <div class="selection-name">Cientista</div>
+        </div>
+        <div class="selection-card" [class.selected]="characterForm.get('class')?.value === 'Piloto'" (click)="selectClass('Piloto')">
+          <div class="selection-icon">✈️</div>
+          <div class="selection-name">Piloto</div>
+        </div>
+        <div class="selection-card" [class.selected]="characterForm.get('class')?.value === 'Diplomata'" (click)="selectClass('Diplomata')">
+          <div class="selection-icon">🕊️</div>
+          <div class="selection-name">Diplomata</div>
+        </div>
+        <div class="selection-card" [class.selected]="characterForm.get('class')?.value === 'Aventureiro'" (click)="selectClass('Aventureiro')">
+          <div class="selection-icon">⚔️</div>
+          <div class="selection-name">Aventureiro</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-group" formGroupName="attributes">
+      <label>Atributos</label>
+      <div class="attributes">
+        <div class="attribute-row">
+          <div class="attribute-label">
+            <span class="attribute-icon">💪</span>
+            <span>Força</span>
+          </div>
+          <div class="attribute-control">
+            <button type="button" class="attribute-btn" (click)="adjustAttribute('strength', -1)">-</button>
+            <div class="attribute-value">{{ characterForm.get('attributes.strength')?.value }}</div>
+            <button type="button" class="attribute-btn" (click)="adjustAttribute('strength', 1)">+</button>
+          </div>
+        </div>
+        <div class="attribute-row">
+          <div class="attribute-label">
+            <span class="attribute-icon">🧠</span>
+            <span>Inteligência</span>
+          </div>
+          <div class="attribute-control">
+            <button type="button" class="attribute-btn" (click)="adjustAttribute('intelligence', -1)">-</button>
+            <div class="attribute-value">{{ characterForm.get('attributes.intelligence')?.value }}</div>
+            <button type="button" class="attribute-btn" (click)="adjustAttribute('intelligence', 1)">+</button>
+          </div>
+        </div>
+        <div class="attribute-row">
+            <div class="attribute-label">
+              <span class="attribute-icon">🗣️</span>
+              <span>Carisma</span>
+            </div>
+            <div class="attribute-control">
+              <button type="button" class="attribute-btn" (click)="adjustAttribute('charisma', -1)">-</button>
+              <div class="attribute-value">{{ characterForm.get('attributes.charisma')?.value }}</div>
+              <button type="button" class="attribute-btn" (click)="adjustAttribute('charisma', 1)">+</button>
+            </div>
+          </div>
+          <div class="attribute-row">
+            <div class="attribute-label">
+              <span class="attribute-icon">🎯</span>
+              <span>Destreza</span>
+            </div>
+            <div class="attribute-control">
+              <button type="button" class="attribute-btn" (click)="adjustAttribute('dexterity', -1)">-</button>
+              <div class="attribute-value">{{ characterForm.get('attributes.dexterity')?.value }}</div>
+              <button type="button" class="attribute-btn" (click)="adjustAttribute('dexterity', 1)">+</button>
+            </div>
+          </div>
+          <div class="attribute-row">
+            <div class="attribute-label">
+              <span class="attribute-icon">🌌</span>
+              <span>Intuição</span>
+            </div>
+            <div class="attribute-control">
+              <button type="button" class="attribute-btn" (click)="adjustAttribute('intuition', -1)">-</button>
+              <div class="attribute-value">{{ characterForm.get('attributes.intuition')?.value }}</div>
+              <button type="button" class="attribute-btn" (click)="adjustAttribute('intuition', 1)">+</button>
+            </div>
+          </div>
+        
+        <div class="points-remaining">
+          Pontos Restantes: <span>{{ pointsRemaining }}</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="description">História Pessoal</label>
+      <textarea id="description" placeholder="Conte a história do seu personagem..." formControlName="description"></textarea>
+    </div>
+    
+    <div class="preview-card">
+      <div class="space-scene">
+        <div class="space-dust"></div>
+        <div class="planet">
+          <div class="planet-ring"></div>
+        </div>
+        <div class="rocket" id="rocket">
+          <div class="rocket-body"></div>
+          <div class="rocket-window"></div>
+          <div class="rocket-flame"></div>
+        </div>
+      </div>
+      <div class="preview-title">⚡ Preview do Personagem ⚡</div>
+      <div class="preview-content">
+        <div class="preview-row">
+          <span class="preview-label">Nome:</span>
+          <span class="preview-value">{{ characterForm.get('name')?.value || '---' }}</span>
+        </div>
+        <div class="preview-row">
+          <span class="preview-label">Raça:</span>
+          <span class="preview-value">{{ characterForm.get('race')?.value || '---' }}</span>
+        </div>
+        <div class="preview-row">
+          <span class="preview-label">Classe:</span>
+          <span class="preview-value">{{ characterForm.get('class')?.value || '---' }}</span>
+        </div>
+        <div class="preview-row">
+          <span class="preview-label">Atributos:</span>
+          <span class="preview-value">
+            FOR: {{ characterForm.get('attributes.strength')?.value }} | 
+            INT: {{ characterForm.get('attributes.intelligence')?.value }} | 
+            CAR: {{ characterForm.get('attributes.charisma')?.value }} | 
+            DES: {{ characterForm.get('attributes.dexterity')?.value }} | 
+            ITU: {{ characterForm.get('attributes.intuition')?.value }}
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="action-buttons">
+      <button type="submit" class="btn btn-confirm" [disabled]="characterForm.invalid">
+        Confirmar Criação
+      </button>
+      <button type="button" class="btn btn-cancel" (click)="cancelCreation()">
+        Cancelar
+      </button>
+    </div>
+  </form>
+</div>

@@ -5,6 +5,7 @@ import { AccountComponent } from './account/account.component';
 import { CharactersComponent } from './characters/characters.component';
 import { WorldsComponent } from './worlds/worlds.component';
 import { BattleComponent } from './battle/battle.component';
+import { CharacterCreateComponent } from './character-create/character-create.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,7 @@ const routes: Routes = [
       { path: 'account', component: AccountComponent },
       { path: 'worlds', component: WorldsComponent },
       { path: 'characters', component: CharactersComponent },
+      { path: 'character-create', component: CharacterCreateComponent },
     ],
   },
 ];

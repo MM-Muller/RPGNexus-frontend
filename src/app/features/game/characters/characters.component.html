@@ -77,12 +77,11 @@
 
       <div class="character-actions">
         <button class="action-btn" (click)="showDetails(char)">Detalhes</button>
-        <button class="action-btn primary">Jogar</button>
+        <button class="action-btn primary" routerLink="/game/worlds">Jogar</button>
       </div>
-      <a routerLink="/game/worlds" routerLinkActive="active">Jogar</a>
     </div>
 
-    <div class="character-card create-character-card">
+    <div class="character-card create-character-card" routerLink="/game/character-create">
       <div class="create-icon">+</div>
       <div class="create-text">Criar Personagem</div>
     </div>
@@ -98,22 +97,16 @@
     <div class="modal-body">
       <span class="info-label-modal">Raça:</span>
       <span class="info-value-modal">{{ selectedCharacter?.race }}</span>
-
       <span class="info-label-modal">Classe:</span>
       <span class="info-value-modal">{{ selectedCharacter?.class }}</span>
-
       <span class="info-label-modal">Nível:</span>
       <span class="info-value-modal">{{ selectedCharacter?.level }}</span>
-
       <span class="info-label-modal">Poder:</span>
       <span class="info-value-modal">{{ selectedCharacter?.power }}</span>
-
       <span class="info-label-modal">Defesa:</span>
       <span class="info-value-modal">{{ selectedCharacter?.defense }}</span>
-
       <span class="info-label-modal">Energia:</span>
       <span class="info-value-modal">{{ selectedCharacter?.energy }}</span>
-
       <div class="description-field">
         <strong class="info-label-modal">Descrição:</strong>
         <span class="info-value-modal">{{ selectedCharacter?.description }}</span>
