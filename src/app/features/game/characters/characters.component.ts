@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Character } from '../../../models/character.model';
-import { CharacterService } from 'src/app/core/services/character.service'; 
+import { CharacterService } from 'src/app/core/services/character.service';
 
 @Component({
-  selector: 'app-personagens',
+  selector: 'app-characters',
   templateUrl: './characters.component.html',
   styleUrls: ['./characters.component.scss'],
 })
@@ -21,15 +21,11 @@ export class CharactersComponent implements OnInit {
   loadCharacters(): void {
     this.characterService.getCharacters().subscribe({
       next: (data) => {
+        // Mapeia os dados recebidos para o formato de exibição
         this.characters = data.map(character => ({
           ...character,
-          level: 1,
-          expPercentage: Math.floor(Math.random() * 100),
-          power: `${(character.attributes.strength * 10)}`,
-          defense: `${(character.attributes.dexterity * 10)}`,
-          energy: `${(character.attributes.intelligence * 10)}`,
-          status: 'online',
-          avatar: character.class_icon,
+          level: 1, // Dados de exibição podem ser calculados ou fixos no futuro
+          expPercentage: Math.floor(Math.random() * 100), // Exemplo de EXP
         }));
       },
       error: (err) => console.error('Falha ao carregar personagens:', err),
@@ -51,7 +47,7 @@ export class CharactersComponent implements OnInit {
       this.characterService.deleteCharacter(this.selectedCharacter.id).subscribe({
         next: () => {
           console.log('Personagem excluído:', this.selectedCharacter?.name);
-          this.loadCharacters();
+          this.loadCharacters(); // Recarrega a lista após a exclusão
           this.closeModal();
         },
         error: (err) => console.error('Falha ao excluir personagem:', err),
