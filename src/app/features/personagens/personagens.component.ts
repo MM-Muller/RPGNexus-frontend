@@ -5,7 +5,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { Character } from '../../models/character.model';
+import { Archetype } from '../../models/archetype.model';
 
 @Component({
   selector: 'app-personagens',
@@ -13,7 +13,7 @@ import { Character } from '../../models/character.model';
   styleUrls: ['./personagens.component.scss'],
 })
 export class PersonagensComponent implements OnInit, AfterViewInit, OnDestroy {
-  races: Character[] = [
+  races: Archetype[] = [
     {
       subtype: 'human',
       title: 'HUMANO',
@@ -40,7 +40,7 @@ export class PersonagensComponent implements OnInit, AfterViewInit, OnDestroy {
     },
   ];
 
-  classes = [
+  classes: Archetype[] = [
     {
       subtype: 'scientist',
       title: 'CIENTISTA',

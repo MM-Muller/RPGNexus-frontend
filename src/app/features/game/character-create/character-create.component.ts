@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, Renderer2, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { CharacterService } from 'src/app/core/services/character.service';
 
 @Component({
   selector: 'app-character-create',
@@ -14,16 +15,31 @@ export class CharacterCreateComponent implements OnInit, AfterViewInit, OnDestro
 
   private trailInterval: any;
 
+  private raceIcons: { [key: string]: string } = {
+    'Humano': '🌍',
+    'Sintético': '🤖',
+    'Híbrido': '🧬',
+    'Expatriado': '🚀'
+  };
+
+  private classIcons: { [key: string]: string } = {
+    'Cientista': '🔭',
+    'Piloto': '✈️',
+    'Diplomata': '🕊️',
+    'Aventureiro': '⚔️'
+  };
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private renderer: Renderer2,
-    private el: ElementRef
+    private el: ElementRef,
+    private characterService: CharacterService 
   ) {
     this.characterForm = this.fb.group({
       name: ['', Validators.required],
       race: ['', Validators.required],
-      class: ['', Validators.required],
+      char_class: ['', Validators.required],
       description: [''],
       attributes: this.fb.group({
         strength: [this.baseAttributeValue],
@@ -53,7 +69,7 @@ export class CharacterCreateComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   selectClass(className: string): void {
-    this.characterForm.get('class')?.setValue(className);
+    this.characterForm.get('char_class')?.setValue(className);
   }
 
   adjustAttribute(attribute: string, amount: number): void {
@@ -74,9 +90,22 @@ export class CharacterCreateComponent implements OnInit, AfterViewInit, OnDestro
 
   confirmCharacter(): void {
     if (this.characterForm.valid) {
-      console.log('Personagem Criado:', this.characterForm.value);
-      alert('Personagem criado com sucesso! (Verifique o console)');
-      this.router.navigate(['/game/characters']);
+      const formValue = this.characterForm.value;
+      const characterData = {
+        ...formValue,
+        race_icon: this.raceIcons[formValue.race],
+        class_icon: this.classIcons[formValue.char_class]
+      };
+
+      this.characterService.createCharacter(characterData).subscribe({
+        next: (response) => {
+          console.log('Personagem criado com sucesso:', response);
+          this.router.navigate(['/game/characters']);
+        },
+        error: (err) => {
+          console.error('Falha ao criar personagem:', err);
+        }
+      });
     }
   }
 

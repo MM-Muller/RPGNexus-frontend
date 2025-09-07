@@ -51,7 +51,7 @@
 
       <div class="character-info">
         <h3 class="character-name">{{ char.name }}</h3>
-        <p class="character-class">{{ char.class }}</p>
+        <p class="character-class">{{ char.char_class }}</p>
         <p class="character-level">
           Nível <span class="level-badge">{{ char.level }}</span>
         </p>
@@ -96,17 +96,26 @@
     </div>
     <div class="modal-body">
       <span class="info-label-modal">Raça:</span>
-      <span class="info-value-modal">{{ selectedCharacter?.race }}</span>
+      <span class="info-value-modal">{{ selectedCharacter?.race }} {{ selectedCharacter?.race_icon }}</span>
+
       <span class="info-label-modal">Classe:</span>
-      <span class="info-value-modal">{{ selectedCharacter?.class }}</span>
-      <span class="info-label-modal">Nível:</span>
-      <span class="info-value-modal">{{ selectedCharacter?.level }}</span>
-      <span class="info-label-modal">Poder:</span>
-      <span class="info-value-modal">{{ selectedCharacter?.power }}</span>
-      <span class="info-label-modal">Defesa:</span>
-      <span class="info-value-modal">{{ selectedCharacter?.defense }}</span>
-      <span class="info-label-modal">Energia:</span>
-      <span class="info-value-modal">{{ selectedCharacter?.energy }}</span>
+      <span class="info-value-modal">{{ selectedCharacter?.char_class }} {{ selectedCharacter?.class_icon }}</span>
+
+      <span class="info-label-modal">Força:</span>
+      <span class="info-value-modal">{{ selectedCharacter?.attributes?.strength }}</span>
+
+      <span class="info-label-modal">Inteligência:</span>
+      <span class="info-value-modal">{{ selectedCharacter?.attributes?.intelligence }}</span>
+
+      <span class="info-label-modal">Carisma:</span>
+      <span class="info-value-modal">{{ selectedCharacter?.attributes?.charisma }}</span>
+
+      <span class="info-label-modal">Destreza:</span>
+      <span class="info-value-modal">{{ selectedCharacter?.attributes?.dexterity }}</span>
+
+      <span class="info-label-modal">Intuição:</span>
+      <span class="info-value-modal">{{ selectedCharacter?.attributes?.intuition }}</span>
+      
       <div class="description-field">
         <strong class="info-label-modal">Descrição:</strong>
         <span class="info-value-modal">{{ selectedCharacter?.description }}</span>

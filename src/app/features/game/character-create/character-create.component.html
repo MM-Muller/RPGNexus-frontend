@@ -34,19 +34,19 @@
     <div class="form-group">
       <label>Classe</label>
       <div class="selection-grid">
-        <div class="selection-card" [class.selected]="characterForm.get('class')?.value === 'Cientista'" (click)="selectClass('Cientista')">
+        <div class="selection-card" [class.selected]="characterForm.get('char_class')?.value === 'Cientista'" (click)="selectClass('Cientista')">
           <div class="selection-icon">🔭</div>
           <div class="selection-name">Cientista</div>
         </div>
-        <div class="selection-card" [class.selected]="characterForm.get('class')?.value === 'Piloto'" (click)="selectClass('Piloto')">
+        <div class="selection-card" [class.selected]="characterForm.get('char_class')?.value === 'Piloto'" (click)="selectClass('Piloto')">
           <div class="selection-icon">✈️</div>
           <div class="selection-name">Piloto</div>
         </div>
-        <div class="selection-card" [class.selected]="characterForm.get('class')?.value === 'Diplomata'" (click)="selectClass('Diplomata')">
+        <div class="selection-card" [class.selected]="characterForm.get('char_class')?.value === 'Diplomata'" (click)="selectClass('Diplomata')">
           <div class="selection-icon">🕊️</div>
           <div class="selection-name">Diplomata</div>
         </div>
-        <div class="selection-card" [class.selected]="characterForm.get('class')?.value === 'Aventureiro'" (click)="selectClass('Aventureiro')">
+        <div class="selection-card" [class.selected]="characterForm.get('char_class')?.value === 'Aventureiro'" (click)="selectClass('Aventureiro')">
           <div class="selection-icon">⚔️</div>
           <div class="selection-name">Aventureiro</div>
         </div>
@@ -147,7 +147,7 @@
         </div>
         <div class="preview-row">
           <span class="preview-label">Classe:</span>
-          <span class="preview-value">{{ characterForm.get('class')?.value || '---' }}</span>
+          <span class="preview-value">{{ characterForm.get('char_class')?.value || '---' }}</span>
         </div>
         <div class="preview-row">
           <span class="preview-label">Atributos:</span>

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Objective } from '../../models/objective.model';
+import { Objective } from '../../../models/objective.model';
 
 @Component({
   selector: 'app-objective-node',
