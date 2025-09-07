@@ -18,15 +18,25 @@ export class CharactersComponent implements OnInit {
     this.loadCharacters();
   }
 
+  // A fórmula aqui DEVE ser idêntica à do backend (leveling.py)
+  getExpToNextLevel(level: number): number {
+    const XP_BASE = 100;
+    const XP_FACTOR = 1.5;
+    return Math.floor(XP_BASE * (level ** XP_FACTOR));
+  }
+
   loadCharacters(): void {
     this.characterService.getCharacters().subscribe({
       next: (data) => {
-        // Mapeia os dados recebidos para o formato de exibição
-        this.characters = data.map(character => ({
-          ...character,
-          level: 1, // Dados de exibição podem ser calculados ou fixos no futuro
-          expPercentage: Math.floor(Math.random() * 100), // Exemplo de EXP
-        }));
+        this.characters = data.map(character => {
+          const expToNextLevel = this.getExpToNextLevel(character.level);
+          const expPercentage = (character.experience / expToNextLevel) * 100;
+          
+          return {
+            ...character,
+            expPercentage: expPercentage,
+          };
+        });
       },
       error: (err) => console.error('Falha ao carregar personagens:', err),
     });
