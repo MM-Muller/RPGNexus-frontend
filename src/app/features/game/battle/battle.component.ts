@@ -19,15 +19,33 @@ export class BattleComponent implements OnInit, OnDestroy {
   isPlayerTurn: boolean = true;
   private interval: any;
 
+  showDialog = true;
+  currentDialogIndex = 0;
+  dialog = [
+    { speaker: 'Sentinela do Vazio', text: 'Olá, aventureiro. Vejo que chegou longe. Mas esta é a barreira final.' },
+    { speaker: 'Zephyr Nova', text: 'Quem é você? E por que me impede de avançar?' },
+    { speaker: 'Sentinela do Vazio', text: 'Eu sou a Sentinela do Vazio, guardiã deste setor. Minha programação é clara: nenhum intruso pode passar. Eu sou a manifestação da entropia, o fim de toda a ordem.' },
+    { speaker: 'Zephyr Nova', text: 'Entropia? Eu sou Zephyr Nova, e trago a luz da esperança! Sua ordem de vazio terminará aqui!' },
+    { speaker: 'Sentinela do Vazio', text: 'Tolice. A esperança é apenas um delírio temporário. Prepare-se para ser absorvido pelo esquecimento.' }
+  ];
+
   constructor() { }
 
   ngOnInit(): void {
     this.createStars();
-    this.startTimer();
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.interval); 
+    clearInterval(this.interval);
+  }
+
+  nextDialog() {
+    if (this.currentDialogIndex < this.dialog.length - 1) {
+      this.currentDialogIndex++;
+    } else {
+      this.showDialog = false;
+      this.startTimer();
+    }
   }
 
   startTimer(): void {
@@ -39,7 +57,7 @@ export class BattleComponent implements OnInit, OnDestroy {
         this.timerDisplay = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
       } else {
         this.isPlayerTurn = !this.isPlayerTurn;
-        this.timeLeft = 90; 
+        this.timeLeft = 90;
       }
     }, 1000);
   }
@@ -82,7 +100,7 @@ export class BattleComponent implements OnInit, OnDestroy {
   hideMenu(): void {
     this.menuTimeout = setTimeout(() => {
       this.activeMenu = null;
-    }, 200); 
+    }, 200);
   }
 
   selectAction(action: string): void {

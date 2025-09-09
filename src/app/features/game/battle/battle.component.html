@@ -71,9 +71,19 @@
             </div>
         </div>
 
-        <div class="turn-indicator">
-            <div class="turn-text">{{ isPlayerTurn ? 'Sua vez' : 'Vez do oponente' }}</div>
-            <div class="turn-arrow" [class.enemy-turn]="!isPlayerTurn"></div>
+        <div class="center-stage">
+            <div class="dialog-container" *ngIf="showDialog">
+                <div class="dialog-balloon" [ngClass]="{'player-speaking': dialog[currentDialogIndex].speaker === 'Zephyr Nova', 'enemy-speaking': dialog[currentDialogIndex].speaker === 'Sentinela do Vazio'}">
+                    <span class="speaker-name">{{ dialog[currentDialogIndex].speaker }}:</span>
+                    <p class="dialog-text">{{ dialog[currentDialogIndex].text }}</p>
+                    <button class="next-dialog-btn" (click)="nextDialog()">{{ currentDialogIndex === dialog.length - 1 ? 'Iniciar Batalha' : 'Próximo' }}</button>
+                </div>
+            </div>
+
+            <div class="turn-indicator" *ngIf="!showDialog">
+                <div class="turn-text">{{ isPlayerTurn ? 'Sua vez' : 'Vez do oponente' }}</div>
+                <div class="turn-arrow" [class.enemy-turn]="!isPlayerTurn"></div>
+            </div>
         </div>
 
         <div class="enemy-container">
@@ -137,24 +147,28 @@
         <div class="action-btn-wrapper" (mouseenter)="showMenu('attack')" (mouseleave)="hideMenu()">
             <button class="action-btn attack" [disabled]="!isPlayerTurn">⚔️ Atacar</button>
             <div class="sub-action-panel" *ngIf="activeMenu === 'attack'" (mouseenter)="showMenu('attack')">
+                <h1 class="sub-action-title">Sugestões de Ataque</h1>
                 <button class="sub-action-btn" (click)="selectAction('Ataque Básico')">Ataque Básico: 15 de dano</button>
             </div>
         </div>
         <div class="action-btn-wrapper" (mouseenter)="showMenu('special')" (mouseleave)="hideMenu()">
             <button class="action-btn special" [disabled]="!isPlayerTurn">✨ Especial</button>
             <div class="sub-action-panel" *ngIf="activeMenu === 'special'" (mouseenter)="showMenu('special')">
+                <h1 class="sub-action-title">Sugestões de Especial</h1>
                 <button class="sub-action-btn" (click)="selectAction(specialAttack)">{{specialAttack}}</button>
             </div>
         </div>
         <div class="action-btn-wrapper" (mouseenter)="showMenu('defend')" (mouseleave)="hideMenu()">
             <button class="action-btn defend" [disabled]="!isPlayerTurn">🛡️ Defender</button>
             <div class="sub-action-panel" *ngIf="activeMenu === 'defend'" (mouseenter)="showMenu('defend')">
+                <h1 class="sub-action-title">Sugestões de Defesa</h1>
                 <button class="sub-action-btn" (click)="selectAction(defendAction)">{{defendAction}}</button>
             </div>
         </div>
         <div class="action-btn-wrapper" (mouseenter)="showMenu('item')" (mouseleave)="hideMenu()">
             <button class="action-btn" [disabled]="!isPlayerTurn">💊 Item</button>
             <div class="sub-action-panel" *ngIf="activeMenu === 'item'" (mouseenter)="showMenu('item')">
+                <h1 class="sub-action-title">Sugestões de Item</h1>
                 <button class="sub-action-btn" (click)="selectAction(item)">{{item}}</button>
             </div>
         </div>

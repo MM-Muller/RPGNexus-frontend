@@ -201,7 +201,7 @@
     width: 250px;
     height: 250px;
     aspect-ratio: 1 / 1;
-    background: linear-gradient(circle, rgba(255, 0, 128, 0.3), rgba(75, 0, 130, 0.2));
+    background: radial-gradient(circle, rgba(255, 0, 128, 0.3), rgba(75, 0, 130, 0.2));
     border: 2px solid rgba(255, 0, 128, 0.5);
     border-radius: 50%;
     display: flex;
@@ -353,8 +353,8 @@
 }
 .action-btn-wrapper {
     position: relative;
-    padding-bottom: 10px; 
-    margin-bottom: -10px; 
+    padding-bottom: 10px;
+    margin-bottom: -10px;
 }
 .action-btn {
     position: relative;
@@ -400,13 +400,123 @@
 .action-btn.defend { border-color: rgba(100, 255, 100, 0.5); }
 .action-btn.defend:hover { border-color: rgba(100, 255, 100, 0.8); box-shadow: 0 5px 20px rgba(100, 255, 100, 0.4); }
 
-.turn-indicator {
-    width: 80px;
-    height: 80px;
+.center-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    position: relative;
+    height: 100%;
+    min-width: 300px;
+    max-width: 450px;
+}
+
+.dialog-container {
+    flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 10;
+    width: 100%;
+    min-height: 250px;
+}
+
+.dialog-balloon {
+    position: relative;
+    padding: 25px 35px;
+    background: linear-gradient(135deg, rgba(138, 43, 226, 0.2) 0%, rgba(75, 0, 130, 0.2) 100%);
+    border: 2px solid rgba(255, 215, 0, 0.5);
+    border-radius: 25px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 0 40px rgba(138, 43, 226, 0.4), inset 0 0 20px rgba(255, 215, 0, 0.2);
+    animation: dialog-fade-in 0.5s ease-out forwards;
+    text-align: center;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+@keyframes dialog-fade-in {
+    from { opacity: 0; transform: scale(0.8) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.dialog-balloon .speaker-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #ffd700;
+    margin-bottom: 10px;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
+
+.dialog-balloon .dialog-text {
+    font-size: 1em;
+    color: #e0e0e0;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.next-dialog-btn {
+    padding: 12px 25px;
+    background: rgba(255, 215, 0, 0.15);
+    border: 1px solid #ffd700;
+    border-radius: 10px;
+    color: #ffd700;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.next-dialog-btn:hover {
+    background: rgba(255, 215, 0, 0.3);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+.dialog-balloon.player-speaking::before {
+    content: '';
+    position: absolute;
+    top: 70%;
+    left: -32px;
+    transform: translateY(-50%);
+    border: 15px solid transparent;
+    border-right-color: rgba(255, 215, 0, 0.5);
+}
+.dialog-balloon.player-speaking::after {
+    content: '';
+    position: absolute;
+    top: 70%;
+    left: -28px;
+    transform: translateY(-50%);
+    border: 13px solid transparent;
+    border-right-color: rgba(75, 0, 130, 0.2);
+}
+
+.dialog-balloon.enemy-speaking::before {
+    content: '';
+    position: absolute;
+    top: 70%;
+    right: -32px;
+    transform: translateY(-50%);
+    border: 15px solid transparent;
+    border-left-color: rgba(255, 215, 0, 0.5);
+}
+.dialog-balloon.enemy-speaking::after {
+    content: '';
+    position: absolute;
+    top: 70%;
+    right: -28px;
+    transform: translateY(-50%);
+    border: 13px solid transparent;
+    border-left-color: rgba(75, 0, 130, 0.2)
 }
 
 .turn-indicator {
@@ -414,10 +524,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: auto; 
-    min-width: 150px; 
+    width: auto;
+    min-width: 150px;
     height: 120px;
     z-index: 10;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .turn-text {
@@ -428,7 +542,7 @@
     margin-bottom: 10px;
     text-transform: uppercase;
     letter-spacing: 1px;
-    text-align: center; 
+    text-align: center;
 }
 
 .turn-arrow {
@@ -475,6 +589,19 @@
     z-index: 200;
     flex-direction: column;
 }
+
+.sub-action-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #ffd700;
+    margin-bottom: 10px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.6);
+}
+
 .sub-action-menu {
     display: flex;
     flex-direction: column;
@@ -484,12 +611,13 @@
     background: transparent;
     border: 1px solid rgba(255, 215, 0, 0.2);
     color: rgba(255, 255, 255, 0.7);
-    padding: 10px 15px;
+    padding: 8px 12px;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
     font-family: 'Exo 2', sans-serif;
     white-space: nowrap;
+    font-size: 0.9em;
 }
 .sub-action-btn:hover {
     background: rgba(255, 215, 0, 0.1);
@@ -515,6 +643,7 @@
 .action-input::placeholder {
     color: rgba(255, 255, 255, 0.4);
 }
+
 @media (max-width: 768px) {
     .battle-arena { padding: 10px; }
     .battle-field { flex-direction: column; padding: 0 10px; }
@@ -525,4 +654,20 @@
     .action-panel { padding: 15px; gap: 10px; }
     .action-btn { padding: 10px; font-size: 10px; }
     .sub-action-panel { bottom: 120px; }
+
+    .dialog-balloon {
+        width: 90%;
+        max-width: unset;
+        padding: 20px;
+    }
+
+    .dialog-balloon.player-speaking::before,
+    .dialog-balloon.player-speaking::after {
+        left: 10%;
+    }
+
+    .dialog-balloon.enemy-speaking::before,
+    .dialog-balloon.enemy-speaking::after {
+        right: 10%;
+    }
 }
