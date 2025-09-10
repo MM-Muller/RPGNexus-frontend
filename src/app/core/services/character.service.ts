@@ -21,6 +21,17 @@ export class CharacterService {
   }
 
   deleteCharacter(characterId: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${characterId}`);
+    return this.http.delete(`${this.apiUrl}${characterId}`);
+  }
+
+  getCharacterProgress(characterId: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}${characterId}/progress`);
+  }
+
+  updateCharacterProgress(
+    characterId: string,
+    progress: { [worldName: string]: boolean }
+  ): Observable<any> {
+    return this.http.put(`${this.apiUrl}${characterId}/progress`, { progress });
   }
 }

@@ -64,7 +64,7 @@
 
       <div class="character-actions">
         <button class="action-btn" (click)="showDetails(char)">Detalhes</button>
-        <button class="action-btn primary" routerLink="/game/worlds">Jogar</button>
+        <button class="action-btn primary" [routerLink]="['/game/worlds', char.id]">Jogar</button>
       </div>
     </div>
 

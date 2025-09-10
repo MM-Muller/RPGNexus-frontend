@@ -1,16 +1,11 @@
-<div class="cosmic-battle-bg"></div>
-<div class="nebula"></div>
-<div class="energy-grid"></div>
-<div class="stars" id="starsContainer"></div>
-
-<div class="battle-arena">
+<div class="battle-arena" *ngIf="battleConfig && enemy && playerCharacter">
     <div class="corner-decoration corner-tl"></div>
     <div class="corner-decoration corner-tr"></div>
     <div class="corner-decoration corner-bl"></div>
     <div class="corner-decoration corner-br"></div>
 
     <div class="top-hud">
-        <h2 class="battle-title">⚡ Batalha Galáctica ⚡</h2>
+        <h2 class="battle-title">{{ battleConfig.title }}</h2>
         <div class="timer">{{ timerDisplay }}</div>
     </div>
 
@@ -18,18 +13,22 @@
         <div class="character-container">
             <div class="character-model">
                 <div class="energy-aura"></div>
-                <div class="character-visual"></div>
+                <div class="player-avatar">
+                  <div class="avatar-frame"></div>
+                  <div class="class-icon-display">{{ playerCharacter.class_icon }}</div>
+                  <div class="race-icon-display">{{ playerCharacter.race_icon }}</div>
+                </div>
             </div>
             <div class="status-panel">
-                <h3 class="character-name">Zephyr Nova</h3>
+                <h3 class="character-name">{{ playerCharacter.name }}</h3>
                 <div class="status-bars">
                     <div class="stat-row">
                         <div class="stat-icon">❤️</div>
                         <div class="stat-info">
                             <div class="stat-label">Vida</div>
                             <div class="stat-bar">
-                                <div class="stat-fill health" style="width: 75%">
-                                    <span class="stat-value">2250/3000</span>
+                                <div class="stat-fill health" [style.width.%]="(playerHealth / playerMaxHealth) * 100">
+                                    <span class="stat-value">{{ playerHealth }}/{{ playerMaxHealth }}</span>
                                 </div>
                             </div>
                         </div>
@@ -39,8 +38,8 @@
                         <div class="stat-info">
                             <div class="stat-label">Energia</div>
                             <div class="stat-bar">
-                                <div class="stat-fill energy" style="width: 60%">
-                                    <span class="stat-value">1920/3200</span>
+                                <div class="stat-fill energy" [style.width.%]="(playerEnergy / playerMaxEnergy) * 100">
+                                    <span class="stat-value">{{ playerEnergy }}/{{ playerMaxEnergy }}</span>
                                 </div>
                             </div>
                         </div>
@@ -50,19 +49,8 @@
                         <div class="stat-info">
                             <div class="stat-label">Poder</div>
                             <div class="stat-bar">
-                                <div class="stat-fill power" style="width: 85%">
-                                    <span class="stat-value">2125/2500</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="stat-row">
-                        <div class="stat-icon">🛡️</div>
-                        <div class="stat-info">
-                            <div class="stat-label">Defesa</div>
-                            <div class="stat-bar">
-                                <div class="stat-fill defense" style="width: 70%">
-                                    <span class="stat-value">1260/1800</span>
+                                <div class="stat-fill power" [style.width.%]="(playerPower / playerMaxPower) * 100">
+                                    <span class="stat-value">{{ playerPower }}/{{ playerMaxPower }}</span>
                                 </div>
                             </div>
                         </div>
@@ -72,14 +60,13 @@
         </div>
 
         <div class="center-stage">
-            <div class="dialog-container" *ngIf="showDialog">
-                <div class="dialog-balloon" [ngClass]="{'player-speaking': dialog[currentDialogIndex].speaker === 'Zephyr Nova', 'enemy-speaking': dialog[currentDialogIndex].speaker === 'Sentinela do Vazio'}">
-                    <span class="speaker-name">{{ dialog[currentDialogIndex].speaker }}:</span>
+            <div class="dialog-container" *ngIf="showDialog && dialog.length > 0">
+                <div class="dialog-balloon" [ngClass]="{'player-speaking': dialog[currentDialogIndex].speaker !== enemy.name, 'enemy-speaking': dialog[currentDialogIndex].speaker === enemy.name}">
+                    <span class="speaker-name">{{ dialog[currentDialogIndex].speaker === 'Zephyr Nova' ? playerCharacter.name : dialog[currentDialogIndex].speaker }}:</span>
                     <p class="dialog-text">{{ dialog[currentDialogIndex].text }}</p>
                     <button class="next-dialog-btn" (click)="nextDialog()">{{ currentDialogIndex === dialog.length - 1 ? 'Iniciar Batalha' : 'Próximo' }}</button>
                 </div>
             </div>
-
             <div class="turn-indicator" *ngIf="!showDialog">
                 <div class="turn-text">{{ isPlayerTurn ? 'Sua vez' : 'Vez do oponente' }}</div>
                 <div class="turn-arrow" [class.enemy-turn]="!isPlayerTurn"></div>
@@ -92,15 +79,15 @@
                 <div class="enemy-visual"></div>
             </div>
             <div class="status-panel">
-                <h3 class="character-name">Sentinela do Vazio</h3>
+                <h3 class="character-name">{{ enemy.name }}</h3>
                 <div class="status-bars">
                     <div class="stat-row">
                         <div class="stat-icon">❤️</div>
                         <div class="stat-info">
                             <div class="stat-label">Vida</div>
                             <div class="stat-bar">
-                                <div class="stat-fill health" style="width: 45%">
-                                    <span class="stat-value">2250/5000</span>
+                                <div class="stat-fill health" [style.width.%]="(enemy.health / enemy.maxHealth) * 100">
+                                    <span class="stat-value">{{ enemy.health }}/{{ enemy.maxHealth }}</span>
                                 </div>
                             </div>
                         </div>

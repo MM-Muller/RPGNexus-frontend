@@ -21,4 +21,5 @@ export interface Character {
   experience: number;
 
   expPercentage?: number;
+  campaign_progress: { [worldName: string]: boolean };
 }

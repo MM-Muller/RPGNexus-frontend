@@ -9,19 +9,15 @@ import { CharacterCreateComponent } from './character-create/character-create.co
 
 const routes: Routes = [
   {
-    path: 'battle',
-    component: BattleComponent,
-  },
-
-  {
     path: '',
     component: GameLayoutComponent,
     children: [
-      { path: '', redirectTo: 'worlds', pathMatch: 'full' },
+      { path: '', redirectTo: 'characters', pathMatch: 'full' },
       { path: 'account', component: AccountComponent },
-      { path: 'worlds', component: WorldsComponent },
+      { path: 'worlds/:characterId', component: WorldsComponent },
       { path: 'characters', component: CharactersComponent },
       { path: 'character-create', component: CharacterCreateComponent },
+      { path: 'battle/:characterId/:id', component: BattleComponent },
     ],
   },
 ];

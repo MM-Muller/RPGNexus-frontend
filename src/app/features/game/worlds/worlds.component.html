@@ -10,118 +10,56 @@
   </div>
 
   <div class="star-map">
-    <svg
-      class="constellation-lines"
-      viewBox="0 0 100 100"
-      preserveAspectRatio="none"
-    >
+    <svg class="constellation-lines" viewBox="0 0 100 100" preserveAspectRatio="none">
       <path class="constellation-line" d="M15,30 L35,25 L50,40 L65,35" />
       <path class="constellation-line" d="M35,25 L40,50 L65,35" />
       <path class="constellation-line" d="M50,40 L55,60 L80,55" />
       <path class="constellation-line" d="M20,70 L40,50 L55,60" />
     </svg>
 
-    <div class="galaxy-location completed" style="left: 15%; top: 30%">
-      <div class="galaxy-core">
-        <div class="galaxy-spiral"></div>
-        <div class="galaxy-center"></div>
-      </div>
-      <div class="galaxy-info">
-        <div class="galaxy-name">Nebulosa Primordial</div>
-        <div class="galaxy-description">O berço da civilização estelar</div>
-        <button class="play-button">✓ Completo</button>
-      </div>
-    </div>
+    <ng-container *ngFor="let world of worlds">
+      <a *ngIf="world.status === 'open' && !isWorldCompleted(world.id) && characterId"
+         class="galaxy-location"
+         [routerLink]="['/game/battle', characterId, world.id]"
+         [style.left]="world.position.left"
+         [style.top]="world.position.top">
+        <div class="galaxy-core">
+          <div class="galaxy-spiral"></div>
+          <div class="galaxy-center"></div>
+        </div>
+        <div class="galaxy-info">
+          <div class="galaxy-name">{{ world.name }}</div>
+          <div class="galaxy-description">{{ world.description }}</div>
+          <div class="play-button">▶ Jogar</div>
+        </div>
+      </a>
 
-    <div class="galaxy-location" style="left: 35%; top: 25%">
-      <div class="galaxy-core">
-        <div class="galaxy-spiral"></div>
-        <div class="galaxy-center"></div>
+      <div *ngIf="world.status !== 'open' || isWorldCompleted(world.id)"
+           class="galaxy-location"
+           [ngClass]="{ 'completed': isWorldCompleted(world.id) || world.status === 'completed', 'locked': world.status === 'locked' }"
+           [style.left]="world.position.left"
+           [style.top]="world.position.top">
+        <div class="galaxy-core">
+          <div class="galaxy-spiral"></div>
+          <div class="galaxy-center"></div>
+        </div>
+        <div class="galaxy-info">
+          <div class="galaxy-name">{{ world.name }}</div>
+          <div class="galaxy-description">{{ world.description }}</div>
+          <div class="play-button" [ngClass]="{ 'completed-btn': isWorldCompleted(world.id) || world.status === 'completed', 'locked-btn': world.status === 'locked' }">
+            <span *ngIf="isWorldCompleted(world.id) || world.status === 'completed'">✓ Completo</span>
+            <span *ngIf="world.status === 'locked'">🔒 Bloqueado</span>
+          </div>
+        </div>
       </div>
-      <div class="galaxy-info">
-        <div class="galaxy-name">Sistema Aurelion</div>
-        <div class="galaxy-description">Lar dos Guardiões Dourados</div>
-        <a class="play-button" routerLink="/game/battle">▶ Jogar</a>
-      </div>
-    </div>
+    </ng-container>
 
-    <div class="galaxy-location" style="left: 50%; top: 40%">
-      <div class="galaxy-core">
-        <div class="galaxy-spiral"></div>
-        <div class="galaxy-center"></div>
-      </div>
-      <div class="galaxy-info">
-        <div class="galaxy-name">Vórtice Púrpura</div>
-        <div class="galaxy-description">Portal para dimensões perdidas</div>
-        <button class="play-button">▶ Jogar</button>
-      </div>
-    </div>
-
-    <div class="galaxy-location" style="left: 65%; top: 35%">
-      <div class="galaxy-core">
-        <div class="galaxy-spiral"></div>
-        <div class="galaxy-center"></div>
-      </div>
-      <div class="galaxy-info">
-        <div class="galaxy-name">Constelação Azurite</div>
-        <div class="galaxy-description">Fortaleza dos Arquitetos</div>
-        <button class="play-button">▶ Jogar</button>
-      </div>
-    </div>
-
-    <div class="galaxy-location" style="left: 40%; top: 50%">
-      <div class="galaxy-core">
-        <div class="galaxy-spiral"></div>
-        <div class="galaxy-center"></div>
-      </div>
-      <div class="galaxy-info">
-        <div class="galaxy-name">Nexus Central</div>
-        <div class="galaxy-description">Encruzilhada dos mundos</div>
-        <button class="play-button">▶ Jogar</button>
-      </div>
-    </div>
-
-    <div class="galaxy-location" style="left: 55%; top: 60%">
-      <div class="galaxy-core">
-        <div class="galaxy-spiral"></div>
-        <div class="galaxy-center"></div>
-      </div>
-      <div class="galaxy-info">
-        <div class="galaxy-name">Galáxia Cristalina</div>
-        <div class="galaxy-description">Reino dos Harmônicos</div>
-        <button class="play-button">▶ Jogar</button>
-      </div>
-    </div>
-
-    <div class="galaxy-location locked" style="left: 80%; top: 55%">
-      <div class="galaxy-core">
-        <div class="galaxy-spiral"></div>
-        <div class="galaxy-center"></div>
-      </div>
-      <div class="galaxy-info">
-        <div class="galaxy-name">Singularidade Omega</div>
-        <div class="galaxy-description">??? Bloqueado ???</div>
-        <button class="play-button" disabled>🔒 Bloqueado</button>
-      </div>
-    </div>
-
-    <div class="galaxy-location" style="left: 20%; top: 70%">
-      <div class="galaxy-core">
-        <div class="galaxy-spiral"></div>
-        <div class="galaxy-center"></div>
-      </div>
-      <div class="galaxy-info">
-        <div class="galaxy-name">Aglomerado Estelar</div>
-        <div class="galaxy-description">Berçário de novas estrelas</div>
-        <button class="play-button">▶ Jogar</button>
-      </div>
-    </div>
     <div class="progress-indicator">
       <span class="progress-text">Progresso Total</span>
       <div class="progress-bar">
-        <div class="progress-fill"></div>
+        <div class="progress-fill" [style.width.%]="calculateProgress()"></div>
       </div>
-      <span class="progress-text">35%</span>
+      <span class="progress-text">{{ calculateProgress() | number:'1.0-0' }}%</span>
     </div>
   </div>
 </div>

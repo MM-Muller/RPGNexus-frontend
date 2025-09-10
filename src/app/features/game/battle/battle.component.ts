@@ -1,4 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
+import { BattleConfigService } from 'src/app/core/services/battle-config.service';
+import { CharacterService } from 'src/app/core/services/character.service';
+import { Battle, DialogLine, Enemy } from 'src/app/models/battle.model';
+import { Character } from 'src/app/models/character.model';
 
 @Component({
   selector: 'app-battle',
@@ -6,6 +12,18 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
   styleUrls: ['./battle.component.scss']
 })
 export class BattleComponent implements OnInit, OnDestroy {
+
+  battleConfig?: Battle;
+  enemy?: Enemy;
+  dialog: DialogLine[] = [];
+  
+  playerCharacter?: Character;
+  playerHealth: number = 0;
+  playerMaxHealth: number = 0;
+  playerEnergy: number = 0;
+  playerMaxEnergy: number = 0;
+  playerPower: number = 0;
+  playerMaxPower: number = 0;
 
   activeMenu: string | null = null;
   selectedAction: string = '';
@@ -21,18 +39,55 @@ export class BattleComponent implements OnInit, OnDestroy {
 
   showDialog = true;
   currentDialogIndex = 0;
-  dialog = [
-    { speaker: 'Sentinela do Vazio', text: 'Olá, aventureiro. Vejo que chegou longe. Mas esta é a barreira final.' },
-    { speaker: 'Zephyr Nova', text: 'Quem é você? E por que me impede de avançar?' },
-    { speaker: 'Sentinela do Vazio', text: 'Eu sou a Sentinela do Vazio, guardiã deste setor. Minha programação é clara: nenhum intruso pode passar. Eu sou a manifestação da entropia, o fim de toda a ordem.' },
-    { speaker: 'Zephyr Nova', text: 'Entropia? Eu sou Zephyr Nova, e trago a luz da esperança! Sua ordem de vazio terminará aqui!' },
-    { speaker: 'Sentinela do Vazio', text: 'Tolice. A esperança é apenas um delírio temporário. Prepare-se para ser absorvido pelo esquecimento.' }
-  ];
-
-  constructor() { }
+  
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private battleConfigService: BattleConfigService,
+    private characterService: CharacterService
+  ) { }
 
   ngOnInit(): void {
-    this.createStars();
+    const battleId = this.route.snapshot.paramMap.get('id');
+    const characterId = this.route.snapshot.paramMap.get('characterId');
+
+    if (battleId && characterId) {
+      forkJoin({
+        battle: this.battleConfigService.getBattle(battleId),
+        characters: this.characterService.getCharacters() 
+      }).subscribe(({ battle, characters }) => {
+        if (battle) {
+          this.battleConfig = battle;
+          this.dialog = battle.dialog;
+          this.enemy = battle.enemy;
+        } else {
+          this.router.navigate(['/game/worlds', characterId]);
+          return;
+        }
+
+        const foundCharacter = characters.find(c => c.id === characterId);
+        if (foundCharacter) {
+          this.playerCharacter = foundCharacter;
+          this.setupPlayerStats();
+        } else {
+          this.router.navigate(['/game/characters']);
+          return;
+        }
+      });
+    }
+  }
+
+  setupPlayerStats(): void {
+    if (!this.playerCharacter) return;
+
+    this.playerMaxHealth = this.playerCharacter.attributes.strength * 150;
+    this.playerHealth = this.playerMaxHealth; 
+
+    this.playerMaxEnergy = this.playerCharacter.attributes.intelligence * 200;
+    this.playerEnergy = this.playerMaxEnergy;
+    
+    this.playerMaxPower = this.playerCharacter.attributes.dexterity * 100;
+    this.playerPower = this.playerMaxPower;
   }
 
   ngOnDestroy(): void {
@@ -60,35 +115,6 @@ export class BattleComponent implements OnInit, OnDestroy {
         this.timeLeft = 90;
       }
     }, 1000);
-  }
-
-  createStars(): void {
-    const starsContainer = document.getElementById('starsContainer');
-    if (starsContainer) {
-        const numberOfStars = 200;
-        for (let i = 0; i < numberOfStars; i++) {
-            const star = document.createElement('div');
-            star.style.position = 'absolute';
-            star.style.background = '#fff';
-            star.style.borderRadius = '50%';
-            const size = Math.random() * 3 + 1;
-            star.style.width = size + 'px';
-            star.style.height = size + 'px';
-            star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.animation = `twinkle ${Math.random() * 3 + 2}s infinite`;
-            star.style.animationDelay = `${Math.random() * 3}s`;
-            starsContainer.appendChild(star);
-        }
-    }
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes twinkle {
-        0%, 100% { opacity: 0.3; transform: scale(1); }
-        50% { opacity: 1; transform: scale(1.2); }
-      }
-    `;
-    document.head.appendChild(style);
   }
 
   showMenu(menu: string): void {

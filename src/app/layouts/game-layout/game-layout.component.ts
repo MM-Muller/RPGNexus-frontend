@@ -1,13 +1,26 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-game-layout',
   templateUrl: './game-layout.component.html',
+  styleUrls: ['./game-layout.component.scss'],
 })
 export class GameLayoutComponent implements OnInit {
-  constructor() {}
+  isBattleRoute = false;
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      this.isBattleRoute = event.urlAfterRedirects.startsWith('/game/battle');
+    });
+
+    this.isBattleRoute = this.router.url.startsWith('/game/battle');
+
     setTimeout(() => {
       this.createStars();
       this.initNeuralCanvas();
@@ -17,7 +30,7 @@ export class GameLayoutComponent implements OnInit {
   createStars(): void {
     const starsContainer = document.getElementById('starsContainer');
     if (starsContainer) {
-      starsContainer.innerHTML = ''; 
+      starsContainer.innerHTML = '';
       const numberOfStars = 150;
 
       for (let i = 0; i < numberOfStars; i++) {

@@ -146,7 +146,6 @@
     rgba(0, 0, 0, 0.3);
   border-radius: 15px;
   border: 1px solid rgba(255, 215, 0, 0.1);
-  /* overflow: hidden; */ /* Removido para que o tooltip não seja cortado */
 }
 
 .constellation-lines {
@@ -176,10 +175,14 @@
 .galaxy-location {
   position: absolute;
   transform: translate(-50%, -50%);
-  cursor: pointer;
   z-index: 10;
   padding-top: 20px;
   margin-top: -20px;
+  &, &:hover, &:visited {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+  }
 }
 
 .galaxy-core {
@@ -343,26 +346,41 @@
   border-color: rgba(255, 215, 0, 0.8);
 }
 
-.galaxy-location.locked .galaxy-center {
-  background: radial-gradient(
-    circle,
-    rgba(128, 128, 128, 0.8),
-    rgba(64, 64, 64, 0.6)
-  );
-  box-shadow: 0 0 20px rgba(128, 128, 128, 0.5);
+.galaxy-location.locked {
+  cursor: not-allowed;
+  .galaxy-center {
+    background: radial-gradient(
+      circle,
+      rgba(128, 128, 128, 0.8),
+      rgba(64, 64, 64, 0.6)
+    );
+    box-shadow: 0 0 20px rgba(128, 128, 128, 0.5);
+  }
+
+  .galaxy-spiral {
+    border-color: rgba(128, 128, 128, 0.3);
+  }
 }
 
-.galaxy-location.locked .galaxy-spiral {
-  border-color: rgba(128, 128, 128, 0.3);
-}
-
-.galaxy-location.completed .galaxy-center {
-  background: radial-gradient(
-    circle,
-    rgba(0, 255, 0, 0.8),
-    rgba(0, 128, 0, 0.6)
-  );
-  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+.galaxy-location.completed {
+  cursor: default;
+  .galaxy-center {
+    background: radial-gradient(
+      circle,
+      rgba(0, 255, 127, 0.8),
+      rgba(0, 128, 70, 0.6)
+    );
+    box-shadow: 0 0 20px rgba(0, 255, 127, 0.5);
+  }
+  .play-button {
+    background-color: rgba(0, 200, 80, 0.3);
+    border-color: rgba(0, 255, 127, 0.5);
+    cursor: default;
+    &:hover {
+      transform: none;
+      background-color: rgba(0, 200, 80, 0.3);
+    }
+  }
 }
 
 .progress-indicator {
