@@ -4,6 +4,7 @@ import { HistoriaComponent } from './features/historia/historia.component';
 import { HomeComponent } from './features/home/home.component';
 import { ObjetivoComponent } from './features/objetivo/objetivo.component';
 import { PersonagensComponent } from './features/personagens/personagens.component';
+import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -17,6 +18,8 @@ const routes: Routes = [
     path: 'game',
     loadChildren: () =>
       import('./features/game/game.module').then((m) => m.GameModule),
+    canActivate: [AuthGuard], 
+    canLoad: [AuthGuard],      
   },
   { path: 'historia', component: HistoriaComponent },
   { path: 'personagens', component: PersonagensComponent },

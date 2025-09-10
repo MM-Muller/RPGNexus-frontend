@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { AuthGuard } from './core/guards/auth.guard';
 
 import { HomeComponent } from './features/home/home.component';
 import { HistoriaComponent } from './features/historia/historia.component';
@@ -35,6 +36,7 @@ import { ObjetivoComponent } from './features/objetivo/objetivo.component';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    AuthGuard,
   ],
   bootstrap: [AppComponent],
 })
