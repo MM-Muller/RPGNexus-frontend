@@ -102,6 +102,8 @@
       transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
       box-shadow: 0 5px 15px $primary-alpha-20;
       border: 1px solid $primary-alpha-30;
+      display: flex;
+      align-items: center;
 
       &::before {
         content: "";
@@ -142,21 +144,23 @@
   }
 }
 
-@media (max-width: $breakpoint-xl) {
-  .navbar-center {
-    left: 30px;
-    padding: 18px 12px;
-  }
-}
-
 @media (max-width: $breakpoint-lg) {
   .navbar-center {
-    left: 20px;
-    padding: 15px 10px;
-    border-radius: 20px;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    transform: translateY(0);
+    padding: 10px 15px;
+    border-radius: 20px 20px 0 0;
+    border-left: 0;
+    border-right: 0;
 
     .nav-items {
-      gap: 20px;
+      flex-direction: row;
+      justify-content: space-around;
+      width: 100%;
     }
 
     .nav-item {
@@ -164,57 +168,40 @@
       height: 45px;
       border-radius: 12px;
 
+      &:hover {
+        transform: translateY(-3px) scale(1.05);
+
+        .nav-tooltip {
+          transform: translate(-50%, 0);
+        }
+      }
+
       .nav-icon {
         width: 20px;
         height: 20px;
       }
-    }
-  }
-}
 
-@media (max-width: $breakpoint-md) {
-  .navbar-center {
-    left: 15px;
-    padding: 12px 8px;
-    border-radius: 18px;
+      .nav-tooltip {
+        left: 50%;
+        top: auto;
+        bottom: calc(100% + 10px);
+        transform: translate(-50%, 5px);
 
-    .nav-items {
-      gap: 18px;
-    }
+        &::before {
+          top: 100%;
+          left: 50%;
+          right: auto;
+          transform: translateX(-50%);
+          border-color: #12121c transparent transparent transparent;
+        }
 
-    .nav-item {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-
-      &:hover {
-        transform: translateY(-2px) scale(1.03);
-      }
-
-      .nav-icon {
-        width: 18px;
-        height: 18px;
-      }
-    }
-  }
-}
-
-@media (max-width: $breakpoint-sm) {
-  .navbar-center {
-    left: 10px;
-    padding: 10px 6px;
-
-    .nav-items {
-      gap: 15px;
-    }
-
-    .nav-item {
-      width: 35px;
-      height: 35px;
-
-      .nav-icon {
-        width: 16px;
-        height: 16px;
+        &::after {
+          top: 100%;
+          left: 50%;
+          right: auto;
+          transform: translateX(-50%);
+          border-color: $primary-alpha-30 transparent transparent transparent;
+        }
       }
     }
   }

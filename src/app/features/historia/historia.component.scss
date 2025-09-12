@@ -153,13 +153,12 @@
 
 .main-container {
   position: relative;
-  height: 295vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 40px 20px;
   z-index: 1;
-  overflow-y: auto;
+  width: 100%;
 }
 
 .holographic-header {
@@ -235,7 +234,7 @@
     rgba(25, 25, 112, 0.1);
   border: 1px solid $primary-alpha-20;
   border-radius: 20px;
-  padding: 60px;
+  padding: clamp(20px, 5vw, 60px);
   position: relative;
   backdrop-filter: blur(10px);
   box-shadow: 0 0 50px rgba(138, 43, 226, 0.2),
@@ -336,7 +335,7 @@
 
 .era-title {
   font-family: "Orbitron", monospace;
-  font-size: 24px;
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
   color: rgba(255, 215, 0, 0.9);
   margin: 40px 0 20px;
   text-transform: uppercase;
@@ -363,7 +362,7 @@
 }
 
 .narrative-text {
-  font-size: 18px;
+  font-size: clamp(1rem, 2.5vw, 1.125rem);
   line-height: 1.8;
   color: rgba(255, 255, 255, 0.85);
   margin-bottom: 30px;
@@ -561,7 +560,7 @@
 }
 
 .quote-text {
-  font-size: 24px;
+  font-size: clamp(1.1rem, 3vw, 1.5rem);
   font-style: italic;
   color: rgba(255, 215, 0, 0.8);
   line-height: 1.6;
@@ -619,42 +618,6 @@
   opacity: 1;
 }
 
-@media (max-width: 768px) {
-  .holographic-panel {
-    padding: 30px 20px;
-  }
-
-  .timeline-event {
-    flex-direction: column !important;
-  }
-
-  .timeline-event:nth-child(even) {
-    flex-direction: column !important;
-  }
-
-  .event-content {
-    width: 100%;
-    text-align: left !important;
-  }
-
-  .timeline-line {
-    left: 20px;
-  }
-
-  .event-marker {
-    left: 20px;
-  }
-
-  .civilization-symbols {
-    gap: 20px;
-  }
-
-  .symbol {
-    width: 60px;
-    height: 60px;
-  }
-}
-
 .shooting-stars {
   position: fixed;
   top: 0;
@@ -665,7 +628,7 @@
   z-index: 0;
 }
 
-.star {
+.shooting-stars .star {
   position: absolute;
   width: 4px;
   height: 4px;
@@ -740,5 +703,81 @@
   100% {
     transform: rotate(315deg) translateX(-1000px);
     opacity: 0;
+  }
+}
+
+@media (min-width: 1025px) {
+  .main-container {
+    justify-content: flex-start;
+    padding-top: 80px;
+  }
+}
+
+@media (max-width: $breakpoint-xl) { 
+  .main-container {
+    height: auto;
+    padding: 40px 20px;
+  }
+}
+
+@media (max-width: $breakpoint-lg) { 
+  .holographic-panel {
+    padding: 30px 20px;
+  }
+
+  .timeline-event,
+  .timeline-event:nth-child(even) {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 30px; 
+  }
+
+  .event-content {
+    width: 100%; 
+    text-align: left !important;
+    margin-left: 20px !important; 
+  }
+
+  .timeline-line {
+    left: 20px;
+  }
+
+  .event-marker {
+    left: 20px;
+  }
+
+  .civilization-symbols {
+    gap: 20px;
+  }
+
+  .symbol {
+    width: 60px;
+    height: 60px;
+  }
+
+  .hud-element {
+    display: none;
+  }
+}
+
+
+@media (max-width: $breakpoint-md) {
+  .main-title {
+    line-height: 1.2;
+  }
+  .era-title {
+    padding-left: 30px;
+  }
+  .narrative-text {
+    padding: 15px;
+  }
+  .cosmic-timeline {
+    padding: 20px 0;
+    margin-left: 0;
+  }
+
+  .timeline-event,
+  .timeline-event:nth-child(even) {
+    margin-left: 25px;
   }
 }

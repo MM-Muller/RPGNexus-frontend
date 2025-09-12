@@ -91,13 +91,12 @@
 
 .main-container {
   position: relative;
-  height: 192vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 40px 20px;
   z-index: 1;
-  overflow-y: auto;
+  width: 100%;
 }
 
 .holographic-header {
@@ -179,6 +178,7 @@
   box-shadow: 0 0 50px rgba(138, 43, 226, 0.2),
     inset 0 0 30px rgba(255, 215, 0, 0.05);
   animation: panel-breathe 4s ease-in-out infinite;
+  margin-bottom: 80px; 
 }
 
 @keyframes panel-breathe {
@@ -288,7 +288,7 @@
 }
 
 .section-title {
-  font-size: 2rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
   color: $primary-color;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -319,12 +319,6 @@
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 40px;
   justify-items: center;
-}
-
-@media (min-width: 768px) {
-  .constellation {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
 .hud-element {
@@ -368,12 +362,6 @@
   opacity: 1;
 }
 
-@media (max-width: 768px) {
-  .holographic-panel {
-    padding: 30px 20px;
-  }
-}
-
 .shooting-stars {
   position: fixed;
   top: 0;
@@ -384,7 +372,7 @@
   z-index: 0;
 }
 
-.star {
+.shooting-stars .star {
   position: absolute;
   width: 4px;
   height: 4px;
@@ -395,7 +383,7 @@
   animation: star-fall 3s linear infinite;
 }
 
-.star::before {
+.shooting-stars .star::before {
   content: "";
   position: absolute;
   top: 50%;
@@ -405,43 +393,43 @@
   background: linear-gradient(90deg, $text-color, transparent);
 }
 
-.star:nth-child(1) {
+.shooting-stars .star:nth-child(1) {
   top: 10%;
   left: 20%;
   animation-delay: 0s;
   animation-duration: 1.5s;
 }
-.star:nth-child(2) {
+.shooting-stars .star:nth-child(2) {
   top: 20%;
   left: 80%;
   animation-delay: 0.5s;
   animation-duration: 2s;
 }
-.star:nth-child(3) {
+.shooting-stars .star:nth-child(3) {
   top: 50%;
   left: 10%;
   animation-delay: 1s;
   animation-duration: 1.8s;
 }
-.star:nth-child(4) {
+.shooting-stars .star:nth-child(4) {
   top: 80%;
   left: 90%;
   animation-delay: 1.5s;
   animation-duration: 2.2s;
 }
-.star:nth-child(5) {
+.shooting-stars .star:nth-child(5) {
   top: 5%;
   left: 50%;
   animation-delay: 2s;
   animation-duration: 1.2s;
 }
-.star:nth-child(6) {
+.shooting-stars .star:nth-child(6) {
   top: 60%;
   left: 40%;
   animation-delay: 2.5s;
   animation-duration: 2.5s;
 }
-.star:nth-child(7) {
+.shooting-stars .star:nth-child(7) {
   top: 90%;
   left: 60%;
   animation-delay: 3s;
@@ -459,5 +447,33 @@
   100% {
     transform: rotate(315deg) translateX(-1000px);
     opacity: 0;
+  }
+}
+
+@media (min-width: 1025px) {
+  .main-container {
+    justify-content: flex-start;
+    padding-top: 80px;
+  }
+}
+
+@media (max-width: $breakpoint-xl) {
+  .main-container {
+    height: auto;
+  }
+  .holographic-panel {
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: $breakpoint-lg) {
+  .holographic-panel {
+    padding: 30px 20px;
+  }
+  .constellation {
+    grid-template-columns: 1fr;
+  }
+  .hud-element {
+    display: none;
   }
 }
