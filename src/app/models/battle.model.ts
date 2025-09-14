@@ -7,12 +7,11 @@ export interface Enemy {
   name: string;
   health: number;
   maxHealth: number;
-  // Adicionar outras metricas do inimigo
 }
 
 export interface Battle {
   id: string;
   title: string;
-  dialog: DialogLine[];
+  theme: string; 
   enemy: Enemy;
 }

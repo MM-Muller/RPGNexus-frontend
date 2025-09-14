@@ -1,8 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { BattleConfigService } from 'src/app/core/services/battle-config.service';
 import { CharacterService } from 'src/app/core/services/character.service';
+import { CampaignService } from 'src/app/core/services/campaign.service';
 import { Battle, DialogLine, Enemy } from 'src/app/models/battle.model';
 import { Character } from 'src/app/models/character.model';
 
@@ -11,40 +12,37 @@ import { Character } from 'src/app/models/character.model';
   templateUrl: './battle.component.html',
   styleUrls: ['./battle.component.scss']
 })
-export class BattleComponent implements OnInit, OnDestroy {
+export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
+  @ViewChild('chatLogContainer') private chatLogContainer!: ElementRef;
 
   battleConfig?: Battle;
   enemy?: Enemy;
-  dialog: DialogLine[] = [];
-  
+
   playerCharacter?: Character;
   playerHealth: number = 0;
   playerMaxHealth: number = 0;
-  playerEnergy: number = 0;
-  playerMaxEnergy: number = 0;
-  playerPower: number = 0;
-  playerMaxPower: number = 0;
 
-  activeMenu: string | null = null;
+  isActionPanelVisible = false;
+  isChatVisible = false;
+  isLoadingAction = false;
+  showInitialDialog = true;
+  currentDialogIndex = 0;
+
+  dialogHistory: DialogLine[] = [];
+  initialDialog: DialogLine[] = [];
   selectedAction: string = '';
-  specialAttack: string = 'Raio Cósmico: 35 de dano';
-  defendAction: string = 'Barreira Quântica: Reduz 50% do dano';
-  item: string = 'Poção de Cura: +500 de vida';
-  private menuTimeout: any;
 
+  private interval: any;
   timeLeft: number = 90;
   timerDisplay: string = '1:30';
-  isPlayerTurn: boolean = true;
-  private interval: any;
+  isPlayerTurn: boolean = false;
 
-  showDialog = true;
-  currentDialogIndex = 0;
-  
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private battleConfigService: BattleConfigService,
-    private characterService: CharacterService
+    private characterService: CharacterService,
+    private campaignService: CampaignService
   ) { }
 
   ngOnInit(): void {
@@ -54,53 +52,77 @@ export class BattleComponent implements OnInit, OnDestroy {
     if (battleId && characterId) {
       forkJoin({
         battle: this.battleConfigService.getBattle(battleId),
-        characters: this.characterService.getCharacters() 
+        characters: this.characterService.getCharacters()
       }).subscribe(({ battle, characters }) => {
-        if (battle) {
-          this.battleConfig = battle;
-          this.dialog = battle.dialog;
-          this.enemy = battle.enemy;
-        } else {
-          this.router.navigate(['/game/worlds', characterId]);
-          return;
-        }
-
+        if (!battle) { this.router.navigate(['/game/worlds', characterId]); return; }
+        
+        this.battleConfig = battle;
+        this.enemy = battle.enemy;
+        
         const foundCharacter = characters.find(c => c.id === characterId);
         if (foundCharacter) {
           this.playerCharacter = foundCharacter;
           this.setupPlayerStats();
+          
+          this.initialDialog = [
+            { speaker: this.enemy!.name, text: 'Olá, aventureiro. Vejo que chegou longe. Mas esta é a barreira final.' },
+            { speaker: this.playerCharacter!.name, text: 'Quem é você? E por que me impede de avançar?' },
+            { speaker: this.enemy!.name, text: 'Prepare-se para ser absorvido pelo esquecimento.' }
+          ];
+          this.dialogHistory.push(this.initialDialog[0]);
         } else {
           this.router.navigate(['/game/characters']);
-          return;
         }
       });
     }
   }
 
-  setupPlayerStats(): void {
-    if (!this.playerCharacter) return;
-
-    this.playerMaxHealth = this.playerCharacter.attributes.strength * 150;
-    this.playerHealth = this.playerMaxHealth; 
-
-    this.playerMaxEnergy = this.playerCharacter.attributes.intelligence * 200;
-    this.playerEnergy = this.playerMaxEnergy;
-    
-    this.playerMaxPower = this.playerCharacter.attributes.dexterity * 100;
-    this.playerPower = this.playerMaxPower;
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
   }
 
   ngOnDestroy(): void {
     clearInterval(this.interval);
   }
 
-  nextDialog() {
-    if (this.currentDialogIndex < this.dialog.length - 1) {
+  nextInitialDialog() {
+    if (this.currentDialogIndex < this.initialDialog.length - 1) {
       this.currentDialogIndex++;
     } else {
-      this.showDialog = false;
+      this.showInitialDialog = false;
+      this.isPlayerTurn = true;
       this.startTimer();
     }
+    if (this.dialogHistory.length <= this.currentDialogIndex) {
+      this.dialogHistory.push(this.initialDialog[this.currentDialogIndex]);
+    }
+  }
+
+  sendPlayerAction(): void {
+    if (this.selectedAction.trim() === '' || !this.isPlayerTurn) return;
+    
+    this.isLoadingAction = true;
+    this.isPlayerTurn = false;
+    const playerAction = this.selectedAction;
+    this.dialogHistory.push({ speaker: this.playerCharacter!.name, text: playerAction });
+    this.selectedAction = '';
+
+    const historyTexts = this.dialogHistory.map(d => `${d.speaker}: ${d.text}`);
+    const theme = (this.battleConfig as any).theme || 'Batalha Galáctica';
+
+    this.campaignService.sendAction(this.playerCharacter!.id, theme, playerAction, historyTexts)
+      .subscribe((response: any) => {
+        this.dialogHistory.push({ speaker: this.enemy!.name, text: response.narrative });
+        this.isLoadingAction = false;
+        this.isPlayerTurn = true;
+        this.timeLeft = 90;
+      });
+  }
+
+  setupPlayerStats(): void {
+    if (!this.playerCharacter) return;
+    this.playerMaxHealth = this.playerCharacter.attributes.strength * 150;
+    this.playerHealth = this.playerMaxHealth;
   }
 
   startTimer(): void {
@@ -117,21 +139,24 @@ export class BattleComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  showMenu(menu: string): void {
-    if (!this.isPlayerTurn) return;
-    clearTimeout(this.menuTimeout);
-    this.activeMenu = menu;
+  toggleChat(): void {
+    this.isChatVisible = !this.isChatVisible;
   }
 
-  hideMenu(): void {
-    this.menuTimeout = setTimeout(() => {
-      this.activeMenu = null;
-    }, 200);
+  toggleActionPanel(): void {
+    this.isActionPanelVisible = !this.isActionPanelVisible;
   }
 
   selectAction(action: string): void {
-    if (!this.isPlayerTurn) return;
-    this.selectedAction = action.split(':')[0];
-    this.hideMenu();
+    this.selectedAction = action;
+    this.isActionPanelVisible = false;
+  }
+
+  private scrollToBottom(): void {
+    try {
+      if (this.chatLogContainer) {
+        this.chatLogContainer.nativeElement.scrollTop = this.chatLogContainer.nativeElement.scrollHeight;
+      }
+    } catch (err) { }
   }
 }

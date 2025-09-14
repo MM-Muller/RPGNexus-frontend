@@ -1,3 +1,4 @@
+<div class="nebula"></div>
 <div class="battle-arena" *ngIf="battleConfig && enemy && playerCharacter">
     <div class="corner-decoration corner-tl"></div>
     <div class="corner-decoration corner-tr"></div>
@@ -12,7 +13,6 @@
     <div class="battle-field">
         <div class="character-container">
             <div class="character-model">
-                <div class="energy-aura"></div>
                 <div class="player-avatar">
                   <div class="avatar-frame"></div>
                   <div class="class-icon-display">{{ playerCharacter.class_icon }}</div>
@@ -23,51 +23,44 @@
                 <h3 class="character-name">{{ playerCharacter.name }}</h3>
                 <div class="status-bars">
                     <div class="stat-row">
-                        <div class="stat-icon">❤️</div>
-                        <div class="stat-info">
-                            <div class="stat-label">Vida</div>
-                            <div class="stat-bar">
-                                <div class="stat-fill health" [style.width.%]="(playerHealth / playerMaxHealth) * 100">
-                                    <span class="stat-value">{{ playerHealth }}/{{ playerMaxHealth }}</span>
-                                </div>
-                            </div>
-                        </div>
+                        <span class="stat-icon">❤️</span>
+                        <div class="stat-bar"><div class="stat-fill health" [style.width.%]="(playerHealth / playerMaxHealth) * 100"><span class="stat-value">{{ playerHealth }}/{{ playerMaxHealth }}</span></div></div>
                     </div>
                     <div class="stat-row">
-                        <div class="stat-icon">⚡</div>
-                        <div class="stat-info">
-                            <div class="stat-label">Energia</div>
-                            <div class="stat-bar">
-                                <div class="stat-fill energy" [style.width.%]="(playerEnergy / playerMaxEnergy) * 100">
-                                    <span class="stat-value">{{ playerEnergy }}/{{ playerMaxEnergy }}</span>
-                                </div>
-                            </div>
-                        </div>
+                        <span class="stat-icon">💪</span>
+                        <div class="stat-bar"><div class="stat-fill strength" [style.width.%]="playerCharacter.attributes.strength * 10"><span class="stat-value">{{ playerCharacter.attributes.strength }}</span></div></div>
                     </div>
                     <div class="stat-row">
-                        <div class="stat-icon">⚔️</div>
-                        <div class="stat-info">
-                            <div class="stat-label">Poder</div>
-                            <div class="stat-bar">
-                                <div class="stat-fill power" [style.width.%]="(playerPower / playerMaxPower) * 100">
-                                    <span class="stat-value">{{ playerPower }}/{{ playerMaxPower }}</span>
-                                </div>
-                            </div>
-                        </div>
+                        <span class="stat-icon">🧠</span>
+                        <div class="stat-bar"><div class="stat-fill intelligence" [style.width.%]="playerCharacter.attributes.intelligence * 10"><span class="stat-value">{{ playerCharacter.attributes.intelligence }}</span></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-icon">🗣️</span>
+                        <div class="stat-bar"><div class="stat-fill charisma" [style.width.%]="playerCharacter.attributes.charisma * 10"><span class="stat-value">{{ playerCharacter.attributes.charisma }}</span></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-icon">🎯</span>
+                        <div class="stat-bar"><div class="stat-fill dexterity" [style.width.%]="playerCharacter.attributes.dexterity * 10"><span class="stat-value">{{ playerCharacter.attributes.dexterity }}</span></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-icon">🌌</span>
+                        <div class="stat-bar"><div class="stat-fill intuition" [style.width.%]="playerCharacter.attributes.intuition * 10"><span class="stat-value">{{ playerCharacter.attributes.intuition }}</span></div></div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="center-stage">
-            <div class="dialog-container" *ngIf="showDialog && dialog.length > 0">
-                <div class="dialog-balloon" [ngClass]="{'player-speaking': dialog[currentDialogIndex].speaker !== enemy.name, 'enemy-speaking': dialog[currentDialogIndex].speaker === enemy.name}">
-                    <span class="speaker-name">{{ dialog[currentDialogIndex].speaker === 'Zephyr Nova' ? playerCharacter.name : dialog[currentDialogIndex].speaker }}:</span>
-                    <p class="dialog-text">{{ dialog[currentDialogIndex].text }}</p>
-                    <button class="next-dialog-btn" (click)="nextDialog()">{{ currentDialogIndex === dialog.length - 1 ? 'Iniciar Batalha' : 'Próximo' }}</button>
+            <div class="dialog-container" *ngIf="showInitialDialog && initialDialog.length > 0">
+                <div class="dialog-balloon">
+                    <span class="speaker-name">{{ initialDialog[currentDialogIndex].speaker }}:</span>
+                    <p class="dialog-text">{{ initialDialog[currentDialogIndex].text }}</p>
+                    <button class="next-dialog-btn" (click)="nextInitialDialog()">
+                        {{ currentDialogIndex >= initialDialog.length - 1 ? 'Iniciar Batalha' : 'Próximo' }}
+                    </button>
                 </div>
             </div>
-            <div class="turn-indicator" *ngIf="!showDialog">
+             <div class="turn-indicator" *ngIf="!showInitialDialog">
                 <div class="turn-text">{{ isPlayerTurn ? 'Sua vez' : 'Vez do oponente' }}</div>
                 <div class="turn-arrow" [class.enemy-turn]="!isPlayerTurn"></div>
             </div>
@@ -75,96 +68,75 @@
 
         <div class="enemy-container">
             <div class="enemy-model">
-                <div class="energy-aura"></div>
                 <div class="enemy-visual"></div>
             </div>
             <div class="status-panel">
                 <h3 class="character-name">{{ enemy.name }}</h3>
                 <div class="status-bars">
                     <div class="stat-row">
-                        <div class="stat-icon">❤️</div>
-                        <div class="stat-info">
-                            <div class="stat-label">Vida</div>
-                            <div class="stat-bar">
-                                <div class="stat-fill health" [style.width.%]="(enemy.health / enemy.maxHealth) * 100">
-                                    <span class="stat-value">{{ enemy.health }}/{{ enemy.maxHealth }}</span>
-                                </div>
-                            </div>
-                        </div>
+                        <span class="stat-icon">❤️</span>
+                        <div class="stat-bar"><div class="stat-fill health" [style.width.%]="(enemy.health / enemy.maxHealth) * 100"><span class="stat-value">{{ enemy.health }}/{{ enemy.maxHealth }}</span></div></div>
                     </div>
                     <div class="stat-row">
-                        <div class="stat-icon">⚡</div>
-                        <div class="stat-info">
-                            <div class="stat-label">Energia</div>
-                            <div class="stat-bar">
-                                <div class="stat-fill energy" style="width: 80%">
-                                    <span class="stat-value">3200/4000</span>
-                                </div>
-                            </div>
-                        </div>
+                        <span class="stat-icon">💪</span>
+                        <div class="stat-bar"><div class="stat-fill strength" style="width: 80%"><span class="stat-value">8</span></div></div>
                     </div>
                     <div class="stat-row">
-                        <div class="stat-icon">⚔️</div>
-                        <div class="stat-info">
-                            <div class="stat-label">Poder</div>
-                            <div class="stat-bar">
-                                <div class="stat-fill power" style="width: 90%">
-                                    <span class="stat-value">2700/3000</span>
-                                </div>
-                            </div>
-                        </div>
+                        <span class="stat-icon">🧠</span>
+                        <div class="stat-bar"><div class="stat-fill intelligence" style="width: 60%"><span class="stat-value">6</span></div></div>
                     </div>
                     <div class="stat-row">
-                        <div class="stat-icon">🛡️</div>
-                        <div class="stat-info">
-                            <div class="stat-label">Defesa</div>
-                            <div class="stat-bar">
-                                <div class="stat-fill defense" style="width: 95%">
-                                    <span class="stat-value">2375/2500</span>
-                                </div>
-                            </div>
-                        </div>
+                        <span class="stat-icon">🗣️</span>
+                        <div class="stat-bar"><div class="stat-fill charisma" style="width: 40%"><span class="stat-value">4</span></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-icon">🎯</span>
+                        <div class="stat-bar"><div class="stat-fill dexterity" style="width: 70%"><span class="stat-value">7</span></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-icon">🌌</span>
+                        <div class="stat-bar"><div class="stat-fill intuition" style="width: 90%"><span class="stat-value">9</span></div></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="action-panel">
-        <div class="action-btn-wrapper" (mouseenter)="showMenu('attack')" (mouseleave)="hideMenu()">
-            <button class="action-btn attack" [disabled]="!isPlayerTurn">⚔️ Atacar</button>
-            <div class="sub-action-panel" *ngIf="activeMenu === 'attack'" (mouseenter)="showMenu('attack')">
-                <h1 class="sub-action-title">Sugestões de Ataque</h1>
-                <button class="sub-action-btn" (click)="selectAction('Ataque Básico')">Ataque Básico: 15 de dano</button>
-            </div>
+    <div class="chat-container" *ngIf="isChatVisible">
+        <div class="chat-header">
+            <h3 class="chat-title">Registro de Combate</h3>
+            <button class="chat-close-btn" (click)="toggleChat()">×</button>
         </div>
-        <div class="action-btn-wrapper" (mouseenter)="showMenu('special')" (mouseleave)="hideMenu()">
-            <button class="action-btn special" [disabled]="!isPlayerTurn">✨ Especial</button>
-            <div class="sub-action-panel" *ngIf="activeMenu === 'special'" (mouseenter)="showMenu('special')">
-                <h1 class="sub-action-title">Sugestões de Especial</h1>
-                <button class="sub-action-btn" (click)="selectAction(specialAttack)">{{specialAttack}}</button>
+        <div class="chat-log" #chatLogContainer>
+            <div *ngFor="let entry of dialogHistory" class="chat-message" [ngClass]="{'player-message': entry.speaker === playerCharacter.name, 'enemy-message': entry.speaker === enemy.name}">
+                <strong>{{ entry.speaker }}:</strong> {{ entry.text }}
             </div>
-        </div>
-        <div class="action-btn-wrapper" (mouseenter)="showMenu('defend')" (mouseleave)="hideMenu()">
-            <button class="action-btn defend" [disabled]="!isPlayerTurn">🛡️ Defender</button>
-            <div class="sub-action-panel" *ngIf="activeMenu === 'defend'" (mouseenter)="showMenu('defend')">
-                <h1 class="sub-action-title">Sugestões de Defesa</h1>
-                <button class="sub-action-btn" (click)="selectAction(defendAction)">{{defendAction}}</button>
+            <div *ngIf="isLoadingAction" class="chat-message enemy-message">
+                <strong>{{ enemy.name }}:</strong> ...
             </div>
-        </div>
-        <div class="action-btn-wrapper" (mouseenter)="showMenu('item')" (mouseleave)="hideMenu()">
-            <button class="action-btn" [disabled]="!isPlayerTurn">💊 Item</button>
-            <div class="sub-action-panel" *ngIf="activeMenu === 'item'" (mouseenter)="showMenu('item')">
-                <h1 class="sub-action-title">Sugestões de Item</h1>
-                <button class="sub-action-btn" (click)="selectAction(item)">{{item}}</button>
-            </div>
-        </div>
-        <div class="action-btn-wrapper">
-            <button class="action-btn" [disabled]="!isPlayerTurn">🚀 Fugir</button>
         </div>
     </div>
 
-    <div class="input-container">
-        <input type="text" class="action-input" placeholder="Ação selecionada..." [(ngModel)]="selectedAction" [disabled]="!isPlayerTurn">
+    <div class="action-panel" *ngIf="isActionPanelVisible && !showInitialDialog">
+        <button class="action-btn attack" (click)="selectAction('Atacar')">⚔️ Atacar</button>
+        <button class="action-btn special" (click)="selectAction('Especial')">✨ Especial</button>
+        <button class="action-btn defend" (click)="selectAction('Defender')">🛡️ Defender</button>
+        <button class="action-btn" (click)="selectAction('Item')">💊 Item</button>
+        <button class="action-btn" (click)="selectAction('Fugir')">🚀 Fugir</button>
+    </div>
+    
+    <div class="footer-hud" *ngIf="!showInitialDialog">
+        <div class="action-input-container">
+            <button class="hud-icon-btn" title="Abrir Chat" (click)="toggleChat()">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+            </button>
+            <input type="text" class="action-input" placeholder="Digite sua ação ou clique em '?' para sugestões..." [(ngModel)]="selectedAction" (keyup.enter)="sendPlayerAction()" [disabled]="!isPlayerTurn || isLoadingAction">
+            <button class="hud-icon-btn send-btn" title="Enviar Ação" (click)="sendPlayerAction()" [disabled]="!isPlayerTurn || isLoadingAction">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+            <button class="hud-icon-btn" title="Ver Sugestões" (click)="toggleActionPanel()">
+                <svg fill="currentColor" viewBox="0 0 24 24"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg>
+            </button>
+        </div>
     </div>
 </div>
