@@ -23,13 +23,9 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
   playerMaxHealth: number = 0;
 
   isActionPanelVisible = false;
-  isChatVisible = false;
   isLoadingAction = false;
-  showInitialDialog = true;
-  currentDialogIndex = 0;
 
   dialogHistory: DialogLine[] = [];
-  initialDialog: DialogLine[] = [];
   selectedAction: string = '';
 
   private interval: any;
@@ -63,13 +59,9 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
         if (foundCharacter) {
           this.playerCharacter = foundCharacter;
           this.setupPlayerStats();
-          
-          this.initialDialog = [
-            { speaker: this.enemy!.name, text: 'Olá, aventureiro. Vejo que chegou longe. Mas esta é a barreira final.' },
-            { speaker: this.playerCharacter!.name, text: 'Quem é você? E por que me impede de avançar?' },
-            { speaker: this.enemy!.name, text: 'Prepare-se para ser absorvido pelo esquecimento.' }
-          ];
-          this.dialogHistory.push(this.initialDialog[0]);
+          this.isPlayerTurn = true;
+          this.startTimer();
+          this.dialogHistory.push({ speaker: 'Narrador', text: 'A batalha começa!' });
         } else {
           this.router.navigate(['/game/characters']);
         }
@@ -83,19 +75,6 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnDestroy(): void {
     clearInterval(this.interval);
-  }
-
-  nextInitialDialog() {
-    if (this.currentDialogIndex < this.initialDialog.length - 1) {
-      this.currentDialogIndex++;
-    } else {
-      this.showInitialDialog = false;
-      this.isPlayerTurn = true;
-      this.startTimer();
-    }
-    if (this.dialogHistory.length <= this.currentDialogIndex) {
-      this.dialogHistory.push(this.initialDialog[this.currentDialogIndex]);
-    }
   }
 
   sendPlayerAction(): void {
@@ -137,10 +116,6 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.timeLeft = 90;
       }
     }, 1000);
-  }
-
-  toggleChat(): void {
-    this.isChatVisible = !this.isChatVisible;
   }
 
   toggleActionPanel(): void {
