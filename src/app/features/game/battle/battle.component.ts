@@ -29,8 +29,8 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
   selectedAction: string = '';
 
   private interval: any;
-  timeLeft: number = 90;
-  timerDisplay: string = '1:30';
+  timeLeft: number = 60;
+  timerDisplay: string = '1:00';
   isPlayerTurn: boolean = false;
 
   constructor(
@@ -94,7 +94,7 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.dialogHistory.push({ speaker: this.enemy!.name, text: response.narrative });
         this.isLoadingAction = false;
         this.isPlayerTurn = true;
-        this.timeLeft = 90;
+        this.timeLeft = 60;
       });
   }
 
@@ -113,7 +113,7 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.timerDisplay = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
       } else {
         this.isPlayerTurn = !this.isPlayerTurn;
-        this.timeLeft = 90;
+        this.timeLeft = 60;
       }
     }, 1000);
   }
