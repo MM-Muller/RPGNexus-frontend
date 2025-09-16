@@ -1,44 +1,87 @@
-# RPG Textual com IA - Trainee Wise Intelligence
 
-Este repositório faz parte do **Programa Trainee em Inteligência Artificial (Wise Intelligence)** e corresponde ao **Projeto 2**.  
-O objetivo é desenvolver um **sistema web completo de RPG textual**, integrando **front-end (Angular)**, **back-end (Python com FastAPI)**, **MongoDB** como banco de dados e **LLM** para narrativas dinâmicas.
+<p align="center">
+  <img src="src/assets/images/logo.png" alt="RPGNexus Logo" width="150"/>
+</p>
 
-## 🚧 Status do Projeto
+<h1 align="center">RPGNexus Interface</h1>
 
-Atualmente, o projeto está **em andamento**.  
-As primeiras etapas de configuração de repositórios, organização de pastas e definição da identidade do sistema estão sendo realizadas.
+<p align="center">
+  <strong>Interface de usuário para o jogo de RPG textual com IA "RPGNexus".</strong><br>
+  Parte do Projeto 2 do Programa Trainee em Inteligência Artificial (Wise Intelligence).
+</p>
+
+---
+
+## 🚀 Sobre o Projeto
+
+Este repositório contém o front-end do projeto RPGNexus, uma aplicação web rica e interativa construída com Angular. A interface foi projetada para proporcionar uma experiência de jogo imersiva, permitindo que os jogadores criem personagens, embarquem em aventuras e interajam com um mundo dinâmico gerado por IA.
 
 ## 🛠️ Tecnologias Principais
 
-- **Front-end:** Angular
-- **Back-end:** Python (FastAPI)
-- **Banco de Dados:** MongoDB
-- **Inteligência Artificial:** LLM (Large Language Model)
-- **Autenticação:** JWT
+- **Framework:** Angular 16
+- **Linguagem:** TypeScript
+- **Estilização:** SCSS
+- **Autenticação:** Interceptores HTTP para JWT
+- **Containerização:** Docker e VS Code Dev Container
 
-## 📖 Documentação
+## ✨ Funcionalidades
 
-A documentação completa do projeto, incluindo instruções de configuração e execução, está disponível em breve
+- **Interface Reativa:** Componentes dinâmicos que se atualizam em tempo real com base nas respostas da API.
+- **Telas de Autenticação:** Páginas dedicadas para Login e Cadastro de usuários.
+- **Gerenciamento de Personagens:**
+    - Visualização em grade dos personagens criados.
+    - Formulário completo para criação de novos personagens com personalização de atributos.
+    - Modal para visualização de detalhes e exclusão de personagens.
+- **Tela de Jogo (Campanha):**
+    - Exibição da narrativa, status do personagem e opções de ação.
+    - Input para que o jogador envie suas ações para a API.
+- **Rotas Protegidas:** Utilização de `AuthGuard` para proteger as rotas do jogo, garantindo que apenas usuários autenticados possam acessá-las.
 
-Cronograma previsto:
-👉 [Acesse o Trello](https://trello.com/b/3wHYNaO6/rpg-textual-trainee-wise)
+---
 
-## 🎮 Funcionalidades Previstas
+## 🏁 Começando
 
-- Criação e gerenciamento de personagens (nome, raça, classe, atributos etc.).
-- Início e continuidade de campanhas interativas.
-- Interações com o LLM retornando narrativas e eventos em JSON.
-- Sistema de combate, progressão de níveis e inventário.
-- Histórico de campanhas e interações.
-- Autenticação segura com JWT.
+Estas instruções permitirão que você tenha uma cópia do projeto em operação na sua máquina local para desenvolvimento e testes.
 
-## 🐳 Dev Container
+### Pré-requisitos
 
-Este projeto já vem configurado com um **Dev Container** (VS Code + Docker), facilitando o setup do ambiente.
+- Docker e Docker Compose
+- Visual Studio Code com a extensão [Dev Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 
-- Extensões, dependências e configurações já vêm pré-instaladas.
-- Serviços incluídos: **Backend (FastAPI)**, **Frontend (Angular)**, **MongoDB** e **Redis**.
-- Scripts automáticos (`post-create.sh`) inicializam o projeto e criam as estruturas básicas.
+### 🐳 Executando com Dev Container (Recomendado)
 
-👉 Para usar, basta abrir o projeto no **VS Code** e selecionar **"Reopen in Container"**.  
-Assim, todo o ambiente estará pronto sem necessidade de instalações adicionais.
+O projeto é configurado para ser executado de forma simples e rápida com o Dev Container.
+
+1.  Clone o repositório:
+    ```bash
+    git clone https://github.com/MM-Muller/RPGNexus-frontend
+    cd rpgnexus-frontend
+    ```
+2.  Abra o projeto no VS Code.
+3.  Clique em **"Reopen in Container"** quando o VS Code sugerir.
+4.  Aguarde a construção do container. As dependências (npm install) serão instaladas e o servidor de desenvolvimento (`ng serve`) será iniciado automaticamente.
+
+A aplicação estará disponível em `http://localhost:4200`.
+
+---
+
+## 🗂️ Estrutura de Pastas
+
+O front-end segue a estrutura padrão de projetos Angular, com uma organização modular para cada funcionalidade principal.
+```
+/
+├── src/
+│   ├── app/
+│   │   ├── core/             # Serviços globais, guardas (guards) e interceptores
+│   │   ├── features/         # Módulos de funcionalidades da aplicação (auth, game, home, etc.)
+│   │   │   ├── auth/         # Componentes de login e cadastro
+│   │   │   └── game/         # Componentes do jogo (personagens, campanha, etc.)
+│   │   ├── layouts/          # Componentes de layout (ex: GameLayout, MainLayout)
+│   │   ├── models/           # Interfaces e modelos de dados (Character, User, etc.)
+│   │   ├── shared/           # Componentes, diretivas e pipes compartilhados
+│   │   └── styles/           # Arquivos de estilo globais (variáveis, mixins)
+│   ├── assets/               # Imagens, ícones e outros recursos estáticos
+│   └── environments/         # Configurações de ambiente (desenvolvimento/produção)
+├── .devcontainer/            # Configurações do Dev Container
+└── angular.json              # Configuração do projeto Angular e seus builds
+```
