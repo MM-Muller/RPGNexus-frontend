@@ -6,6 +6,7 @@ import { CharacterService } from 'src/app/core/services/character.service';
 import { CampaignService } from 'src/app/core/services/campaign.service';
 import { Battle, DialogLine, Enemy } from 'src/app/models/battle.model';
 import { Character } from 'src/app/models/character.model';
+import { CampaignResponse } from 'src/app/models/campaign.model';
 
 @Component({
   selector: 'app-battle',
@@ -17,13 +18,15 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   battleConfig?: Battle;
   enemy?: Enemy;
-
   playerCharacter?: Character;
+  
   playerHealth: number = 0;
   playerMaxHealth: number = 0;
-
-  isActionPanelVisible = false;
+  
   isLoadingAction = false;
+  isPlayerTurn: boolean = false;
+  isBattleOver = false;
+  battleResult = '';
 
   dialogHistory: DialogLine[] = [];
   selectedAction: string = '';
@@ -31,7 +34,7 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
   private interval: any;
   timeLeft: number = 60;
   timerDisplay: string = '1:00';
-  isPlayerTurn: boolean = false;
+  isActionPanelVisible = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,63 +42,120 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
     private battleConfigService: BattleConfigService,
     private characterService: CharacterService,
     private campaignService: CampaignService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     const battleId = this.route.snapshot.paramMap.get('id');
     const characterId = this.route.snapshot.paramMap.get('characterId');
 
     if (battleId && characterId) {
-      forkJoin({
-        battle: this.battleConfigService.getBattle(battleId),
-        characters: this.characterService.getCharacters()
-      }).subscribe(({ battle, characters }) => {
-        if (!battle) { this.router.navigate(['/game/worlds', characterId]); return; }
-        
-        this.battleConfig = battle;
-        this.enemy = battle.enemy;
-        
-        const foundCharacter = characters.find(c => c.id === characterId);
-        if (foundCharacter) {
-          this.playerCharacter = foundCharacter;
-          this.setupPlayerStats();
-          this.isPlayerTurn = true;
-          this.startTimer();
-          this.dialogHistory.push({ speaker: 'Narrador', text: 'A batalha começa!' });
-        } else {
-          this.router.navigate(['/game/characters']);
-        }
-      });
+      this.loadInitialData(battleId, characterId);
     }
   }
 
-  ngAfterViewChecked(): void {
-    this.scrollToBottom();
+  loadInitialData(battleId: string, characterId: string): void {
+    forkJoin({
+      battle: this.battleConfigService.getBattle(battleId),
+      characters: this.characterService.getCharacters()
+    }).subscribe(({ battle, characters }) => {
+      if (!battle) { this.router.navigate(['/game/worlds', characterId]); return; }
+      
+      this.battleConfig = battle;
+      this.enemy = { ...battle.enemy }; // Faz uma cópia para poder modificar a vida
+      
+      const foundCharacter = characters.find(c => c.id === characterId);
+      if (foundCharacter) {
+        this.playerCharacter = foundCharacter;
+        this.setupPlayerStats();
+        this.startBattle(characterId, battle.theme);
+      } else {
+        this.router.navigate(['/game/characters']);
+      }
+    });
   }
 
-  ngOnDestroy(): void {
-    clearInterval(this.interval);
+  startBattle(characterId: string, theme: string): void {
+    this.isLoadingAction = true;
+    this.campaignService.startBattle(characterId, theme).subscribe(response => {
+      this.addDialogEntry('Narrador', response.narrativa);
+      this.processEvent(response);
+      this.isLoadingAction = false;
+      this.isPlayerTurn = true;
+      this.startTimer();
+    });
   }
 
   sendPlayerAction(): void {
-    if (this.selectedAction.trim() === '' || !this.isPlayerTurn) return;
+    if (!this.playerCharacter || !this.battleConfig || this.selectedAction.trim() === '' || !this.isPlayerTurn || this.isBattleOver) return;
     
     this.isLoadingAction = true;
     this.isPlayerTurn = false;
+    clearInterval(this.interval);
+
     const playerAction = this.selectedAction;
-    this.dialogHistory.push({ speaker: this.playerCharacter!.name, text: playerAction });
+    this.addDialogEntry(this.playerCharacter.name, playerAction);
     this.selectedAction = '';
 
     const historyTexts = this.dialogHistory.map(d => `${d.speaker}: ${d.text}`);
-    const theme = (this.battleConfig as any).theme || 'Batalha Galáctica';
 
-    this.campaignService.sendAction(this.playerCharacter!.id, theme, playerAction, historyTexts)
-      .subscribe((response: any) => {
-        this.dialogHistory.push({ speaker: this.enemy!.name, text: response.narrative });
+    this.campaignService.sendAction(this.playerCharacter.id, this.battleConfig.theme, playerAction, historyTexts)
+      .subscribe((response: CampaignResponse) => {
+        this.addDialogEntry('Narrador', response.narrativa);
+        this.processEvent(response);
         this.isLoadingAction = false;
-        this.isPlayerTurn = true;
-        this.timeLeft = 60;
+        
+        if (!this.isBattleOver) {
+          this.isPlayerTurn = true;
+          this.startTimer();
+        }
       });
+  }
+
+  processEvent(response: CampaignResponse): void {
+    const event = response.evento;
+    if (!event) return;
+
+    if (event.danoRecebido && this.playerCharacter) {
+      this.playerHealth = Math.max(0, this.playerHealth - event.danoRecebido);
+    }
+    if (event.danoCausado && this.enemy) {
+      this.enemy.health = Math.max(0, this.enemy.health - event.danoCausado);
+    }
+
+    if (event.tipo === 'fim' || this.playerHealth <= 0 || (this.enemy && this.enemy.health <= 0)) {
+      this.endBattle(event.vitoria);
+    }
+  }
+
+  endBattle(playerWon?: boolean): void {
+    this.isBattleOver = true;
+    this.isPlayerTurn = false;
+    clearInterval(this.interval);
+
+    if (playerWon || (this.enemy && this.enemy.health <= 0)) {
+      this.battleResult = 'VITÓRIA!';
+      this.addDialogEntry('Sistema', 'Você venceu a batalha e ganhou experiência!');
+      if (this.playerCharacter && this.battleConfig) {
+        this.characterService.getCharacterProgress(this.playerCharacter.id).subscribe(progressData => {
+            const progress = progressData.campaign_progress || {};
+            progress[this.battleConfig!.id] = true;
+            this.characterService.updateCharacterProgress(this.playerCharacter!.id, progress).subscribe();
+        });
+      }
+    } else {
+      this.battleResult = 'DERROTA!';
+      this.addDialogEntry('Sistema', 'Você foi derrotado. Tente novamente.');
+    }
+  }
+
+  returnToMap(): void {
+    if (this.playerCharacter) {
+      this.router.navigate(['/game/worlds', this.playerCharacter.id]);
+    }
+  }
+
+  addDialogEntry(speaker: string, text: string): void {
+    this.dialogHistory.push({ speaker, text });
   }
 
   setupPlayerStats(): void {
@@ -105,6 +165,8 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   startTimer(): void {
+    this.timeLeft = 60;
+    this.timerDisplay = '1:00';
     this.interval = setInterval(() => {
       if (this.timeLeft > 0) {
         this.timeLeft--;
@@ -113,20 +175,17 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
         this.timerDisplay = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
       } else {
         this.isPlayerTurn = !this.isPlayerTurn;
-        this.timeLeft = 60;
+        if (!this.isPlayerTurn) {
+            this.sendPlayerAction();
+        }
       }
     }, 1000);
   }
 
-  toggleActionPanel(): void {
-    this.isActionPanelVisible = !this.isActionPanelVisible;
-  }
-
-  selectAction(action: string): void {
-    this.selectedAction = action;
-    this.isActionPanelVisible = false;
-  }
-
+  toggleActionPanel(): void { this.isActionPanelVisible = !this.isActionPanelVisible; }
+  selectAction(action: string): void { this.selectedAction = action; this.isActionPanelVisible = false; }
+  ngAfterViewChecked(): void { this.scrollToBottom(); }
+  ngOnDestroy(): void { clearInterval(this.interval); }
   private scrollToBottom(): void {
     try {
       if (this.chatLogContainer) {

@@ -26,27 +26,7 @@
                         <span class="stat-icon">❤️</span>
                         <div class="stat-bar"><div class="stat-fill health" [style.width.%]="(playerHealth / playerMaxHealth) * 100"><span class="stat-value">{{ playerHealth }}/{{ playerMaxHealth }}</span></div></div>
                     </div>
-                    <div class="stat-row">
-                        <span class="stat-icon">💪</span>
-                        <div class="stat-bar"><div class="stat-fill strength" [style.width.%]="playerCharacter.attributes.strength * 10"><span class="stat-value">{{ playerCharacter.attributes.strength }}</span></div></div>
                     </div>
-                    <div class="stat-row">
-                        <span class="stat-icon">🧠</span>
-                        <div class="stat-bar"><div class="stat-fill intelligence" [style.width.%]="playerCharacter.attributes.intelligence * 10"><span class="stat-value">{{ playerCharacter.attributes.intelligence }}</span></div></div>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-icon">🗣️</span>
-                        <div class="stat-bar"><div class="stat-fill charisma" [style.width.%]="playerCharacter.attributes.charisma * 10"><span class="stat-value">{{ playerCharacter.attributes.charisma }}</span></div></div>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-icon">🎯</span>
-                        <div class="stat-bar"><div class="stat-fill dexterity" [style.width.%]="playerCharacter.attributes.dexterity * 10"><span class="stat-value">{{ playerCharacter.attributes.dexterity }}</span></div></div>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-icon">🌌</span>
-                        <div class="stat-bar"><div class="stat-fill intuition" [style.width.%]="playerCharacter.attributes.intuition * 10"><span class="stat-value">{{ playerCharacter.attributes.intuition }}</span></div></div>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -56,11 +36,11 @@
                     <h3 class="chat-title">Registro de Combate</h3>
                 </div>
                 <div class="chat-log" #chatLogContainer>
-                    <div *ngFor="let entry of dialogHistory" class="chat-message" [ngClass]="{'player-message': entry.speaker === playerCharacter.name, 'enemy-message': entry.speaker === enemy.name}">
+                    <div *ngFor="let entry of dialogHistory" class="chat-message" [ngClass]="{'player-message': entry.speaker === playerCharacter.name, 'enemy-message': entry.speaker !== playerCharacter.name}">
                         <strong>{{ entry.speaker }}:</strong> {{ entry.text }}
                     </div>
                     <div *ngIf="isLoadingAction" class="chat-message enemy-message">
-                        <strong>{{ enemy.name }}:</strong> ...
+                        <strong>Narrador:</strong> ...
                     </div>
                 </div>
             </div>
@@ -77,48 +57,34 @@
                         <span class="stat-icon">❤️</span>
                         <div class="stat-bar"><div class="stat-fill health" [style.width.%]="(enemy.health / enemy.maxHealth) * 100"><span class="stat-value">{{ enemy.health }}/{{ enemy.maxHealth }}</span></div></div>
                     </div>
-                    <div class="stat-row">
-                        <span class="stat-icon">💪</span>
-                        <div class="stat-bar"><div class="stat-fill strength" style="width: 80%"><span class="stat-value">8</span></div></div>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-icon">🧠</span>
-                        <div class="stat-bar"><div class="stat-fill intelligence" style="width: 60%"><span class="stat-value">6</span></div></div>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-icon">🗣️</span>
-                        <div class="stat-bar"><div class="stat-fill charisma" style="width: 40%"><span class="stat-value">4</span></div></div>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-icon">🎯</span>
-                        <div class="stat-bar"><div class="stat-fill dexterity" style="width: 70%"><span class="stat-value">7</span></div></div>
-                    </div>
-                    <div class="stat-row">
-                        <span class="stat-icon">🌌</span>
-                        <div class="stat-bar"><div class="stat-fill intuition" style="width: 90%"><span class="stat-value">9</span></div></div>
-                    </div>
-                </div>
+                     </div>
             </div>
         </div>
     </div>
 
-    <div class="action-panel" *ngIf="isActionPanelVisible">
-        <button class="action-btn attack" (click)="selectAction('Atacar')">⚔️ Atacar</button>
-        <button class="action-btn special" (click)="selectAction('Especial')">✨ Especial</button>
-        <button class="action-btn defend" (click)="selectAction('Defender')">🛡️ Defender</button>
-        <button class="action-btn" (click)="selectAction('Item')">💊 Item</button>
-        <button class="action-btn" (click)="selectAction('Fugir')">🚀 Fugir</button>
+    <div class="action-panel" *ngIf="isActionPanelVisible && !isBattleOver">
+        <button class="action-btn" (click)="selectAction('Atacar')">⚔️ Atacar</button>
+        <button class="action-btn" (click)="selectAction('Especial')">✨ Especial</button>
+        <button class="action-btn" (click)="selectAction('Defender')">🛡️ Defender</button>
     </div>
     
-    <div class="footer-hud">
+    <div class="footer-hud" *ngIf="!isBattleOver">
         <div class="action-input-container">
             <button class="hud-icon-btn" title="Ver Sugestões" (click)="toggleActionPanel()">
                 <svg fill="currentColor" viewBox="0 0 24 24"><path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/></svg>
             </button>
-            <input type="text" class="action-input" placeholder="Digite sua ação ou clique em '?' para sugestões..." [(ngModel)]="selectedAction" (keyup.enter)="sendPlayerAction()" [disabled]="!isPlayerTurn || isLoadingAction">
+            <input type="text" class="action-input" placeholder="Digite sua ação..." [(ngModel)]="selectedAction" (keyup.enter)="sendPlayerAction()" [disabled]="!isPlayerTurn || isLoadingAction">
             <button class="hud-icon-btn send-btn" title="Enviar Ação" (click)="sendPlayerAction()" [disabled]="!isPlayerTurn || isLoadingAction">
                 <svg fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
             </button>
         </div>
+    </div>
+
+    <div class="battle-over-modal" *ngIf="isBattleOver">
+      <div class="modal-content">
+        <h2 class="modal-title" [ngClass]="{'victory': battleResult === 'VITÓRIA!', 'defeat': battleResult === 'DERROTA!'}">{{ battleResult }}</h2>
+        <p class="modal-text">{{ battleResult === 'VITÓRIA!' ? 'Você superou o desafio e se tornou mais forte.' : 'A jornada é longa. Reagrupe-se e tente novamente.' }}</p>
+        <button class="modal-button" (click)="returnToMap()">Voltar ao Mapa Galáctico</button>
+      </div>
     </div>
 </div>
