@@ -201,6 +201,7 @@
   border: 2px solid rgba(255, 215, 0, 0.3);
   border-radius: 50%;
   animation: rotate-galaxy 20s linear infinite;
+  margin-top: 30%;
 }
 
 .galaxy-spiral::before,
@@ -241,6 +242,7 @@
   animation: pulse 2s infinite;
   z-index: 2;
   position: relative;
+  margin-top: 30%;
 }
 
 @keyframes pulse {
