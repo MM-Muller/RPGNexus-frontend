@@ -118,23 +118,43 @@ export class BattleComponent implements OnInit, OnDestroy {
   }
   
   typeWriterEffect(speaker: string, text: string, callback: () => void): void {
-    let i = 0;
-    const speed = 20;
-    const initialEntry: DialogLine = { speaker, text: '' };
-    this.dialogHistory.push(initialEntry);
-    this.scrollToBottom();
+    const lines = text.split('\n').filter(line => line.trim() !== '');
+    if (lines.length === 0) {
+        callback();
+        return;
+    }
 
-    const type = () => {
-        if (i < text.length) {
-            initialEntry.text += text.charAt(i);
-            i++;
-            this.scrollToBottom();
-            setTimeout(type, speed);
+    let lineIndex = 0;
+    const speed = 20;
+    const dialogEntry: DialogLine = { speaker, text: '' };
+    this.dialogHistory.push(dialogEntry);
+
+    const typeLine = () => {
+        if (lineIndex < lines.length) {
+            let charIndex = 0;
+            const currentLine = lines[lineIndex];
+
+            const typeChar = () => {
+                if (charIndex < currentLine.length) {
+                    dialogEntry.text += currentLine.charAt(charIndex);
+                    charIndex++;
+                    this.scrollToBottom();
+                    setTimeout(typeChar, speed);
+                } else {
+                    if (lineIndex < lines.length - 1) {
+                        dialogEntry.text += '\n';
+                    }
+                    lineIndex++;
+                    setTimeout(typeLine, 250);
+                }
+            };
+            typeChar();
         } else {
             callback();
         }
     };
-    type();
+
+    typeLine();
   }
 
   processEvent(response: CampaignResponse): void {
@@ -148,7 +168,7 @@ export class BattleComponent implements OnInit, OnDestroy {
       this.enemy.health = Math.max(0, this.enemy.health - event.danoCausado);
     }
 
-    if (event.tipo === 'fim' || this.playerHealth <= 0 || (this.enemy && this.enemy.health <= 0)) {
+    if (event.vitoria || this.playerHealth <= 0 || (this.enemy && this.enemy.health <= 0)) {
       this.endBattle(event.vitoria);
     }
   }

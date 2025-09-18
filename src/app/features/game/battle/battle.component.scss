@@ -395,10 +395,24 @@
 }
 
 .chat-message {
-    margin-bottom: 12px;
-    &.player-message strong { color: #4CAF50; }
-    &.enemy-message strong { color: #F44336; }
+  display: flex;
+  line-height: 1.6;
+  margin-bottom: 12px;
+  
+  &.player-message .chat-speaker { color: #4CAF50; }
+  &.enemy-message .chat-speaker { color: #F44336; }
 }
+
+.chat-speaker {
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-right: 8px;
+}
+
+.chat-text {
+  white-space: pre-wrap;
+}
+
 
 .typing-indicator::after {
   content: 'Gerando...';
