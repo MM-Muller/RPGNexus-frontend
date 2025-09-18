@@ -59,8 +59,8 @@
                     <div *ngFor="let entry of dialogHistory" class="chat-message" [ngClass]="{'player-message': entry.speaker === playerCharacter.name, 'enemy-message': entry.speaker !== playerCharacter.name}">
                         <strong>{{ entry.speaker }}:</strong> {{ entry.text }}
                     </div>
-                    <div *ngIf="isLoadingAction" class="chat-message enemy-message">
-                        <strong>Narrador:</strong> ...
+                    <div *ngIf="isTyping" class="chat-message enemy-message">
+                        <strong>Narrador: </strong> <span class="typing-indicator"></span> 
                     </div>
                 </div>
             </div>
@@ -84,6 +84,18 @@
                     <div class="stat-row">
                         <span class="stat-icon">🧠</span>
                         <div class="stat-bar"><div class="stat-fill intelligence" style="width: 60%"><span class="stat-value">6</span></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-icon">🗣️</span>
+                        <div class="stat-bar"><div class="stat-fill charisma" style="width: 40%"><span class="stat-value">4</span></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-icon">🎯</span>
+                        <div class="stat-bar"><div class="stat-fill dexterity" style="width: 70%"><span class="stat-value">7</span></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-icon">🌌</span>
+                        <div class="stat-bar"><div class="stat-fill intuition" style="width: 90%"><span class="stat-value">9</span></div></div>
                     </div>
                 </div>
             </div>

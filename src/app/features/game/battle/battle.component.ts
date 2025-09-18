@@ -27,6 +27,7 @@ export class BattleComponent implements OnInit, OnDestroy {
   isPlayerTurn: boolean = false;
   isBattleOver = false;
   battleResult = '';
+  isTyping: boolean = false;
 
   dialogHistory: DialogLine[] = [];
   selectedAction: string = '';
@@ -76,12 +77,15 @@ export class BattleComponent implements OnInit, OnDestroy {
 
   startBattle(characterId: string, theme: string): void {
     this.isLoadingAction = true;
+    this.isTyping = true;
     this.campaignService.startBattle(characterId, theme).subscribe(response => {
-      this.addDialogEntry('Narrador', response.narrativa);
-      this.processEvent(response);
-      this.isLoadingAction = false;
-      this.isPlayerTurn = true;
-      this.startTimer();
+      this.isTyping = false;
+      this.typeWriterEffect('Narrador', response.narrativa, () => {
+        this.processEvent(response);
+        this.isLoadingAction = false;
+        this.isPlayerTurn = true;
+        this.startTimer();
+      });
     });
   }
 
@@ -90,6 +94,7 @@ export class BattleComponent implements OnInit, OnDestroy {
     
     this.isLoadingAction = true;
     this.isPlayerTurn = false;
+    this.isTyping = true;
     clearInterval(this.interval);
 
     const playerAction = this.selectedAction;
@@ -100,15 +105,36 @@ export class BattleComponent implements OnInit, OnDestroy {
 
     this.campaignService.sendAction(this.playerCharacter.id, this.battleConfig.theme, playerAction, historyTexts)
       .subscribe((response: CampaignResponse) => {
-        this.addDialogEntry('Narrador', response.narrativa);
-        this.processEvent(response);
-        this.isLoadingAction = false;
-        
-        if (!this.isBattleOver) {
-          this.isPlayerTurn = true;
-          this.startTimer();
-        }
+        this.isTyping = false;
+        this.typeWriterEffect('Narrador', response.narrativa, () => {
+            this.processEvent(response);
+            this.isLoadingAction = false;
+            if (!this.isBattleOver) {
+              this.isPlayerTurn = true;
+              this.startTimer();
+            }
+        });
       });
+  }
+  
+  typeWriterEffect(speaker: string, text: string, callback: () => void): void {
+    let i = 0;
+    const speed = 20;
+    const initialEntry: DialogLine = { speaker, text: '' };
+    this.dialogHistory.push(initialEntry);
+    this.scrollToBottom();
+
+    const type = () => {
+        if (i < text.length) {
+            initialEntry.text += text.charAt(i);
+            i++;
+            this.scrollToBottom();
+            setTimeout(type, speed);
+        } else {
+            callback();
+        }
+    };
+    type();
   }
 
   processEvent(response: CampaignResponse): void {
@@ -155,14 +181,8 @@ export class BattleComponent implements OnInit, OnDestroy {
   }
 
   addDialogEntry(speaker: string, text: string): void {
-    const container = this.chatLogContainer.nativeElement;
-    const shouldScroll = container.scrollTop + container.clientHeight >= container.scrollHeight - 30;
-
     this.dialogHistory.push({ speaker, text });
-
-    if (shouldScroll) {
-      setTimeout(() => this.scrollToBottom(), 0);
-    }
+    this.scrollToBottom();
   }
 
   setupPlayerStats(): void {

@@ -342,7 +342,8 @@
 .chat-container {
     width: 100%;
     height: 100%; 
-    max-height: 500px; 
+    max-height: 600px; 
+    min-height: 600px;
     background: rgba(10, 10, 46, 0.9);
     backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 215, 0, 0.3);
@@ -397,6 +398,21 @@
     margin-bottom: 12px;
     &.player-message strong { color: #4CAF50; }
     &.enemy-message strong { color: #F44336; }
+}
+
+.typing-indicator::after {
+  content: 'Gerando...';
+  display: inline-block;
+  vertical-align: bottom;
+  animation: typing 2s steps(24, end) infinite;
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+}
+
+@keyframes typing {
+  0% { width: 0; }
+  100% { width: 14ch; }
 }
 
 .action-panel {
