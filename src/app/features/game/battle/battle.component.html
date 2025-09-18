@@ -26,7 +26,27 @@
                         <span class="stat-icon">❤️</span>
                         <div class="stat-bar"><div class="stat-fill health" [style.width.%]="(playerHealth / playerMaxHealth) * 100"><span class="stat-value">{{ playerHealth }}/{{ playerMaxHealth }}</span></div></div>
                     </div>
+                    <div class="stat-row">
+                        <span class="stat-icon">💪</span>
+                        <div class="stat-bar"><div class="stat-fill strength" [style.width.%]="playerCharacter.attributes.strength * 10"><span class="stat-value">{{ playerCharacter.attributes.strength }}</span></div></div>
                     </div>
+                    <div class="stat-row">
+                        <span class="stat-icon">🧠</span>
+                        <div class="stat-bar"><div class="stat-fill intelligence" [style.width.%]="playerCharacter.attributes.intelligence * 10"><span class="stat-value">{{ playerCharacter.attributes.intelligence }}</span></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-icon">🗣️</span>
+                        <div class="stat-bar"><div class="stat-fill charisma" [style.width.%]="playerCharacter.attributes.charisma * 10"><span class="stat-value">{{ playerCharacter.attributes.charisma }}</span></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-icon">🎯</span>
+                        <div class="stat-bar"><div class="stat-fill dexterity" [style.width.%]="playerCharacter.attributes.dexterity * 10"><span class="stat-value">{{ playerCharacter.attributes.dexterity }}</span></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-icon">🌌</span>
+                        <div class="stat-bar"><div class="stat-fill intuition" [style.width.%]="playerCharacter.attributes.intuition * 10"><span class="stat-value">{{ playerCharacter.attributes.intuition }}</span></div></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -57,7 +77,15 @@
                         <span class="stat-icon">❤️</span>
                         <div class="stat-bar"><div class="stat-fill health" [style.width.%]="(enemy.health / enemy.maxHealth) * 100"><span class="stat-value">{{ enemy.health }}/{{ enemy.maxHealth }}</span></div></div>
                     </div>
-                     </div>
+                    <div class="stat-row">
+                        <span class="stat-icon">💪</span>
+                        <div class="stat-bar"><div class="stat-fill strength" style="width: 80%"><span class="stat-value">8</span></div></div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-icon">🧠</span>
+                        <div class="stat-bar"><div class="stat-fill intelligence" style="width: 60%"><span class="stat-value">6</span></div></div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { BattleConfigService } from 'src/app/core/services/battle-config.service';
@@ -13,16 +13,16 @@ import { CampaignResponse } from 'src/app/models/campaign.model';
   templateUrl: './battle.component.html',
   styleUrls: ['./battle.component.scss']
 })
-export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class BattleComponent implements OnInit, OnDestroy {
   @ViewChild('chatLogContainer') private chatLogContainer!: ElementRef;
 
   battleConfig?: Battle;
   enemy?: Enemy;
   playerCharacter?: Character;
-  
+
   playerHealth: number = 0;
   playerMaxHealth: number = 0;
-  
+
   isLoadingAction = false;
   isPlayerTurn: boolean = false;
   isBattleOver = false;
@@ -59,10 +59,10 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
       characters: this.characterService.getCharacters()
     }).subscribe(({ battle, characters }) => {
       if (!battle) { this.router.navigate(['/game/worlds', characterId]); return; }
-      
+
       this.battleConfig = battle;
-      this.enemy = { ...battle.enemy }; // Faz uma cópia para poder modificar a vida
-      
+      this.enemy = { ...battle.enemy };
+
       const foundCharacter = characters.find(c => c.id === characterId);
       if (foundCharacter) {
         this.playerCharacter = foundCharacter;
@@ -155,7 +155,14 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   addDialogEntry(speaker: string, text: string): void {
+    const container = this.chatLogContainer.nativeElement;
+    const shouldScroll = container.scrollTop + container.clientHeight >= container.scrollHeight - 30;
+
     this.dialogHistory.push({ speaker, text });
+
+    if (shouldScroll) {
+      setTimeout(() => this.scrollToBottom(), 0);
+    }
   }
 
   setupPlayerStats(): void {
@@ -165,27 +172,47 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   startTimer(): void {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+
     this.timeLeft = 60;
-    this.timerDisplay = '1:00';
+    this.updateTimerDisplay();
+
     this.interval = setInterval(() => {
-      if (this.timeLeft > 0) {
-        this.timeLeft--;
-        const minutes = Math.floor(this.timeLeft / 60);
-        const seconds = this.timeLeft % 60;
-        this.timerDisplay = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-      } else {
-        this.isPlayerTurn = !this.isPlayerTurn;
-        if (!this.isPlayerTurn) {
-            this.sendPlayerAction();
-        }
+      this.timeLeft--;
+      this.updateTimerDisplay();
+
+      if (this.timeLeft <= 0) {
+        clearInterval(this.interval);
+        this.handleTimeout();
       }
     }, 1000);
   }
 
+  private handleTimeout(): void {
+    if (this.isPlayerTurn && !this.isBattleOver) {
+      this.addDialogEntry(this.playerCharacter!.name, 'O tempo acabou! O personagem hesita...');
+      this.selectedAction = 'hesitar e não fazer nada neste turno'; 
+      this.sendPlayerAction();
+    }
+  }
+
+  private updateTimerDisplay(): void {
+    const minutes = Math.floor(this.timeLeft / 60);
+    const seconds = this.timeLeft % 60;
+    this.timerDisplay = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  }
+
   toggleActionPanel(): void { this.isActionPanelVisible = !this.isActionPanelVisible; }
   selectAction(action: string): void { this.selectedAction = action; this.isActionPanelVisible = false; }
-  ngAfterViewChecked(): void { this.scrollToBottom(); }
-  ngOnDestroy(): void { clearInterval(this.interval); }
+  
+  ngOnDestroy(): void { 
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+  }
+  
   private scrollToBottom(): void {
     try {
       if (this.chatLogContainer) {
