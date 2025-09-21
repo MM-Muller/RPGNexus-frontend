@@ -33,8 +33,8 @@ export class BattleComponent implements OnInit, OnDestroy {
   selectedAction: string = '';
 
   private interval: any;
-  timeLeft: number = 60;
-  timerDisplay: string = '1:00';
+  timeLeft: number = 300; 
+  timerDisplay: string = '5:00';
   isActionPanelVisible = false;
 
   constructor(
@@ -216,7 +216,7 @@ export class BattleComponent implements OnInit, OnDestroy {
       clearInterval(this.interval);
     }
 
-    this.timeLeft = 60;
+    this.timeLeft = 300;
     this.updateTimerDisplay();
 
     this.interval = setInterval(() => {
