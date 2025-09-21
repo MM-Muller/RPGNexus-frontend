@@ -26,6 +26,10 @@ export class SignupComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  navigateToHome(): void {
+    this.router.navigate(['/home']);
+  }
+
   onSignup(
     username: string,
     email: string,

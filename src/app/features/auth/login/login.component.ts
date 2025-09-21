@@ -34,6 +34,10 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  navigateToHome(): void {
+    this.router.navigate(['/home']);
+  }
+
   onLogin(): void {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
@@ -53,7 +57,6 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
 
   onForgotPassword(): void {
     console.log('Forgot password clicked');
-    // Implemente a lógica de recuperação de senha aqui
   }
 
   navigateToSignup(): void {
@@ -61,7 +64,6 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
   }
 
   private initNeuralCanvas(): void {
-    // ... (seu código do canvas continua aqui, sem alterações)
     const canvas = this.el.nativeElement.querySelector('#neuralCanvas');
     if (!canvas) return;
 
