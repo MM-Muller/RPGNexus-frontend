@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Character } from '../../../models/character.model';
 import { CharacterService } from 'src/app/core/services/character.service';
+import { MatSnackBar } from '@angular/material/snack-bar'; 
 
 @Component({
   selector: 'app-characters',
@@ -12,13 +13,15 @@ export class CharactersComponent implements OnInit {
   selectedCharacter: Character | null = null;
   isModalVisible: boolean = false;
 
-  constructor(private characterService: CharacterService) {}
+  constructor(
+    private characterService: CharacterService,
+    private snackBar: MatSnackBar 
+  ) {}
 
   ngOnInit(): void {
     this.loadCharacters();
   }
 
-  // A fórmula aqui DEVE ser idêntica à do backend (leveling.py)
   getExpToNextLevel(level: number): number {
     const XP_BASE = 100;
     const XP_FACTOR = 1.5;
@@ -57,10 +60,24 @@ export class CharactersComponent implements OnInit {
       this.characterService.deleteCharacter(this.selectedCharacter.id).subscribe({
         next: () => {
           console.log('Personagem excluído:', this.selectedCharacter?.name);
-          this.loadCharacters(); // Recarrega a lista após a exclusão
+          this.loadCharacters();
           this.closeModal();
+          this.snackBar.open('Personagem excluído com sucesso!', 'Fechar', {
+            duration: 3000,
+            panelClass: ['snackbar-success'],
+            horizontalPosition: 'right',
+            verticalPosition: 'top'
+          });
         },
-        error: (err) => console.error('Falha ao excluir personagem:', err),
+        error: (err) => {
+          console.error('Falha ao excluir personagem:', err);
+          this.snackBar.open('Falha ao excluir personagem. Tente novamente.', 'Fechar', {
+            duration: 5000,
+            panelClass: ['snackbar-error'],
+            horizontalPosition: 'right',
+            verticalPosition: 'top'
+          });
+        },
       });
     }
   }

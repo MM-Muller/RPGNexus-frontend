@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-account',
@@ -13,11 +14,13 @@ export class AccountComponent implements OnInit {
   isEditModalVisible = false;
   isDeleteModalVisible = false;
   editForm: FormGroup;
+  private originalEmail: string = '';
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar
   ) {
     this.editForm = this.fb.group({
       username: ['', Validators.required],
@@ -34,6 +37,7 @@ export class AccountComponent implements OnInit {
     this.authService.getCurrentUser().subscribe({
       next: (data) => {
         this.user = data;
+        this.originalEmail = this.user.email;
         this.editForm.patchValue({
           username: this.user.username,
           email: this.user.email,
@@ -58,6 +62,8 @@ export class AccountComponent implements OnInit {
     }
     
     const formData = this.editForm.value;
+    const isEmailChanged = formData.email !== this.originalEmail;
+    
     const payload: any = {
       username: formData.username,
       email: formData.email,
@@ -68,10 +74,35 @@ export class AccountComponent implements OnInit {
 
     this.authService.updateCurrentUser(payload).subscribe({
       next: (updatedUser) => {
-        this.user = updatedUser;
         this.closeEditModal();
+        if (isEmailChanged) {
+          this.snackBar.open('Email atualizado. Por favor, faça login novamente.', 'Fechar', {
+            duration: 5000,
+            panelClass: ['snackbar-success'],
+            horizontalPosition: 'right',
+            verticalPosition: 'top'
+          });
+          this.authService.logout();
+          this.router.navigate(['/auth/login']);
+        } else {
+          this.user = updatedUser;
+          this.snackBar.open('Perfil atualizado com sucesso!', 'Fechar', {
+            duration: 3000,
+            panelClass: ['snackbar-success'],
+            horizontalPosition: 'right',
+            verticalPosition: 'top'
+          });
+        }
       },
-      error: (err) => console.error('Failed to update user:', err),
+      error: (err) => {
+        console.error('Failed to update user:', err);
+        this.snackBar.open('Falha ao atualizar o perfil. Tente novamente.', 'Fechar', {
+          duration: 5000,
+          panelClass: ['snackbar-error'],
+          horizontalPosition: 'right',
+          verticalPosition: 'top'
+        });
+      },
     });
   }
 
@@ -81,6 +112,12 @@ export class AccountComponent implements OnInit {
 
   onLogout(): void {
     this.authService.logout();
+    this.snackBar.open('Deslogado com sucesso. Volte em breve!', 'Fechar', {
+      duration: 3000,
+      panelClass: ['snackbar-success'],
+      horizontalPosition: 'right',
+      verticalPosition: 'top'
+    });
     this.router.navigate(['/auth/login']);
   }
 
@@ -98,8 +135,22 @@ export class AccountComponent implements OnInit {
         console.log('Account deleted successfully');
         this.authService.logout();
         this.router.navigate(['/auth/login']);
+        this.snackBar.open('Conta excluída permanentemente. Lamentamos sua partida.', 'Fechar', {
+          duration: 3000,
+          panelClass: ['snackbar-success'],
+          horizontalPosition: 'right',
+          verticalPosition: 'top'
+        });
       },
-      error: (err) => console.error('Failed to delete account:', err),
+      error: (err) => {
+        console.error('Failed to delete account:', err);
+        this.snackBar.open('Falha ao excluir a conta. Tente novamente.', 'Fechar', {
+          duration: 5000,
+          panelClass: ['snackbar-error'],
+          horizontalPosition: 'right',
+          verticalPosition: 'top'
+        });
+      },
     });
   }
 }

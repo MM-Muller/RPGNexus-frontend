@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, Renderer2, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CharacterService } from 'src/app/core/services/character.service';
+import { CharacterService } from 'src/app/core/services/character.service'; 
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-character-create',
@@ -34,7 +35,8 @@ export class CharacterCreateComponent implements OnInit, AfterViewInit, OnDestro
     private router: Router,
     private renderer: Renderer2,
     private el: ElementRef,
-    private characterService: CharacterService 
+    private characterService: CharacterService,
+    private snackBar: MatSnackBar 
   ) {
     this.characterForm = this.fb.group({
       name: ['', Validators.required],
@@ -100,10 +102,22 @@ export class CharacterCreateComponent implements OnInit, AfterViewInit, OnDestro
       this.characterService.createCharacter(characterData).subscribe({
         next: (response) => {
           console.log('Personagem criado com sucesso:', response);
+          this.snackBar.open('Personagem criado com sucesso!', 'Fechar', {
+            duration: 3000,
+            panelClass: ['snackbar-success'],
+            horizontalPosition: 'right',
+            verticalPosition: 'top'
+          });
           this.router.navigate(['/game/characters']);
         },
         error: (err) => {
           console.error('Falha ao criar personagem:', err);
+          this.snackBar.open('Falha ao criar personagem. Tente novamente.', 'Fechar', {
+            duration: 5000,
+            panelClass: ['snackbar-error'],
+            horizontalPosition: 'right',
+            verticalPosition: 'top'
+          });
         }
       });
     }
