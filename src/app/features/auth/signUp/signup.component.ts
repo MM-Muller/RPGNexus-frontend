@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-signup',
@@ -13,7 +14,8 @@ export class SignupComponent implements AfterViewInit, OnDestroy {
   constructor(
     private router: Router,
     private el: ElementRef,
-    private authService: AuthService
+    private authService: AuthService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngAfterViewInit(): void {
@@ -26,10 +28,6 @@ export class SignupComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  navigateToHome(): void {
-    this.router.navigate(['/home']);
-  }
-
   onSignup(
     username: string,
     email: string,
@@ -38,23 +36,49 @@ export class SignupComponent implements AfterViewInit, OnDestroy {
   ): void {
     if (username && email && password && confirmPassword) {
       if (password !== confirmPassword) {
-        console.error('As senhas não coincidem!');
+        this.snackBar.open('As senhas não coincidem!', 'Fechar', {
+          duration: 3000,
+          panelClass: ['snackbar-error'],
+          horizontalPosition: 'right',
+          verticalPosition: 'top'
+        });
         return;
       }
       this.authService.signup({ username, email, password }).subscribe(
         (response) => {
-          console.log('Signup successful:', response);
+          this.snackBar.open('Registro realizado com sucesso!', 'Fechar', {
+            duration: 3000,
+            panelClass: ['snackbar-success'],
+            horizontalPosition: 'right',
+            verticalPosition: 'top'
+          });
           this.router.navigate(['/auth/login']);
         },
         (error) => {
-          console.error('Signup failed:', error);
+          this.snackBar.open('Falha no registro: ' + error.error.detail, 'Fechar', {
+            duration: 5000,
+            panelClass: ['snackbar-error'],
+            horizontalPosition: 'right',
+            verticalPosition: 'top'
+          });
         }
       );
+    } else {
+      this.snackBar.open('Todos os campos são obrigatórios!', 'Fechar', {
+        duration: 3000,
+        panelClass: ['snackbar-error'],
+        horizontalPosition: 'right',
+        verticalPosition: 'top'
+      });
     }
   }
 
   navigateToLogin(): void {
     this.router.navigate(['/auth/login']);
+  }
+
+  navigateToHome(): void {
+    this.router.navigate(['/home']);
   }
 
   private initNeuralCanvas(): void {
@@ -100,7 +124,7 @@ export class SignupComponent implements AfterViewInit, OnDestroy {
 
     const initParticles = () => {
       particles = [];
-      for (let i = 0; i < particleCount; i++) {
+      for (let i = 0; i < particles.length; i++) {
         particles.push(new Particle());
       }
     };

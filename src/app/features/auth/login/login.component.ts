@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
     private router: Router,
     private el: ElementRef,
     private authService: AuthService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -34,33 +36,49 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  navigateToHome(): void {
-    this.router.navigate(['/home']);
-  }
-
   onLogin(): void {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       this.authService.login(email, password).subscribe({
         next: (response) => {
-          console.log('Login successful:', response);
+          this.snackBar.open('Login realizado com sucesso!', 'Fechar', {
+            duration: 3000,
+            panelClass: ['snackbar-success'],
+            horizontalPosition: 'right',
+            verticalPosition: 'top'
+          });
           this.router.navigate(['/game/account']);
         },
         error: (err) => {
-          console.error('Login failed:', err);
+          this.snackBar.open('Falha no login: verifique suas credenciais.', 'Fechar', {
+            duration: 5000,
+            panelClass: ['snackbar-error'],
+            horizontalPosition: 'right',
+            verticalPosition: 'top'
+          });
         },
       });
     } else {
-      console.error('Form is invalid');
+      this.snackBar.open('Formulário inválido, verifique os campos.', 'Fechar', {
+        duration: 3000,
+        panelClass: ['snackbar-error'],
+        horizontalPosition: 'right',
+        verticalPosition: 'top'
+      });
     }
   }
 
   onForgotPassword(): void {
     console.log('Forgot password clicked');
+    // Implemente a lógica de recuperação de senha aqui
   }
 
   navigateToSignup(): void {
     this.router.navigate(['/auth/signup']);
+  }
+
+  navigateToHome(): void {
+    this.router.navigate(['/home']);
   }
 
   private initNeuralCanvas(): void {

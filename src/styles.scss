@@ -97,3 +97,102 @@ body {
 ::-webkit-scrollbar {
   display: none;
 }
+
+.mat-mdc-snack-bar-container {
+  padding: 0 !important;
+  margin: 0 !important;
+  border-radius: 8px !important;
+
+  position: fixed !important;
+  top: -700px !important;
+  right: 20px !important;
+  z-index: 1000 !important;
+  max-width: 400px !important;
+  min-width: 300px !important;
+}
+
+.mat-mdc-simple-snack-bar {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+
+  background-color: #1c0030 !important;
+  border-radius: 8px !important;
+  font-family: 'Exo 2', sans-serif !important;
+  
+  box-shadow: 0 0 0 1px $primary-color inset !important;
+
+  .mat-mdc-simple-snack-bar-label {
+    padding: 14px 24px !important;
+    flex-grow: 1 !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+  }
+}
+
+.snackbar-success {
+  .mat-mdc-simple-snack-bar-label {
+    color: #4CAF50 !important; 
+  }
+
+  .mat-mdc-simple-snack-bar-label * {
+    color: #4CAF50 !important;
+  }
+
+  .mat-mdc-simple-snack-bar {
+    border-left: 10px solid #4CAF50 !important;
+  }
+}
+
+.snackbar-error {
+  .mat-mdc-simple-snack-bar-label {
+    color: #f44336 !important; 
+  }
+
+  .mat-mdc-simple-snack-bar-label * {
+    color: #f44336 !important;
+  }
+
+  .mat-mdc-simple-snack-bar {
+    border-left: 10px solid #f44336 !important;
+  }
+}
+
+.mat-mdc-snack-bar-container .mat-mdc-button {
+  color: $primary-color !important;
+  margin-right: 14px !important;
+  font-weight: 600 !important;
+  
+  &:hover {
+    background-color: rgba(255, 215, 0, 0.1) !important;
+  }
+}
+
+.mat-mdc-snack-bar-container {
+  animation: slideInFromRight 0.3s ease-out;
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .mat-mdc-snack-bar-container {
+    top: 10px !important;
+    right: 10px !important;
+    left: 10px !important;
+    max-width: calc(100% - 20px) !important;
+    min-width: auto !important;
+  }
+}
