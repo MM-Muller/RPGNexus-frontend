@@ -158,7 +158,7 @@ export class SignupComponent implements AfterViewInit, OnDestroy {
 
     const initParticles = () => {
       particles = [];
-      for (let i = 0; i < particles.length; i++) {
+      for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle());
       }
     };
