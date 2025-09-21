@@ -34,43 +34,77 @@ export class SignupComponent implements AfterViewInit, OnDestroy {
     password: string,
     confirmPassword: string
   ): void {
-    if (username && email && password && confirmPassword) {
-      if (password !== confirmPassword) {
-        this.snackBar.open('As senhas não coincidem!', 'Fechar', {
-          duration: 3000,
-          panelClass: ['snackbar-error'],
-          horizontalPosition: 'right',
-          verticalPosition: 'top'
-        });
-        return;
-      }
-      this.authService.signup({ username, email, password }).subscribe(
-        (response) => {
-          this.snackBar.open('Registro realizado com sucesso!', 'Fechar', {
-            duration: 3000,
-            panelClass: ['snackbar-success'],
-            horizontalPosition: 'right',
-            verticalPosition: 'top'
-          });
-          this.router.navigate(['/auth/login']);
-        },
-        (error) => {
-          this.snackBar.open('Falha no registro: ' + error.error.detail, 'Fechar', {
-            duration: 5000,
-            panelClass: ['snackbar-error'],
-            horizontalPosition: 'right',
-            verticalPosition: 'top'
-          });
-        }
-      );
-    } else {
-      this.snackBar.open('Todos os campos são obrigatórios!', 'Fechar', {
+    const missingFields = [];
+    if (!username || username.trim() === '') missingFields.push('Nome de usuário');
+    if (!email || email.trim() === '') missingFields.push('E-mail');
+    if (!password || password.trim() === '') missingFields.push('Senha');
+    if (!confirmPassword || confirmPassword.trim() === '') missingFields.push('Confirmação de senha');
+
+    if (missingFields.length > 0) {
+      let errorMessage = 'Por favor, preencha os seguintes campos: ';
+      errorMessage += missingFields.join(', ');
+      
+      this.snackBar.open(errorMessage, 'Fechar', {
+        duration: 4000,
+        panelClass: ['snackbar-error'],
+        horizontalPosition: 'right',
+        verticalPosition: 'top'
+      });
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      this.snackBar.open('Por favor, insira um e-mail válido.', 'Fechar', {
         duration: 3000,
         panelClass: ['snackbar-error'],
         horizontalPosition: 'right',
         verticalPosition: 'top'
       });
+      return;
     }
+
+    if (password !== confirmPassword) {
+      this.snackBar.open('As senhas não coincidem!', 'Fechar', {
+        duration: 3000,
+        panelClass: ['snackbar-error'],
+        horizontalPosition: 'right',
+        verticalPosition: 'top'
+      });
+      return;
+    }
+
+    this.authService.signup({ username, email, password }).subscribe(
+      (response) => {
+        this.snackBar.open('Registro realizado com sucesso!', 'Fechar', {
+          duration: 3000,
+          panelClass: ['snackbar-success'],
+          horizontalPosition: 'right',
+          verticalPosition: 'top'
+        });
+        this.router.navigate(['/auth/login']);
+      },
+      (error) => {
+        let errorMessage = 'Falha no registro: ';
+        
+        if (error.error && error.error.detail) {
+          errorMessage += error.error.detail;
+        } else if (error.error && error.error.message) {
+          errorMessage += error.error.message;
+        } else if (error.message) {
+          errorMessage += error.message;
+        } else {
+          errorMessage += 'Erro desconhecido. Tente novamente.';
+        }
+
+        this.snackBar.open(errorMessage, 'Fechar', {
+          duration: 5000,
+          panelClass: ['snackbar-error'],
+          horizontalPosition: 'right',
+          verticalPosition: 'top'
+        });
+      }
+    );
   }
 
   navigateToLogin(): void {

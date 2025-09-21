@@ -37,6 +37,8 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
   }
 
   onLogin(): void {
+    this.loginForm.markAllAsTouched();
+
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       this.authService.login(email, password).subscribe({
@@ -59,8 +61,25 @@ export class LoginComponent implements AfterViewInit, OnDestroy {
         },
       });
     } else {
-      this.snackBar.open('Formulário inválido, verifique os campos.', 'Fechar', {
-        duration: 3000,
+      const emailControl = this.loginForm.get('email');
+      const passwordControl = this.loginForm.get('password');
+      
+      let errorMessage = '';
+      
+      if (emailControl?.hasError('required') && passwordControl?.hasError('required')) {
+        errorMessage = 'Por favor, preencha o e-mail e a senha para fazer login.';
+      } else if (emailControl?.hasError('required')) {
+        errorMessage = 'Por favor, preencha o campo de e-mail.';
+      } else if (emailControl?.hasError('email')) {
+        errorMessage = 'Por favor, insira um e-mail válido.';
+      } else if (passwordControl?.hasError('required')) {
+        errorMessage = 'Por favor, preencha o campo de senha.';
+      } else {
+        errorMessage = 'Por favor, verifique os campos do formulário.';
+      }
+
+      this.snackBar.open(errorMessage, 'Fechar', {
+        duration: 4000,
         panelClass: ['snackbar-error'],
         horizontalPosition: 'right',
         verticalPosition: 'top'
