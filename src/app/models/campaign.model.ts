@@ -1,5 +1,5 @@
 export interface CampaignEvent {
-  tipo: 'combate' | 'dialogo' | 'fim';
+  tipo: 'combate' | 'dialogo' | 'fim' | 'inicio';
   danoRecebido?: number;
   danoCausado?: number;
   expGanha?: number;
@@ -9,4 +9,8 @@ export interface CampaignEvent {
 export interface CampaignResponse {
   narrativa: string;
   evento: CampaignEvent;
+}
+
+export interface SuggestionsResponse {
+  suggestions: string[];
 }

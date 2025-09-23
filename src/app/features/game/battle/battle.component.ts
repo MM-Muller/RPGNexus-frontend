@@ -22,6 +22,8 @@ export class BattleComponent implements OnInit, OnDestroy {
 
   playerHealth: number = 0;
   playerMaxHealth: number = 0;
+  enemyHealth: number = 0;
+  enemyMaxHealth: number = 0;
 
   isLoadingAction = false;
   isPlayerTurn: boolean = false;
@@ -31,12 +33,13 @@ export class BattleComponent implements OnInit, OnDestroy {
 
   dialogHistory: DialogLine[] = [];
   selectedAction: string = '';
-
-  private interval: any;
-  timeLeft: number = 300; 
-  timerDisplay: string = '5:00';
+  actionSuggestions: string[] = [];
   isActionPanelVisible = false;
 
+  private interval: any;
+  timeLeft: number = 300;
+  timerDisplay: string = '5:00';
+  
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -75,6 +78,15 @@ export class BattleComponent implements OnInit, OnDestroy {
     });
   }
 
+  setupPlayerStats(): void {
+    if (!this.playerCharacter || !this.enemy) return;
+    this.playerMaxHealth = 200;
+    this.playerHealth = 200;
+
+    this.enemyMaxHealth = this.enemy.maxHealth;
+    this.enemyHealth = this.enemy.health;
+  }
+  
   startBattle(characterId: string, theme: string): void {
     this.isLoadingAction = true;
     this.isTyping = true;
@@ -116,7 +128,7 @@ export class BattleComponent implements OnInit, OnDestroy {
         });
       });
   }
-  
+
   typeWriterEffect(speaker: string, text: string, callback: () => void): void {
     const lines = text.split('\n').filter(line => line.trim() !== '');
     if (lines.length === 0) {
@@ -156,6 +168,19 @@ export class BattleComponent implements OnInit, OnDestroy {
 
     typeLine();
   }
+  
+  fetchActionSuggestions(): void {
+    if (!this.playerCharacter || !this.battleConfig) return;
+
+    this.isLoadingAction = true;
+    const historyTexts = this.dialogHistory.map(d => `${d.speaker}: ${d.text}`);
+    this.campaignService.getActionSuggestions(this.playerCharacter.id, this.battleConfig.theme, historyTexts)
+      .subscribe(response => {
+        this.actionSuggestions = response.suggestions;
+        this.isActionPanelVisible = true;
+        this.isLoadingAction = false;
+      });
+  }
 
   processEvent(response: CampaignResponse): void {
     const event = response.evento;
@@ -165,10 +190,10 @@ export class BattleComponent implements OnInit, OnDestroy {
       this.playerHealth = Math.max(0, this.playerHealth - event.danoRecebido);
     }
     if (event.danoCausado && this.enemy) {
-      this.enemy.health = Math.max(0, this.enemy.health - event.danoCausado);
+      this.enemyHealth = Math.max(0, this.enemyHealth - event.danoCausado);
     }
 
-    if (event.vitoria || this.playerHealth <= 0 || (this.enemy && this.enemy.health <= 0)) {
+    if (event.vitoria || this.playerHealth <= 0 || (this.enemy && this.enemyHealth <= 0)) {
       this.endBattle(event.vitoria);
     }
   }
@@ -178,7 +203,7 @@ export class BattleComponent implements OnInit, OnDestroy {
     this.isPlayerTurn = false;
     clearInterval(this.interval);
 
-    if (playerWon || (this.enemy && this.enemy.health <= 0)) {
+    if (playerWon || (this.enemy && this.enemyHealth <= 0)) {
       this.battleResult = 'VITÓRIA!';
       this.addDialogEntry('Sistema', 'Você venceu a batalha e ganhou experiência!');
       if (this.playerCharacter && this.battleConfig) {
@@ -205,12 +230,6 @@ export class BattleComponent implements OnInit, OnDestroy {
     this.scrollToBottom();
   }
 
-  setupPlayerStats(): void {
-    if (!this.playerCharacter) return;
-    this.playerMaxHealth = this.playerCharacter.attributes.strength * 150;
-    this.playerHealth = this.playerMaxHealth;
-  }
-
   startTimer(): void {
     if (this.interval) {
       clearInterval(this.interval);
@@ -233,7 +252,7 @@ export class BattleComponent implements OnInit, OnDestroy {
   private handleTimeout(): void {
     if (this.isPlayerTurn && !this.isBattleOver) {
       this.addDialogEntry(this.playerCharacter!.name, 'O tempo acabou! O personagem hesita...');
-      this.selectedAction = 'hesitar e não fazer nada neste turno'; 
+      this.selectedAction = 'hesitar e não fazer nada neste turno';
       this.sendPlayerAction();
     }
   }
@@ -243,11 +262,22 @@ export class BattleComponent implements OnInit, OnDestroy {
     const seconds = this.timeLeft % 60;
     this.timerDisplay = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }
-
-  toggleActionPanel(): void { this.isActionPanelVisible = !this.isActionPanelVisible; }
-  selectAction(action: string): void { this.selectedAction = action; this.isActionPanelVisible = false; }
   
-  ngOnDestroy(): void { 
+  toggleActionPanel(): void {
+    if (this.isActionPanelVisible) {
+        this.isActionPanelVisible = false;
+        this.actionSuggestions = [];
+    } else {
+        this.fetchActionSuggestions();
+    }
+  }
+
+  selectAction(action: string): void {
+    this.selectedAction = action;
+    this.isActionPanelVisible = false;
+  }
+  
+  ngOnDestroy(): void {
     if (this.interval) {
       clearInterval(this.interval);
     }

@@ -14,8 +14,8 @@ export class BattleConfigService {
       theme: 'Confronto com o guardião dourado de um sistema estelar antigo.',
       enemy: {
         name: 'Sentinela do Vazio',
-        health: 5000,
-        maxHealth: 5000,
+        health: 500,
+        maxHealth: 500,
       }
     },
     {
@@ -24,8 +24,8 @@ export class BattleConfigService {
       theme: 'Encontro com uma entidade de um vórtex dimensional perdido.',
       enemy: {
         name: 'Eco Dimensional',
-        health: 4500,
-        maxHealth: 4500,
+        health: 750,
+        maxHealth: 750,
       }
     }
     // Adicionar as outras batalhas aqui

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { CampaignResponse } from 'src/app/models/campaign.model';
+import { CampaignResponse, SuggestionsResponse } from 'src/app/models/campaign.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +24,14 @@ export class CampaignService {
       character_id: characterId,
       battle_theme: battleTheme,
       action,
+      history
+    });
+  }
+
+  getActionSuggestions(characterId: string, battleTheme: string, history: string[]): Observable<SuggestionsResponse> {
+    return this.http.post<SuggestionsResponse>(`${this.apiUrl}/suggestions`, {
+      character_id: characterId,
+      battle_theme: battleTheme,
       history
     });
   }
