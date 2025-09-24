@@ -488,23 +488,24 @@
 .character-art {
   width: 200px;
   height: 200px;
+  font-size: 100px; 
   margin-bottom: 25px;
   position: relative;
   z-index: 2;
   border-radius: 50%;
-  border: 2px solid $primary-alpha-50;
+  border: 2px solid $primary-alpha-10;
   display: flex;
   align-items: center;
   justify-content: center;
-
+  
   &::before {
     content: "";
     position: absolute;
     inset: -6px;
     border-radius: 50%;
     border: 1px solid transparent;
-    border-top-color: $primary-color;
-    border-bottom-color: $secondary-color;
+    border-top-color: $primary-alpha-10;
+    border-bottom-color: $secondary-alpha-10;
     animation: rotate-slow 4s linear infinite;
   }
 }
@@ -536,28 +537,28 @@
 }
 
 .art-human {
-  background: radial-gradient(circle, #4caf50, transparent 70%);
+  background: radial-gradient(circle, rgba(#4caf50, 0.8), transparent 70%); 
 }
 .art-synthetic {
-  background: radial-gradient(circle, #2196f3, transparent 70%);
+  background: radial-gradient(circle, rgba(#2196f3, 0.8), transparent 70%);
 }
 .art-hybrid {
-  background: radial-gradient(circle, #ff5722, transparent 70%);
+  background: radial-gradient(circle, rgba(#ff5722, 0.8), transparent 70%);
 }
 .art-expatriate {
-  background: radial-gradient(circle, #9c27b0, transparent 70%);
+  background: radial-gradient(circle, rgba(#9c27b0, 0.8), transparent 70%);
 }
 .art-scientist {
-  background: radial-gradient(circle, #00bcd4, transparent 70%);
+  background: radial-gradient(circle, rgba(#00bcd4, 0.8), transparent 70%);
 }
 .art-pilot {
-  background: radial-gradient(circle, #ffc107, transparent 70%);
+  background: radial-gradient(circle, rgba(#ffc107, 0.8), transparent 70%);
 }
 .art-diplomat {
-  background: radial-gradient(circle, #673ab7, transparent 70%);
+  background: radial-gradient(circle, rgba(#673ab7, 0.8), transparent 70%);
 }
 .art-adventurer {
-  background: radial-gradient(circle, #f44336, transparent 70%);
+  background: radial-gradient(circle, rgba(#f44336, 0.8), transparent 70%);
 }
 
 .stream {

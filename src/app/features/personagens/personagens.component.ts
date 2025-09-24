@@ -69,6 +69,20 @@ export class PersonagensComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private animationFrameId?: number;
 
+  private raceIcons: { [key: string]: string } = {
+    'HUMANO': '🌍',
+    'SINTÉTICO': '🤖',
+    'HÍBRIDO': '🧬',
+    'EXPATRIADO': '🚀'
+  };
+
+  private classIcons: { [key: string]: string } = {
+    'CIENTISTA': '🔭',
+    'PILOTO': '✈️',
+    'DIPLOMATA': '🕊️',
+    'AVENTUREIRO': '⚔️'
+  };
+
   constructor(private el: ElementRef) {}
 
   ngOnInit(): void {
@@ -109,6 +123,14 @@ export class PersonagensComponent implements OnInit, AfterViewInit, OnDestroy {
         starsContainer.appendChild(star);
       }
     }
+  }
+
+  getRaceIcon(title: string): string {
+    return this.raceIcons[title] || '';
+  }
+
+  getClassIcon(title: string): string {
+    return this.classIcons[title] || '';
   }
 
   private initNeuralCanvas(): void {
