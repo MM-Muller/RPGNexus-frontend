@@ -159,6 +159,7 @@
   padding: 40px 20px;
   z-index: 1;
   width: 100%;
+  height: auto;
 }
 
 .holographic-header {
@@ -240,6 +241,7 @@
   box-shadow: 0 0 50px rgba(138, 43, 226, 0.2),
     inset 0 0 30px rgba(255, 215, 0, 0.05);
   animation: panel-breathe 4s ease-in-out infinite;
+  margin-bottom: 25px; 
 }
 
 @keyframes panel-breathe {
