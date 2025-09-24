@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { BattleConfigService } from 'src/app/core/services/battle-config.service';
@@ -13,7 +13,7 @@ import { CampaignResponse } from 'src/app/models/campaign.model';
   templateUrl: './battle.component.html',
   styleUrls: ['./battle.component.scss']
 })
-export class BattleComponent implements OnInit, OnDestroy {
+export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('chatLogContainer') private chatLogContainer!: ElementRef;
 
   battleConfig?: Battle;
@@ -37,6 +37,7 @@ export class BattleComponent implements OnInit, OnDestroy {
   isActionPanelVisible = false;
 
   private interval: any;
+  private shouldScrollToBottom = false;
   timeLeft: number = 300;
   timerDisplay: string = '5:00';
   
@@ -54,6 +55,13 @@ export class BattleComponent implements OnInit, OnDestroy {
 
     if (battleId && characterId) {
       this.loadInitialData(battleId, characterId);
+    }
+  }
+
+  ngAfterViewChecked(): void {
+    if (this.shouldScrollToBottom) {
+      this.scrollToBottom();
+      this.shouldScrollToBottom = false;
     }
   }
 
@@ -113,6 +121,8 @@ export class BattleComponent implements OnInit, OnDestroy {
     this.addDialogEntry(this.playerCharacter.name, playerAction);
     this.selectedAction = '';
 
+    this.forceScrollToBottom();
+
     const historyTexts = this.dialogHistory.map(d => `${d.speaker}: ${d.text}`);
 
     this.campaignService.sendAction(this.playerCharacter.id, this.battleConfig.theme, playerAction, historyTexts)
@@ -125,6 +135,7 @@ export class BattleComponent implements OnInit, OnDestroy {
               this.isPlayerTurn = true;
               this.startTimer();
             }
+            this.forceScrollToBottom();
         });
       });
   }
@@ -227,7 +238,7 @@ export class BattleComponent implements OnInit, OnDestroy {
 
   addDialogEntry(speaker: string, text: string): void {
     this.dialogHistory.push({ speaker, text });
-    this.scrollToBottom();
+    this.shouldScrollToBottom = true;
   }
 
   startTimer(): void {
@@ -262,7 +273,25 @@ export class BattleComponent implements OnInit, OnDestroy {
     const seconds = this.timeLeft % 60;
     this.timerDisplay = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }
-  
+
+  onInputFocus(): void {
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 100);
+  }
+
+  onInputClick(): void {
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 50);
+  }
+
+  onInputChange(): void {
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 50);
+  }
+
   toggleActionPanel(): void {
     if (this.isActionPanelVisible) {
         this.isActionPanelVisible = false;
@@ -275,19 +304,31 @@ export class BattleComponent implements OnInit, OnDestroy {
   selectAction(action: string): void {
     this.selectedAction = action;
     this.isActionPanelVisible = false;
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 100);
+  }
+
+  private forceScrollToBottom(): void {
+    setTimeout(() => {
+      this.scrollToBottom();
+    }, 0);
+  }
+
+  private scrollToBottom(): void {
+    try {
+      if (this.chatLogContainer?.nativeElement) {
+        const element = this.chatLogContainer.nativeElement;
+        element.scrollTop = element.scrollHeight;
+      }
+    } catch (err) {
+      console.error('Erro ao fazer scroll:', err);
+    }
   }
   
   ngOnDestroy(): void {
     if (this.interval) {
       clearInterval(this.interval);
     }
-  }
-  
-  private scrollToBottom(): void {
-    try {
-      if (this.chatLogContainer) {
-        this.chatLogContainer.nativeElement.scrollTop = this.chatLogContainer.nativeElement.scrollHeight;
-      }
-    } catch (err) { }
   }
 }

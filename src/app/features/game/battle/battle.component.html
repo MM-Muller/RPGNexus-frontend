@@ -67,7 +67,15 @@
                 <div class="footer-hud" *ngIf="!isBattleOver">
                   <div class="action-input-container">
                       <button class="action-btn-suggestions" title="Sugestões de Ações" (click)="toggleActionPanel()">Ações</button>
-                      <input type="text" class="action-input" placeholder="Digite sua ação..." [(ngModel)]="selectedAction" (keyup.enter)="sendPlayerAction()" [disabled]="!isPlayerTurn || isLoadingAction">
+                      <input type="text" 
+                             class="action-input" 
+                             placeholder="Digite sua ação..." 
+                             [(ngModel)]="selectedAction" 
+                             (keyup.enter)="sendPlayerAction()" 
+                             (focus)="onInputFocus()"
+                             (input)="onInputChange()"
+                             (click)="onInputClick()"
+                             [disabled]="!isPlayerTurn || isLoadingAction">
                       <button class="hud-icon-btn send-btn" title="Enviar Ação" (click)="sendPlayerAction()" [disabled]="!isPlayerTurn || isLoadingAction">
                           <svg fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
                       </button>
