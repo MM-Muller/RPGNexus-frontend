@@ -1,12 +1,13 @@
 import { Component, OnDestroy, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
+import { forkJoin, Subject, takeUntil, map } from 'rxjs';
 import { BattleConfigService } from 'src/app/core/services/battle-config.service';
 import { CharacterService } from 'src/app/core/services/character.service';
 import { CampaignService } from 'src/app/core/services/campaign.service';
 import { Battle, DialogLine, Enemy } from 'src/app/models/battle.model';
 import { Character } from 'src/app/models/character.model';
-import { CampaignResponse } from 'src/app/models/campaign.model';
+import { CampaignEvent } from 'src/app/models/campaign.model';
+import { BattleState } from 'src/app/models/battle-state.model';
 
 @Component({
   selector: 'app-battle',
@@ -36,6 +37,9 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
   actionSuggestions: string[] = [];
   isActionPanelVisible = false;
 
+  private battleState: BattleState | null = null;
+  private destroy$ = new Subject<void>();
+  
   private interval: any;
   private shouldScrollToBottom = false;
   timeLeft: number = 300;
@@ -52,7 +56,6 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
   ngOnInit(): void {
     const battleId = this.route.snapshot.paramMap.get('id');
     const characterId = this.route.snapshot.paramMap.get('characterId');
-
     if (battleId && characterId) {
       this.loadInitialData(battleId, characterId);
     }
@@ -65,50 +68,110 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+    this.saveBattleState();
+    this.campaignService.disconnect();
+  }
+
   loadInitialData(battleId: string, characterId: string): void {
     forkJoin({
       battle: this.battleConfigService.getBattle(battleId),
-      characters: this.characterService.getCharacters()
-    }).subscribe(({ battle, characters }) => {
-      if (!battle) { this.router.navigate(['/game/worlds', characterId]); return; }
+      character: this.characterService.getCharacters().pipe(
+        map((characters: Character[]) => characters.find((c: Character) => c.id === characterId))
+      ),
+    }).subscribe(({ battle, character }) => {
+      if (!battle || !character) {
+        console.error('Dados de batalha ou personagem não encontrados. Redirecionando...');
+        this.router.navigate(['/game/worlds', characterId]);
+        return;
+      }
 
       this.battleConfig = battle;
+      this.playerCharacter = character;
       this.enemy = { ...battle.enemy };
 
-      const foundCharacter = characters.find(c => c.id === characterId);
-      if (foundCharacter) {
-        this.playerCharacter = foundCharacter;
-        this.setupPlayerStats();
-        this.startBattle(characterId, battle.theme);
-      } else {
-        this.router.navigate(['/game/characters']);
-      }
-    });
-  }
+      console.log('Dados carregados:', { battleConfig: this.battleConfig, enemy: this.enemy, playerCharacter: this.playerCharacter });
+      
+      this.setupPlayerStats();
 
-  setupPlayerStats(): void {
-    if (!this.playerCharacter || !this.enemy) return;
-    this.playerMaxHealth = 200;
-    this.playerHealth = 200;
-
-    this.enemyMaxHealth = this.enemy.maxHealth;
-    this.enemyHealth = this.enemy.health;
-  }
-  
-  startBattle(characterId: string, theme: string): void {
-    this.isLoadingAction = true;
-    this.isTyping = true;
-    this.campaignService.startBattle(characterId, theme).subscribe(response => {
-      this.isTyping = false;
-      this.typeWriterEffect('Narrador', response.narrativa, () => {
-        this.processEvent(response);
-        this.isLoadingAction = false;
-        this.isPlayerTurn = true;
-        this.startTimer();
+      this.campaignService.connect(character.id, battle.id).pipe(
+        takeUntil(this.destroy$)
+      ).subscribe(message => {
+        switch (message.type) {
+          case 'load_state':
+            this.loadBattleState(message.payload);
+            break;
+          case 'narrative_start':
+            this.isLoadingAction = true;
+            this.isTyping = true;
+            this.dialogHistory.push({ speaker: 'Narrador', text: '' });
+            break;
+          case 'narrative_chunk':
+            this.typeWriterEffect(message.payload);
+            break;
+          case 'narrative_end':
+            this.processEvent(message.payload.event);
+            this.isTyping = false;
+            this.isLoadingAction = false;
+            if (!this.isBattleOver) {
+              this.isPlayerTurn = true;
+              this.startTimer();
+            }
+            break;
+          case 'suggestions':
+            this.actionSuggestions = message.payload.suggestions;
+            break;
+          case 'battle_over':
+            this.endBattle(message.payload.victory);
+            break;
+          default:
+            console.warn('Tipo de mensagem desconhecida:', message.type);
+            break;
+        }
       });
     });
   }
 
+  private loadBattleState(state: BattleState): void {
+    this.battleState = state;
+    this.dialogHistory = state.history;
+    this.playerHealth = state.player_health;
+    this.enemyHealth = state.enemy_health;
+    this.isPlayerTurn = true;
+    this.isBattleOver = false;
+    this.forceScrollToBottom();
+    this.startTimer();
+  }
+
+  private saveBattleState(): void {
+    if (this.isBattleOver) return;
+
+    this.battleState = {
+      character_id: this.playerCharacter!.id,
+      battle_id: this.battleConfig!.id,
+      battle_theme: this.battleConfig!.theme,
+      history: this.dialogHistory,
+      player_health: this.playerHealth,
+      enemy_health: this.enemyHealth,
+      last_updated: new Date().toISOString()
+    };
+    this.campaignService.sendMessage('save_state', this.battleState);
+  }
+
+  setupPlayerStats(): void {
+    if (!this.playerCharacter || !this.battleConfig) return;
+    this.playerMaxHealth = 200;
+    this.playerHealth = 200;
+
+    this.enemyMaxHealth = this.battleConfig.enemy.maxHealth;
+    this.enemyHealth = this.battleConfig.enemy.health;
+  }
+  
   sendPlayerAction(): void {
     if (!this.playerCharacter || !this.battleConfig || this.selectedAction.trim() === '' || !this.isPlayerTurn || this.isBattleOver) return;
     
@@ -120,68 +183,37 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
     const playerAction = this.selectedAction;
     this.addDialogEntry(this.playerCharacter.name, playerAction);
     this.selectedAction = '';
-
     this.forceScrollToBottom();
-
-    const historyTexts = this.dialogHistory.map(d => `${d.speaker}: ${d.text}`);
-
-    this.campaignService.sendAction(this.playerCharacter.id, this.battleConfig.theme, playerAction, historyTexts)
-      .subscribe((response: CampaignResponse) => {
-        this.isTyping = false;
-        this.typeWriterEffect('Narrador', response.narrativa, () => {
-            this.processEvent(response);
-            this.isLoadingAction = false;
-            if (!this.isBattleOver) {
-              this.isPlayerTurn = true;
-              this.startTimer();
-            }
-            this.forceScrollToBottom();
-        });
-      });
+    
+    this.campaignService.sendMessage('player_action', {
+      action: playerAction,
+      history: this.dialogHistory.map(d => `${d.speaker}: ${d.text}`)
+    });
   }
 
-  typeWriterEffect(speaker: string, text: string, callback: () => void): void {
-    const lines = text.split('\n').filter(line => line.trim() !== '');
-    if (lines.length === 0) {
-        callback();
-        return;
-    }
+  typeWriterEffect(chunk: string): void {
+    const lastEntry = this.dialogHistory[this.dialogHistory.length - 1];
+    if (lastEntry && lastEntry.speaker === 'Narrador') {
+      let i = 0;
+      const speed = 20;
+      const totalText = lastEntry.text + chunk;
+      lastEntry.text = '';
 
-    let lineIndex = 0;
-    const speed = 20;
-    const dialogEntry: DialogLine = { speaker, text: '' };
-    this.dialogHistory.push(dialogEntry);
-
-    const typeLine = () => {
-        if (lineIndex < lines.length) {
-            let charIndex = 0;
-            const currentLine = lines[lineIndex];
-
-            const typeChar = () => {
-                if (charIndex < currentLine.length) {
-                    dialogEntry.text += currentLine.charAt(charIndex);
-                    charIndex++;
-                    this.scrollToBottom();
-                    setTimeout(typeChar, speed);
-                } else {
-                    if (lineIndex < lines.length - 1) {
-                        dialogEntry.text += '\n';
-                    }
-                    lineIndex++;
-                    setTimeout(typeLine, 250);
-                }
-            };
-            typeChar();
-        } else {
-            callback();
+      const type = () => {
+        if (i < totalText.length) {
+          lastEntry.text += totalText.charAt(i);
+          this.shouldScrollToBottom = true;
+          i++;
+          setTimeout(type, speed);
         }
-    };
+      };
 
-    typeLine();
+      type();
+    }
   }
-  
+
   fetchActionSuggestions(): void {
-    if (!this.playerCharacter || !this.battleConfig) return;
+    if (!this.playerCharacter || !this.battleConfig || this.isLoadingAction) return;
 
     this.isLoadingAction = true;
     const historyTexts = this.dialogHistory.map(d => `${d.speaker}: ${d.text}`);
@@ -193,8 +225,7 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
       });
   }
 
-  processEvent(response: CampaignResponse): void {
-    const event = response.evento;
+  processEvent(event: CampaignEvent): void {
     if (!event) return;
 
     if (event.danoRecebido && this.playerCharacter) {
@@ -318,17 +349,10 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
   private scrollToBottom(): void {
     try {
       if (this.chatLogContainer?.nativeElement) {
-        const element = this.chatLogContainer.nativeElement;
-        element.scrollTop = element.scrollHeight;
+        this.chatLogContainer.nativeElement.scrollTop = this.chatLogContainer.nativeElement.scrollHeight;
       }
     } catch (err) {
       console.error('Erro ao fazer scroll:', err);
-    }
-  }
-  
-  ngOnDestroy(): void {
-    if (this.interval) {
-      clearInterval(this.interval);
     }
   }
 }

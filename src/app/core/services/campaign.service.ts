@@ -1,31 +1,66 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { CampaignResponse, SuggestionsResponse } from 'src/app/models/campaign.model';
+import { BattleState } from 'src/app/models/battle-state.model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CampaignService {
   private apiUrl = `${environment.apiUrl}/campaign`;
+  private wsUrl = `ws://localhost:8000/api/v1/campaign`;
+  private socket?: WebSocket;
+  private messageSubject = new Subject<any>();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
-  startBattle(characterId: string, battleTheme: string): Observable<CampaignResponse> {
-    return this.http.post<CampaignResponse>(`${this.apiUrl}/start_battle`, {
-      character_id: characterId,
-      battle_theme: battleTheme
-    });
+  connect(characterId: string, battleId: string): Observable<any> {
+    const token = this.authService.getToken();
+    if (!token) {
+      console.error('Token de autenticação não encontrado.');
+      return new Observable(observer => observer.error('Token de autenticação não encontrado.'));
+    }
+
+    this.socket = new WebSocket(`${this.wsUrl}/ws/battle/${characterId}/${battleId}?token=${token}`);
+
+    this.socket.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      this.messageSubject.next(message);
+    };
+
+    this.socket.onclose = (event) => {
+      console.log('WebSocket connection closed:', event);
+      this.messageSubject.complete();
+    };
+
+    this.socket.onerror = (error) => {
+      console.error('WebSocket error:', error);
+      this.messageSubject.error(error);
+    };
+
+    return this.messageSubject.asObservable();
   }
 
-  sendAction(characterId: string, battleTheme: string, action: string, history: string[]): Observable<CampaignResponse> {
-    return this.http.post<CampaignResponse>(`${this.apiUrl}/action`, {
-      character_id: characterId,
-      battle_theme: battleTheme,
-      action,
-      history
-    });
+  disconnect(): void {
+    if (this.socket) {
+      this.socket.close();
+    }
+  }
+
+  sendMessage(type: string, payload: any): void {
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+      this.socket.send(JSON.stringify({ type, payload }));
+    }
+  }
+
+  exitBattle(state: BattleState): void {
+    if (this.socket) {
+      this.sendMessage('exit_battle', state);
+      this.socket.close();
+    }
   }
 
   getActionSuggestions(characterId: string, battleTheme: string, history: string[]): Observable<SuggestionsResponse> {
