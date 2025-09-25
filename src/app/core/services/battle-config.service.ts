@@ -9,6 +9,16 @@ export class BattleConfigService {
 
   private battles: Battle[] = [
     {
+      id: 'primordial-nebula',
+      title: '🌟 Conflito na Nebulosa 🌟',
+      theme: 'Encontro com uma entidade elemental que protege a Nebulosa Primordial.',
+      enemy: {
+        name: 'Guardião Elemental',
+        health: 450,
+        maxHealth: 450,
+      }
+    },
+    {
       id: 'aurelion-guardian',
       title: '⚡ Batalha Galáctica ⚡',
       theme: 'Confronto com o guardião dourado de um sistema estelar antigo.',
@@ -27,8 +37,47 @@ export class BattleConfigService {
         health: 750,
         maxHealth: 750,
       }
+    },
+    {
+      id: 'azurite-constellation',
+      title: '💎 Caçada ao Arquiteto 💎',
+      theme: 'Infiltração na fortaleza dos Arquitetos do Vazio para desativar suas defesas.',
+      enemy: {
+        name: 'Arquiteto de Cristal',
+        health: 600,
+        maxHealth: 600,
+      }
+    },
+    {
+      id: 'central-nexus',
+      title: '🌌 O Coração do Nexus 🌌',
+      theme: 'Batalha pela estabilidade do Nexus Central contra uma anomalia disruptiva.',
+      enemy: {
+        name: 'Anomalia Convergente',
+        health: 850,
+        maxHealth: 850,
+      }
+    },
+    {
+      id: 'crystal-galaxy',
+      title: '🎶 Desafio do Som Cósmico 🎶',
+      theme: 'Uma disputa de frequência e ressonância contra um Harmônico.',
+      enemy: {
+        name: 'Cantor Harmônico',
+        health: 550,
+        maxHealth: 550,
+      }
+    },
+    {
+      id: 'star-cluster',
+      title: '✨ O Enxame Celeste ✨',
+      theme: 'Repelindo um enxame de criaturas exóticas e predadoras no aglomerado estelar.',
+      enemy: {
+        name: 'Rainha do Enxame',
+        health: 700,
+        maxHealth: 700,
+      }
     }
-    // Adicionar as outras batalhas aqui
   ];
 
   constructor() { }
