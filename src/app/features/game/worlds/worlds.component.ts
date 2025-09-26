@@ -1,16 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { CharacterService } from '../../../core/services/character.service';
+import { Character } from '../../../models/character.model';
 
 @Component({
   selector: 'app-worlds',
   templateUrl: './worlds.component.html',
   styleUrls: ['./worlds.component.scss'],
 })
-export class WorldsComponent implements OnInit {
+export class WorldsComponent implements OnInit, OnDestroy {
   characterId: string | null = null;
   campaignProgress: { [worldName: string]: boolean } = {};
-  
+  character?: Character;
+
+  private queryParamsSubscription?: Subscription;
+  private paramMapSubscription?: Subscription;
+
   worlds = [
     { name: 'Nebulosa Primordial', id: 'primordial-nebula', description: 'O berço da civilização estelar', position: { left: '15%', top: '30%' }, status: 'open' },
     { name: 'Sistema Aurelion', id: 'aurelion-guardian', description: 'Lar dos Guardiões Dourados', position: { left: '35%', top: '25%' }, status: 'open' },
@@ -24,18 +30,52 @@ export class WorldsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private characterService: CharacterService
   ) {}
 
   ngOnInit(): void {
-    this.characterId = this.route.snapshot.paramMap.get('characterId');
-    if (this.characterId) {
-      this.characterService.getCharacterProgress(this.characterId).subscribe((data) => {
-        this.campaignProgress = data.campaign_progress || {};
-      });
+    this.queryParamsSubscription = this.route.queryParams.subscribe(params => {
+      if (params['refresh'] === 'true') {
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: {},
+          replaceUrl: true
+        }).then(() => {
+          window.location.reload();
+        });
+        return; 
+      }
+    });
+
+    this.paramMapSubscription = this.route.paramMap.subscribe(params => {
+      this.characterId = params.get('characterId');
+      if (this.characterId) {
+        this.loadCharacterAndProgress(this.characterId);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.queryParamsSubscription) {
+      this.queryParamsSubscription.unsubscribe();
+    }
+    if (this.paramMapSubscription) {
+      this.paramMapSubscription.unsubscribe();
     }
   }
 
+  loadCharacterAndProgress(characterId: string): void {
+    this.characterService.getCharacterProgress(characterId).subscribe({
+      next: (data) => {
+        this.campaignProgress = data.campaign_progress || {};
+      },
+      error: (err) => {
+        console.error('Falha ao carregar o progresso do personagem:', err);
+      }
+    });
+  }
+  
   isWorldCompleted(worldId: string): boolean {
     return this.campaignProgress[worldId] || false;
   }
