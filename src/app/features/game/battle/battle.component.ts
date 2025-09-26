@@ -44,6 +44,7 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
   private shouldScrollToBottom = false;
   timeLeft: number = 300;
   timerDisplay: string = '5:00';
+  private animationFrameId: any;
   
   constructor(
     private route: ActivatedRoute,
@@ -73,6 +74,9 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.destroy$.complete();
     if (this.interval) {
       clearInterval(this.interval);
+    }
+    if (this.animationFrameId) {
+        clearTimeout(this.animationFrameId);
     }
     this.saveBattleState();
     this.campaignService.disconnect();
@@ -109,15 +113,15 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
           case 'narrative_start':
             this.isLoadingAction = true;
             this.isTyping = true;
-            this.dialogHistory.push({ speaker: 'Narrador', text: '' });
+            this.dialogHistory = [];
             break;
           case 'narrative_chunk':
-            this.typeWriterEffect(message.payload);
+            this.addDialogEntry('Narrador', message.payload);
             break;
           case 'narrative_end':
             this.processEvent(message.payload.event);
-            this.isTyping = false;
             this.isLoadingAction = false;
+            this.isTyping = false;
             if (!this.isBattleOver) {
               this.isPlayerTurn = true;
               this.startTimer();
@@ -189,27 +193,6 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
       action: playerAction,
       history: this.dialogHistory.map(d => `${d.speaker}: ${d.text}`)
     });
-  }
-
-  typeWriterEffect(chunk: string): void {
-    const lastEntry = this.dialogHistory[this.dialogHistory.length - 1];
-    if (lastEntry && lastEntry.speaker === 'Narrador') {
-      let i = 0;
-      const speed = 20;
-      const totalText = lastEntry.text + chunk;
-      lastEntry.text = '';
-
-      const type = () => {
-        if (i < totalText.length) {
-          lastEntry.text += totalText.charAt(i);
-          this.shouldScrollToBottom = true;
-          i++;
-          setTimeout(type, speed);
-        }
-      };
-
-      type();
-    }
   }
 
   fetchActionSuggestions(): void {
