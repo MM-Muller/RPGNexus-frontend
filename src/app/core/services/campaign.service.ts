@@ -70,4 +70,8 @@ export class CampaignService {
       history
     });
   }
+
+  getMostRecentBattleState(characterId: string): Observable<BattleState> {
+    return this.http.get<BattleState>(`${this.apiUrl}/most-recent-state/${characterId}`);
+  }
 }

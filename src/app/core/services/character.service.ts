@@ -28,6 +28,14 @@ export class CharacterService {
     return this.http.get(`${this.apiUrl}${characterId}/progress`);
   }
 
+  getCampaignHistory(campaignId: string): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/historico/${campaignId}`);
+  }
+
+  deleteCampaignHistory(campaignId: string): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/historico/${campaignId}`);
+  }
+
   updateCharacterProgress(
     characterId: string,
     progress: { [worldName: string]: boolean }

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin, Subject, takeUntil, map } from 'rxjs';
+import { forkJoin, Subject, takeUntil, map, of } from 'rxjs';
 import { BattleConfigService } from 'src/app/core/services/battle-config.service';
 import { CharacterService } from 'src/app/core/services/character.service';
 import { CampaignService } from 'src/app/core/services/campaign.service';
@@ -57,8 +57,8 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
   ngOnInit(): void {
     const battleId = this.route.snapshot.paramMap.get('id');
     const characterId = this.route.snapshot.paramMap.get('characterId');
-    if (battleId && characterId) {
-      this.loadInitialData(battleId, characterId);
+    if (characterId) {
+      this.loadCharacterData(characterId, battleId);
     }
   }
 
@@ -82,19 +82,47 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.campaignService.disconnect();
   }
 
-  loadInitialData(battleId: string, characterId: string): void {
-    forkJoin({
-      battle: this.battleConfigService.getBattle(battleId),
-      character: this.characterService.getCharacters().pipe(
-        map((characters: Character[]) => characters.find((c: Character) => c.id === characterId))
-      ),
-    }).subscribe(({ battle, character }) => {
-      if (!battle || !character) {
-        console.error('Dados de batalha ou personagem não encontrados. Redirecionando...');
+  loadCharacterData(characterId: string, battleIdFromRoute: string | null): void {
+    this.characterService.getCharacters().pipe(
+      map((characters: Character[]) => characters.find((c: Character) => c.id === characterId))
+    ).subscribe(character => {
+      if (!character) {
+        console.error('Personagem não encontrado. Redirecionando...');
         this.router.navigate(['/game/worlds', characterId]);
         return;
       }
+      this.playerCharacter = character;
+      
+      const battleId = battleIdFromRoute || this.battleConfig?.id;
+      if (battleId) {
+        this.loadInitialData(battleId, characterId);
+      } else {
+        // Se não tiver o battleId na rota, busca o histórico mais recente para iniciar uma nova batalha a partir dele
+        this.campaignService.getMostRecentBattleState(characterId).subscribe(
+          (mostRecentState) => {
+            const mostRecentBattleId = mostRecentState.battle_id;
+            this.loadInitialData(mostRecentBattleId, characterId, mostRecentState);
+          },
+          (error) => {
+            console.warn('Nenhum histórico encontrado para o personagem. Iniciando nova batalha.', error);
+            // Inicia uma nova batalha sem histórico
+            this.loadInitialData(this.battleConfig?.id!, characterId);
+          }
+        );
+      }
+    });
+  }
 
+  private loadInitialData(battleId: string, characterId: string, battleState?: BattleState): void {
+    forkJoin({
+      battle: this.battleConfigService.getBattle(battleId),
+      character: of(this.playerCharacter!),
+    }).subscribe(({ battle, character }) => {
+      if (!battle) {
+        console.error('Dados de batalha não encontrados. Redirecionando...');
+        this.router.navigate(['/game/worlds', characterId]);
+        return;
+      }
       this.battleConfig = battle;
       this.playerCharacter = character;
       this.enemy = { ...battle.enemy };
@@ -138,6 +166,10 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
             break;
         }
       });
+
+      if (battleState) {
+        this.loadBattleState(battleState);
+      }
     });
   }
 
