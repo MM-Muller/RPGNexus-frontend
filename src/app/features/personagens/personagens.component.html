@@ -62,7 +62,9 @@
                 <div
                   class="character-art"
                   [ngClass]="'art-' + race.subtype"
-                >{{ getRaceIcon(race.title) }}</div>
+                >
+                  <img [src]="getRaceIcon(race.title)" alt="Ícone de {{ race.title }}" class="archetype-image">
+                </div>
                 <div class="character-title">{{ race.title }}</div>
               </div>
               <div class="card__face card__face--back">
@@ -99,7 +101,9 @@
                 <div
                   class="character-art"
                   [ngClass]="'art-' + klass.subtype"
-                >{{ getClassIcon(klass.title) }}</div>
+                >
+                  <img [src]="getClassIcon(klass.title)" alt="Ícone de {{ klass.title }}" class="archetype-image">
+                </div>
                 <div class="character-title">{{ klass.title }}</div>
               </div>
               <div class="card__face card__face--back">

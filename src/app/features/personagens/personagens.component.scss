@@ -489,7 +489,7 @@
   width: 200px;
   height: 200px;
   font-size: 100px; 
-  margin-bottom: 25px;
+  margin-bottom: 50px;
   position: relative;
   z-index: 2;
   border-radius: 50%;
@@ -766,4 +766,11 @@
   .main-title {
     font-size: clamp(1.2rem, 7vw, 2rem);
   }
+}
+
+.archetype-image {
+  max-width: 100%; 
+  height: auto;    
+  display: block;  
+  margin: 0 auto;  
 }

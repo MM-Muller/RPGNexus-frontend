@@ -5,7 +5,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { Archetype } from '../../models/archetype.model';
+import { Archetype } from '../../models/archetype.model'; 
 
 @Component({
   selector: 'app-personagens',
@@ -70,17 +70,17 @@ export class PersonagensComponent implements OnInit, AfterViewInit, OnDestroy {
   private animationFrameId?: number;
 
   private raceIcons: { [key: string]: string } = {
-    'HUMANO': '🌍',
-    'SINTÉTICO': '🤖',
-    'HÍBRIDO': '🧬',
-    'EXPATRIADO': '🚀'
+    'HUMANO': 'assets/images/race/humano.png',
+    'SINTÉTICO': 'assets/images/race/sintetico.png',
+    'HÍBRIDO': 'assets/images/race/hibrido.png',
+    'EXPATRIADO': 'assets/images/race/expatriado.png'
   };
 
   private classIcons: { [key: string]: string } = {
-    'CIENTISTA': '🔭',
-    'PILOTO': '✈️',
-    'DIPLOMATA': '🕊️',
-    'AVENTUREIRO': '⚔️'
+    'CIENTISTA': 'assets/images/class/cientista.png',
+    'PILOTO': 'assets/images/class/piloto.png',
+    'DIPLOMATA': 'assets/images/class/diplomata.png',
+    'AVENTUREIRO': 'assets/images/class/aventureiro.png'
   };
 
   constructor(private el: ElementRef) {}
@@ -126,7 +126,7 @@ export class PersonagensComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getRaceIcon(title: string): string {
-    return this.raceIcons[title] || '';
+    return this.raceIcons[title] || ''; 
   }
 
   getClassIcon(title: string): string {
