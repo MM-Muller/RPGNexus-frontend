@@ -93,83 +93,55 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
       }
       this.playerCharacter = character;
       
-      const battleId = battleIdFromRoute || this.battleConfig?.id;
-      if (battleId) {
-        this.loadInitialData(battleId, characterId);
-      } else {
-        // Se não tiver o battleId na rota, busca o histórico mais recente para iniciar uma nova batalha a partir dele
-        this.campaignService.getMostRecentBattleState(characterId).subscribe(
-          (mostRecentState) => {
-            const mostRecentBattleId = mostRecentState.battle_id;
-            this.loadInitialData(mostRecentBattleId, characterId, mostRecentState);
-          },
-          (error) => {
-            console.warn('Nenhum histórico encontrado para o personagem. Iniciando nova batalha.', error);
-            // Inicia uma nova batalha sem histórico
-            this.loadInitialData(this.battleConfig?.id!, characterId);
+      this.campaignService.connect(character.id, battleIdFromRoute || 'primordial-nebula')
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(message => {
+          switch (message.type) {
+            case 'load_state':
+              this.loadBattleState(message.payload);
+              this.loadBattleConfig(message.payload.battle_id, character.id);
+              break;
+            case 'narrative_start':
+              this.isLoadingAction = true;
+              this.isTyping = true;
+              this.dialogHistory = [];
+              break;
+            case 'narrative_chunk':
+              this.addDialogEntry('Narrador', message.payload);
+              break;
+            case 'narrative_end':
+              this.processEvent(message.payload.event);
+              this.isLoadingAction = false;
+              this.isTyping = false;
+              if (!this.isBattleOver) {
+                this.isPlayerTurn = true;
+                this.startTimer();
+              }
+              break;
+            case 'suggestions':
+              this.actionSuggestions = message.payload.suggestions;
+              break;
+            case 'battle_over':
+              this.endBattle(message.payload.victory);
+              break;
+            default:
+              console.warn('Tipo de mensagem desconhecida:', message.type);
+              break;
           }
-        );
-      }
+        });
     });
   }
 
-  private loadInitialData(battleId: string, characterId: string, battleState?: BattleState): void {
-    forkJoin({
-      battle: this.battleConfigService.getBattle(battleId),
-      character: of(this.playerCharacter!),
-    }).subscribe(({ battle, character }) => {
+  private loadBattleConfig(battleId: string, characterId: string): void {
+    this.battleConfigService.getBattle(battleId).subscribe(battle => {
       if (!battle) {
         console.error('Dados de batalha não encontrados. Redirecionando...');
         this.router.navigate(['/game/worlds', characterId]);
         return;
       }
       this.battleConfig = battle;
-      this.playerCharacter = character;
       this.enemy = { ...battle.enemy };
-
-      console.log('Dados carregados:', { battleConfig: this.battleConfig, enemy: this.enemy, playerCharacter: this.playerCharacter });
-      
       this.setupPlayerStats();
-
-      this.campaignService.connect(character.id, battle.id).pipe(
-        takeUntil(this.destroy$)
-      ).subscribe(message => {
-        switch (message.type) {
-          case 'load_state':
-            this.loadBattleState(message.payload);
-            break;
-          case 'narrative_start':
-            this.isLoadingAction = true;
-            this.isTyping = true;
-            this.dialogHistory = [];
-            break;
-          case 'narrative_chunk':
-            this.addDialogEntry('Narrador', message.payload);
-            break;
-          case 'narrative_end':
-            this.processEvent(message.payload.event);
-            this.isLoadingAction = false;
-            this.isTyping = false;
-            if (!this.isBattleOver) {
-              this.isPlayerTurn = true;
-              this.startTimer();
-            }
-            break;
-          case 'suggestions':
-            this.actionSuggestions = message.payload.suggestions;
-            break;
-          case 'battle_over':
-            this.endBattle(message.payload.victory);
-            break;
-          default:
-            console.warn('Tipo de mensagem desconhecida:', message.type);
-            break;
-        }
-      });
-
-      if (battleState) {
-        this.loadBattleState(battleState);
-      }
     });
   }
 
