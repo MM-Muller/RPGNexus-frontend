@@ -20,11 +20,7 @@
     <div class="hud-corner bottom-right"></div>
 
     <div class="holographic-logo" (click)="navigateToHome()">
-      <img
-        src="assets/images/logo.png"
-        alt="Logo RPGNexus"
-        class="logo-image"
-      />
+      <img src="assets/images/logo.png" alt="Logo RPGNexus" class="logo-image" />
       <h1 class="portal-title">NEXUS GALÁCTICO</h1>
       <p class="portal-subtitle">Portal de Acesso Quântico</p>
     </div>
@@ -34,23 +30,14 @@
       <button class="tab-button" (click)="navigateToSignup()">Registrar</button>
     </div>
 
-    <form
-      id="loginForm"
-      class="form-content active"
-      [formGroup]="loginForm"
-    >
+    <form id="loginForm" class="form-content active" [formGroup]="loginForm">
       <div class="input-group">
         <div class="input-container">
           <svg class="input-icon icon-user" viewBox="0 0 24 24">
             <circle cx="12" cy="7" r="4" />
             <path d="M12 14c-5 0-8 2-8 6v1h16v-1c0-4-3-6-8-6z" />
           </svg>
-          <input
-            type="email"
-            class="input-field"
-            placeholder="Seu Email de Acesso"
-            formControlName="email"
-          />
+          <input type="email" class="input-field" placeholder="Seu Email de Acesso" formControlName="email" />
           <div class="field-border"></div>
         </div>
       </div>
@@ -62,12 +49,7 @@
             <path d="M7 11V7a5 5 0 0110 0v4" />
             <circle cx="12" cy="16" r="1" />
           </svg>
-          <input
-            type="password"
-            class="input-field"
-            placeholder="Chave Quântica"
-            formControlName="password"
-          />
+          <input type="password" class="input-field" placeholder="Chave Quântica" formControlName="password" />
           <div class="field-border"></div>
         </div>
       </div>
@@ -75,20 +57,6 @@
       <button class="submit-button" type="button" (click)="onLogin()">
         <span class="button-text">Iniciar Jornada</span>
       </button>
-
-      <div class="additional-links">
-        <div class="link-divider">
-          <div class="divider-line"></div>
-          <span class="divider-text">ou</span>
-          <div class="divider-line"></div>
-        </div>
-        <a
-          href="#"
-          class="forgot-link"
-          (click)="onForgotPassword(); $event.preventDefault()"
-          >Recuperar acesso dimensional</a
-        >
-      </div>
     </form>
   </div>
 </div>
