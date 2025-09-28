@@ -18,8 +18,8 @@ body {
   background: $dark-background;
   color: $text-color;
   overflow-x: hidden;
-  -ms-overflow-style: none; 
-  scrollbar-width: none;  
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 *:focus {
@@ -29,14 +29,12 @@ body {
 .tech-line {
   width: 300px;
   height: 3px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    $primary-color,
-    $secondary-color,
-    $primary-color,
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      $primary-color,
+      $secondary-color,
+      $primary-color,
+      transparent);
   margin: 30px auto 0;
   position: relative;
   border-radius: 2px;
@@ -66,11 +64,13 @@ body {
 }
 
 @keyframes tech-line-pulse {
+
   0%,
   100% {
     opacity: 0.7;
     transform: scaleX(1);
   }
+
   50% {
     opacity: 1;
     transform: scaleX(1.05);
@@ -78,11 +78,13 @@ body {
 }
 
 @keyframes tech-dots {
+
   0%,
   100% {
     opacity: 0.6;
     transform: scale(1);
   }
+
   50% {
     opacity: 1;
     transform: scale(1.3);
@@ -115,7 +117,7 @@ body {
   width: 100% !important;
   max-width: 100% !important;
   padding: 0 !important;
-  
+
   display: flex !important;
   align-items: center !important;
   justify-content: space-between !important;
@@ -123,7 +125,7 @@ body {
   background-color: #1c0030 !important;
   border-radius: 8px !important;
   font-family: 'Exo 2', sans-serif !important;
-  
+
   box-shadow: 0 0 0 1px $primary-color inset !important;
 
   .mat-mdc-simple-snack-bar-label {
@@ -136,7 +138,7 @@ body {
 
 .snackbar-success {
   .mat-mdc-simple-snack-bar-label {
-    color: #4CAF50 !important; 
+    color: #4CAF50 !important;
   }
 
   .mat-mdc-simple-snack-bar-label * {
@@ -150,7 +152,7 @@ body {
 
 .snackbar-error {
   .mat-mdc-simple-snack-bar-label {
-    color: #f44336 !important; 
+    color: #f44336 !important;
   }
 
   .mat-mdc-simple-snack-bar-label * {
@@ -166,7 +168,7 @@ body {
   color: $primary-color !important;
   margin-right: 14px !important;
   font-weight: 600 !important;
-  
+
   &:hover {
     background-color: rgba(255, 215, 0, 0.1) !important;
   }
@@ -181,6 +183,7 @@ body {
     transform: translateX(100%);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;
@@ -194,5 +197,61 @@ body {
     left: 10px !important;
     max-width: calc(100% - 20px) !important;
     min-width: auto !important;
+  }
+}
+
+@media (max-width: 767px) and (orientation: portrait) {
+  body.account-rotated-view {
+    overflow: hidden;
+
+    app-root>.main-layout>.main-content {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 100vh;
+      height: 100vw;
+      transform: translate(-50%, -50%) rotate(90deg);
+      transform-origin: center center;
+      overflow-y: auto;
+      padding-bottom: 0;
+    }
+
+    app-navbar .navbar-center {
+      top: 50% !important;
+      bottom: auto !important;
+      left: 40px !important;
+      right: auto !important;
+      width: auto !important;
+      transform: translateY(-50%) !important;
+      border-radius: 25px !important;
+
+      .nav-items {
+        flex-direction: column !important;
+        gap: 25px !important;
+      }
+
+      .nav-item .nav-tooltip {
+        left: calc(100% + 15px) !important;
+        top: 50% !important;
+        bottom: auto !important;
+        transform: translateY(-50%) translateX(-5px) !important;
+
+        &::before {
+          top: 50% !important;
+          left: auto !important;
+          right: 100% !important;
+          transform: translateY(-50%) !important;
+          border-color: transparent #12121c transparent transparent !important;
+        }
+
+        &::after {
+          top: 50% !important;
+          left: auto !important;
+          right: 100% !important;
+          transform: translateY(-50%) !important;
+          border-color: transparent $primary-alpha-30 transparent transparent !important;
+        }
+      }
+    }
   }
 }

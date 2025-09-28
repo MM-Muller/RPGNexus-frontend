@@ -1,5 +1,24 @@
 @import '../../../styles/variables';
 
+:host {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.account-page-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+
 .content-panel {
   color: #fff;
   text-align: center;
@@ -61,13 +80,11 @@
 .stream {
   position: absolute;
   height: 2px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    $primary-alpha-30,
-    rgba(138, 43, 226, 0.5),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      $primary-alpha-30,
+      rgba(138, 43, 226, 0.5),
+      transparent);
   animation: flow 8s linear infinite;
 }
 
@@ -89,11 +106,9 @@
 .account-container {
   width: 100%;
   max-width: 800px;
-  background: linear-gradient(
-      135deg,
+  background: linear-gradient(135deg,
       rgba(138, 43, 226, 0.05) 0%,
-      rgba(75, 0, 130, 0.05) 100%
-    ),
+      rgba(75, 0, 130, 0.05) 100%),
     rgba(25, 25, 112, 0.1);
   border: 1px solid rgba(138, 43, 226, 0.2);
   border-radius: 20px;
@@ -136,7 +151,7 @@
   margin-bottom: 25px;
   text-align: left;
   padding-bottom: 15px;
-  border-bottom: 1px solid rgba(255, 215, 0, 0.3); 
+  border-bottom: 1px solid rgba(255, 215, 0, 0.3);
 }
 
 .info-label {
@@ -158,6 +173,7 @@
   display: flex;
   justify-content: center;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 .action-btn {
@@ -222,11 +238,9 @@
   transform: translate(-50%, -50%);
   width: 100%;
   max-width: 550px;
-  background: linear-gradient(
-      135deg,
+  background: linear-gradient(135deg,
       rgba(138, 43, 226, 0.1) 0%,
-      rgba(75, 0, 130, 0.1) 100%
-    ),
+      rgba(75, 0, 130, 0.1) 100%),
     rgba(10, 10, 46, 0.95);
   border: 1px solid rgba(138, 43, 226, 0.4);
   border-radius: 15px;
@@ -248,7 +262,7 @@
 .modal-header {
   text-align: center;
   margin-bottom: 25px;
-  border-bottom: 1px solid rgba(255, 215, 0, 0.4); 
+  border-bottom: 1px solid rgba(255, 215, 0, 0.4);
   padding-bottom: 15px;
 }
 
@@ -306,7 +320,7 @@
   justify-content: center;
   gap: 15px;
   padding-top: 15px;
-  border-top: 1px solid rgba(255, 215, 0, 0.4); 
+  border-top: 1px solid rgba(255, 215, 0, 0.4);
 }
 
 .modal-footer .action-btn {
@@ -325,7 +339,7 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   cursor: pointer;
-  flex-grow: 0; 
+  flex-grow: 0;
   flex-shrink: 0;
 }
 
@@ -336,11 +350,9 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 215, 0, 0.2) 0%,
-    rgba(255, 215, 0, 0.5) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(255, 215, 0, 0.2) 0%,
+      rgba(255, 215, 0, 0.5) 100%);
   transform: translateX(-100%);
   transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   z-index: -1;
@@ -358,8 +370,8 @@
   transform: translateY(-2px);
 }
 
-.modal-footer .action-btn.primary { 
-  background-color: rgba(255, 215, 0, 0.15); 
+.modal-footer .action-btn.primary {
+  background-color: rgba(255, 215, 0, 0.15);
   border-color: rgba(255, 215, 0, 0.6);
 }
 
@@ -374,14 +386,53 @@
 }
 
 .modal-footer .action-btn-danger::before {
-  background: linear-gradient(
-    90deg,
-    rgba(255, 82, 82, 0.2) 0%,
-    rgba(255, 82, 82, 0.5) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(255, 82, 82, 0.2) 0%,
+      rgba(255, 82, 82, 0.5) 100%);
 }
 
 .modal-footer .action-btn-danger:hover {
   border-color: rgba(255, 82, 82, 1);
   box-shadow: 0 0 25px rgba(255, 82, 82, 0.6);
+}
+
+@media (max-width: 767px) {
+  .account-page-wrapper {
+    padding: 15px;
+    align-items: flex-start;
+    padding-bottom: 100px;
+  }
+
+  .account-container {
+    padding: 20px;
+  }
+
+  .account-title {
+    font-size: 28px;
+  }
+
+  .account-subtitle {
+    font-size: 14px;
+  }
+
+  .account-actions {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .action-btn {
+    width: 100%;
+  }
+
+  .modal-container {
+    width: 90%;
+  }
+
+  .modal-footer {
+    flex-direction: column;
+  }
+
+  .hud-element {
+    display: none;
+  }
 }

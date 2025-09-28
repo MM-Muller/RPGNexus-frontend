@@ -55,15 +55,15 @@ export class AccountComponent implements OnInit {
     });
     this.isEditModalVisible = true;
   }
-  
+
   onSave(): void {
     if (this.editForm.invalid) {
       return;
     }
-    
+
     const formData = this.editForm.value;
     const isEmailChanged = formData.email !== this.originalEmail;
-    
+
     const payload: any = {
       username: formData.username,
       email: formData.email,

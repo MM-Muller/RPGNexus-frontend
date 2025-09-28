@@ -1,22 +1,25 @@
 import { Component, OnInit } from '@angular/core';
-import { Character } from '../../../models/character.model';
+import { Router } from '@angular/router';
 import { CharacterService } from 'src/app/core/services/character.service';
-import { MatSnackBar } from '@angular/material/snack-bar'; 
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Character } from '../../../models/character.model';
 
 @Component({
   selector: 'app-characters',
   templateUrl: './characters.component.html',
-  styleUrls: ['./characters.component.scss'],
+  styleUrls: ['./characters.component.scss']
 })
 export class CharactersComponent implements OnInit {
+
   characters: Character[] = [];
   selectedCharacter: Character | null = null;
-  isModalVisible: boolean = false;
+  isModalVisible = false;
 
   constructor(
     private characterService: CharacterService,
-    private snackBar: MatSnackBar 
-  ) {}
+    private router: Router,
+    private snackBar: MatSnackBar
+  ) { }
 
   ngOnInit(): void {
     this.loadCharacters();
@@ -29,20 +32,18 @@ export class CharactersComponent implements OnInit {
   }
 
   loadCharacters(): void {
-    this.characterService.getCharacters().subscribe({
-      next: (data) => {
-        this.characters = data.map(character => {
-          const expToNextLevel = this.getExpToNextLevel(character.level);
-          const expPercentage = (character.experience / expToNextLevel) * 100;
-          
-          return {
-            ...character,
-            expPercentage: expPercentage,
-          };
-        });
+    this.characterService.getCharacters().subscribe(
+      (data) => {
+        this.characters = data.map((char: Character) => ({
+          ...char,
+          expPercentage: (char.experience / this.getExpToNextLevel(char.level)) * 100
+        }));
       },
-      error: (err) => console.error('Falha ao carregar personagens:', err),
-    });
+      (error) => {
+        console.error('Erro ao buscar personagens:', error);
+        this.snackBar.open('Falha ao carregar personagens.', 'Fechar', { duration: 3000 });
+      }
+    );
   }
 
   showDetails(character: Character): void {
@@ -56,29 +57,26 @@ export class CharactersComponent implements OnInit {
   }
 
   deleteCharacter(): void {
-    if (this.selectedCharacter) {
-      this.characterService.deleteCharacter(this.selectedCharacter.id).subscribe({
-        next: () => {
-          console.log('Personagem excluído:', this.selectedCharacter?.name);
-          this.loadCharacters();
-          this.closeModal();
-          this.snackBar.open('Personagem excluído com sucesso!', 'Fechar', {
-            duration: 3000,
-            panelClass: ['snackbar-success'],
-            horizontalPosition: 'right',
-            verticalPosition: 'top'
-          });
-        },
-        error: (err) => {
-          console.error('Falha ao excluir personagem:', err);
-          this.snackBar.open('Falha ao excluir personagem. Tente novamente.', 'Fechar', {
-            duration: 5000,
-            panelClass: ['snackbar-error'],
-            horizontalPosition: 'right',
-            verticalPosition: 'top'
-          });
-        },
-      });
-    }
+    if (!this.selectedCharacter) return;
+
+    const characterId = this.selectedCharacter.id;
+
+    this.characterService.deleteCharacter(characterId).subscribe(
+      () => {
+        this.snackBar.open('Personagem excluído com sucesso!', 'Fechar', {
+          duration: 3000,
+          panelClass: ['snackbar-success']
+        });
+        this.characters = this.characters.filter(char => char.id !== characterId);
+        this.closeModal();
+      },
+      (error) => {
+        this.snackBar.open('Erro ao excluir personagem.', 'Fechar', {
+          duration: 3000,
+          panelClass: ['snackbar-error']
+        });
+        console.error('Erro ao deletar personagem:', error);
+      }
+    );
   }
 }

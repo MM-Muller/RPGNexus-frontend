@@ -1,87 +1,88 @@
-<div class="harmonic-streams">
-  <div class="stream stream1"></div>
-  <div class="stream stream2"></div>
-</div>
-<div class="hud-element hud-top-left">
-  <div class="hud-data">ARQUIVO DE PILOTO ATIVO</div>
-  <div class="hud-data">NÍVEL ACESSO: TRANSCENDENTE</div>
-</div>
-<div class="hud-element hud-top-right">
-  <div class="hud-data">NEXUS.GALACTIC.ARCHIVE</div>
-  <div class="hud-data">TEMPO CÓSMICO: ∞</div>
-</div>
-<div class="hud-element hud-bottom-left">
-  <div class="hud-data">DECODIFICAÇÃO: 100%</div>
-  <div class="hud-data">RESSONÂNCIA QUÂNTICA: ESTÁVEL</div>
-</div>
-<div class="hud-element hud-bottom-right">
-  <div class="hud-data">COORDENADAS: BRAÇO EXTERIOR</div>
-  <div class="hud-data">SETOR: NEXUS-PRIME</div>
-</div>
+<div class="account-page-wrapper">
+  <div class="harmonic-streams">
+    <div class="stream stream1"></div>
+    <div class="stream stream2"></div>
+  </div>
+  <div class="hud-element hud-top-left">
+    <div class="hud-data">ARQUIVO DE PILOTO ATIVO</div>
+    <div class="hud-data">NÍVEL ACESSO: TRANSCENDENTE</div>
+  </div>
+  <div class="hud-element hud-top-right">
+    <div class="hud-data">NEXUS.GALACTIC.ARCHIVE</div>
+    <div class="hud-data">TEMPO CÓSMICO: ∞</div>
+  </div>
+  <div class="hud-element hud-bottom-left">
+    <div class="hud-data">DECODIFICAÇÃO: 100%</div>
+    <div class="hud-data">RESSONÂNCIA QUÂNTICA: ESTÁVEL</div>
+  </div>
+  <div class="hud-element hud-bottom-right">
+    <div class="hud-data">COORDENADAS: BRAÇO EXTERIOR</div>
+    <div class="hud-data">SETOR: NEXUS-PRIME</div>
+  </div>
 
-<div class="account-container" *ngIf="user; else loading">
-  <div class="account-header">
-    <h1 class="account-title">PAINEL DE CONTROLE</h1>
-    <p class="account-subtitle">Gerencie suas informações no Nexus</p>
-  </div>
-  <div class="account-info">
-    <div class="info-field">
-      <label class="info-label">NOME DE USUÁRIO</label>
-      <div class="info-value">{{ user.username }}</div>
+  <div class="account-container" *ngIf="user; else loading">
+    <div class="account-header">
+      <h1 class="account-title">PAINEL DE CONTROLE</h1>
+      <p class="account-subtitle">Gerencie suas informações no Nexus</p>
     </div>
-    <div class="info-field">
-      <label class="info-label">E-MAIL</label>
-      <div class="info-value">{{ user.email }}</div>
-    </div>
-    <div class="info-field">
-      <label class="info-label">SENHA</label>
-      <div class="info-value">●●●●●●●●</div>
-    </div>
-  </div>
-  <div class="account-actions">
-    <button class="action-btn" (click)="onEdit()">Editar Perfil</button>
-    <button class="action-btn action-btn-secondary" (click)="onLogout()">Deslogar</button>
-    <button class="action-btn action-btn-danger" (click)="onDelete()">Excluir Conta</button>
-  </div>
-</div>
-
-<ng-template #loading>
-  <div class="account-container">
-    <p class="account-subtitle">Carregando informações do usuário...</p>
-  </div>
-</ng-template>
-
-<div class="modal-backdrop" *ngIf="isEditModalVisible" (click)="closeEditModal()"></div>
-<div class="modal-container" *ngIf="isEditModalVisible">
-  <form [formGroup]="editForm" (ngSubmit)="onSave()">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 class="modal-title">Editar Perfil</h2>
+    <div class="account-info">
+      <div class="info-field">
+        <label class="info-label">NOME DE USUÁRIO</label>
+        <div class="info-value">{{ user.username }}</div>
       </div>
-      <div class="modal-body">
-        <div class="input-group">
-          <label class="info-label-modal">Nome de Usuário</label>
-          <input type="text" class="input-field" formControlName="username">
-        </div>
-        <div class="input-group">
-          <label class="info-label-modal">Email</label>
-          <input type="email" class="input-field" formControlName="email">
-        </div>
-        <div class="input-group">
-          <label class="info-label-modal">Nova Senha</label>
-          <input type="password" class="input-field" formControlName="password">
-        </div>
+      <div class="info-field">
+        <label class="info-label">E-MAIL</label>
+        <div class="info-value">{{ user.email }}</div>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="action-btn" (click)="closeEditModal()">Cancelar</button>
-        <button type="submit" class="action-btn primary" [disabled]="editForm.invalid">Salvar Alterações</button>
+      <div class="info-field">
+        <label class="info-label">SENHA</label>
+        <div class="info-value">●●●●●●●●</div>
       </div>
     </div>
-  </form>
-</div>
+    <div class="account-actions">
+      <button class="action-btn" (click)="onEdit()">Editar Perfil</button>
+      <button class="action-btn action-btn-secondary" (click)="onLogout()">Deslogar</button>
+      <button class="action-btn action-btn-danger" (click)="onDelete()">Excluir Conta</button>
+    </div>
+  </div>
 
-<div class="modal-backdrop" *ngIf="isDeleteModalVisible" (click)="cancelDelete()"></div>
-<div class="modal-container" *ngIf="isDeleteModalVisible">
+  <ng-template #loading>
+    <div class="account-container">
+      <p class="account-subtitle">Carregando informações do usuário...</p>
+    </div>
+  </ng-template>
+
+  <div class="modal-backdrop" *ngIf="isEditModalVisible" (click)="closeEditModal()"></div>
+  <div class="modal-container" *ngIf="isEditModalVisible">
+    <form [formGroup]="editForm" (ngSubmit)="onSave()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">Editar Perfil</h2>
+        </div>
+        <div class="modal-body">
+          <div class="input-group">
+            <label class="info-label-modal">Nome de Usuário</label>
+            <input type="text" class="input-field" formControlName="username">
+          </div>
+          <div class="input-group">
+            <label class="info-label-modal">Email</label>
+            <input type="email" class="input-field" formControlName="email">
+          </div>
+          <div class="input-group">
+            <label class="info-label-modal">Nova Senha</label>
+            <input type="password" class="input-field" formControlName="password">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="action-btn" (click)="closeEditModal()">Cancelar</button>
+          <button type="submit" class="action-btn primary" [disabled]="editForm.invalid">Salvar Alterações</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="isDeleteModalVisible" (click)="cancelDelete()"></div>
+  <div class="modal-container" *ngIf="isDeleteModalVisible">
     <div class="modal-content">
       <div class="modal-header">
         <h2 class="modal-title">Confirmar Exclusão</h2>
@@ -95,4 +96,5 @@
         <button type="button" class="action-btn action-btn-danger" (click)="confirmDelete()">Confirmar Exclusão</button>
       </div>
     </div>
+  </div>
 </div>
