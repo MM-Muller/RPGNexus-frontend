@@ -120,7 +120,7 @@ body {
   height: 100%;
   min-height: 700px;
   z-index: 1;
-  padding: 40px 40px;
+  padding: 40px 20px;
   background: linear-gradient(135deg,
       rgba(138, 43, 226, 0.05) 0%,
       rgba(75, 0, 130, 0.05) 100%),
@@ -275,8 +275,8 @@ body {
 
 .character-container,
 .enemy-container {
-  flex: 1 1 340px;
-  max-width: 400px;
+  flex: 1 1 300px;
+  max-width: 350px;
   min-width: 280px;
   display: flex;
   flex-direction: column;
@@ -289,8 +289,8 @@ body {
 }
 
 .center-stage {
-  flex: 1.5 1 450px;
-  max-width: 700px;
+  flex: 2 1 600px;
+  max-width: 900px;
   min-width: 320px;
   display: flex;
   flex-direction: column;
