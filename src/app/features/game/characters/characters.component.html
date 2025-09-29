@@ -40,8 +40,12 @@
 
         <div class="character-avatar">
           <div class="avatar-frame"></div>
-          <div class="class-icon-display">{{ char.class_icon }}</div>
-          <div class="race-icon-display">{{ char.race_icon }}</div>
+          <div class="class-icon-display">
+            <img [src]="char.class_icon" alt="Ícone da Classe" class="icon-image">
+          </div>
+          <div class="race-icon-display">
+            <img [src]="char.race_icon" alt="Ícone da Raça" class="icon-image">
+          </div>
         </div>
 
         <div class="character-info">
@@ -91,9 +95,9 @@
       </div>
       <div class="modal-body">
         <span class="info-label-modal">Raça:</span>
-        <span class="info-value-modal">{{ selectedCharacter?.race }} {{ selectedCharacter?.race_icon }}</span>
+        <span class="info-value-modal">{{ selectedCharacter?.race }} <img *ngIf="selectedCharacter?.race_icon" [src]="selectedCharacter?.race_icon" alt="Ícone da Raça" class="modal-icon"></span>
         <span class="info-label-modal">Classe:</span>
-        <span class="info-value-modal">{{ selectedCharacter?.char_class }} {{ selectedCharacter?.class_icon }}</span>
+        <span class="info-value-modal">{{ selectedCharacter?.char_class }} <img *ngIf="selectedCharacter?.class_icon" [src]="selectedCharacter?.class_icon" alt="Ícone da Classe" class="modal-icon"></span>
         <span class="info-label-modal">Força:</span>
         <span class="info-value-modal">{{ selectedCharacter?.attributes?.strength }}</span>
         <span class="info-label-modal">Inteligência:</span>
