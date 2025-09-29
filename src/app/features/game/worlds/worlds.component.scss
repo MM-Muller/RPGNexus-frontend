@@ -15,7 +15,7 @@
   box-shadow: 0 0 50px rgba(138, 43, 226, 0.2),
     inset 0 0 30px rgba(255, 215, 0, 0.05);
   animation: panel-breathe 4s ease-in-out infinite;
-  margin-top: -10%;
+  margin-top: 10%;
 }
 
 @keyframes panel-breathe {
@@ -455,7 +455,7 @@
   .galactic-map-container {
     max-width: 1100px;
     padding: 30px;
-    margin-top: -20px;
+    margin-top: 100px;
     margin-bottom: 20px;
   }
 
