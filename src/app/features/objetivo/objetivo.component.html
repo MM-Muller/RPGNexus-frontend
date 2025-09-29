@@ -29,39 +29,34 @@
 <div class="main-container">
   <div class="holographic-header">
     <div class="archive-label">◆ Diretrizes da Missão ◆</div>
-    <h1 class="main-title">OBJETIVOS CÓSMICOS</h1>
-    <div class="subtitle">Coordenadas para o Desconhecido</div>
+    <h1 class="main-title">BESTIÁRIO CÓSMICO</h1>
+    <div class="subtitle">Ameaças e Recompensas do Nexus</div>
   </div>
 
-  <div class="holographic-panel">
+  <div class="holographic-panel" *ngFor="let enemy of enemies">
     <div class="corner-decoration corner-tl"></div>
     <div class="corner-decoration corner-tr"></div>
     <div class="corner-decoration corner-bl"></div>
     <div class="corner-decoration corner-br"></div>
 
-    <div class="objectives-content">
-      <div class="objective-section">
-        <div class="section-header">
-          <h2 class="section-title">Horizontes Próximos</h2>
-        </div>
-        <div class="constellation">
-          <app-objective-node
-            *ngFor="let objective of shortTermObjectives"
-            [objective]="objective"
-          ></app-objective-node>
-        </div>
-      </div>
+    <div class="enemy-header">
+      <h2 class="enemy-name">{{ enemy.name }}</h2>
+    </div>
 
-      <div class="objective-section">
-        <div class="section-header">
-          <h2 class="section-title">Destinos Transcendentes</h2>
-        </div>
-        <div class="constellation">
-          <app-objective-node
-            *ngFor="let objective of longTermObjectives"
-            [objective]="objective"
-          ></app-objective-node>
-        </div>
+    <div class="enemy-grid">
+      <div class="grid-item enemy-image-container">
+        <img [src]="enemy.image" [alt]="'Imagem de ' + enemy.name" class="enemy-image">
+      </div>
+      <div class="grid-item enemy-description">
+        <h3>Sobre:</h3>
+        <p>{{ enemy.description }}</p>
+      </div>
+      <div class="grid-item drop-description">
+        <h3>Recompensa:</h3>
+        <p>{{ enemy.dropDescription }}</p>
+      </div>
+      <div class="grid-item drop-image-container">
+        <img [src]="enemy.dropImage" [alt]="'Drop de ' + enemy.name" class="drop-image">
       </div>
     </div>
   </div>

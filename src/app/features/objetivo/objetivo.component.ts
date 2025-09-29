@@ -5,7 +5,14 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { Objective } from '../../models/objective.model';
+
+interface Enemy {
+  name: string;
+  description: string;
+  image: string;
+  dropDescription: string;
+  dropImage: string;
+}
 
 @Component({
   selector: 'app-objetivo',
@@ -13,66 +20,61 @@ import { Objective } from '../../models/objective.model';
   styleUrls: ['./objetivo.component.scss'],
 })
 export class ObjetivoComponent implements OnInit, OnDestroy, AfterViewInit {
-  title: string = 'OBJETIVOS CÓSMICOS';
-  subtitle: string = 'Nexus Galáctico';
-
-  shortTermObjectives: Objective[] = [
+  enemies: Enemy[] = [
     {
-      title: 'Exploração Estelar',
-      description:
-        'Descobrir sistemas solares desconhecidos e mapear anomalias espaciais no braço exterior da galáxia.',
-      progress: 35,
+      name: 'Rainha do Enxame',
+      description: 'A mente coletiva de uma raça de insetoides espaciais. Controla milhões de zangões com sua vontade, coordenando ataques em uma escala planetária.',
+      image: 'assets/images/enemy/rainhaDoEnxame.png',
+      dropDescription: 'Glândula de Feromônios: Permite a criação de drones de combate que auxiliam o jogador em batalha ou aprimoramentos que aumentam o dano contra enxames inimigos.',
+      dropImage: 'assets/images/drops/dropRainhadoEnxame.png'
     },
     {
-      title: 'Primeiros Contatos',
-      description:
-        'Estabelecer comunicação pacífica com inteligências alienígenas através de protocolos diplomáticos.',
-      progress: 20,
+      name: 'Guardião Elemental',
+      description: 'Uma entidade elemental que protege a Nebulosa Primordial, um ser de pura energia cósmica, com ataques que manipulam a matéria e a energia do ambiente.',
+      image: 'assets/images/enemy/guardiaoElemental.png',
+      dropDescription: 'Fragmento Primordial: Um cristal que pulsa com a energia da criação, usado para aprimorar armas com dano elemental.',
+      dropImage: 'assets/images/drops/dropGuardiaoElemental.png'
     },
     {
-      title: 'Arqueologia Cósmica',
-      description:
-        'Recuperar artefatos e tecnologias únicas de civilizações perdidas nas Estruturas Guardiãs.',
-      progress: 45,
+      name: 'Sentinela do Vazio',
+      description: 'Um guardião dourado de um sistema estelar antigo, com a habilidade de prever movimentos e contra-atacar com precisão.',
+      image: 'assets/images/enemy/sentinelaDoVazio.png',
+      dropDescription: 'Núcleo de Previsão: Um artefato que, quando integrado a sistemas de naves, melhora a precisão de armas e a eficiência de escudos.',
+      dropImage: 'assets/images/drops/dropSentinelaDoVazio.png'
     },
     {
-      title: 'Sobrevivência Nexus',
-      description:
-        'Navegar com segurança através das anomalias temporais e singularidades artificiais.',
-      progress: 60,
-    },
-  ];
-
-  longTermObjectives: Objective[] = [
-    {
-      title: 'Segredo dos Guardiões',
-      description:
-        'Desvendar o mistério completo das Estruturas Guardiãs e sua conexão com a transcendência cósmica.',
-      progress: 15,
+      name: 'Arquiteto de Cristal',
+      description: 'Uma entidade cristalina que molda a realidade ao seu redor, criando estruturas de energia sólida para atacar e se defender.',
+      image: 'assets/images/enemy/arquitetoDeCristal.png',
+      dropDescription: 'Essência do Arquiteto: Um cristal que permite a construção de itens e melhorias avançadas para a nave e equipamentos.',
+      dropImage: 'assets/images/drops/dropArquitetodeCristal.png'
     },
     {
-      title: 'Ponte Galáctica',
-      description:
-        'Construir alianças duradouras entre civilizações através das Correntes Harmônicas.',
-      progress: 25,
+      name: 'Anomalia Convergente',
+      description: 'Uma singularidade instável que distorce o espaço-tempo, atraindo e repelindo matéria de forma caótica e imprevisível.',
+      image: 'assets/images/enemy/anomaliaConvergente.png',
+      dropDescription: 'Fragmento de Singularidade: Um pedaço de espaço-tempo condensado que pode ser usado para criar dispositivos de teletransporte de curto alcance ou munição que ignora escudos.',
+      dropImage: 'assets/images/drops/dropAnomaliaConvergente.png'
     },
     {
-      title: 'Ascensão Evolutiva',
-      description:
-        'Descobrir o destino das espécies transcendentes e o caminho para a evolução cósmica.',
-      progress: 10,
+      name: 'Cantor Harmônico',
+      description: 'Uma criatura que se comunica através de frequências sônicas, capaz de gerar ondas de choque devastadoras e manipular a mente de seres menos evoluídos com sua canção.',
+      image: 'assets/images/enemy/cantorHarmonico.png',
+      dropDescription: 'Coração Ressonante: Um órgão cristalino que vibra em uma frequência única, usado para criar módulos de armas sônicas ou aprimorar os sensores da nave.',
+      dropImage: 'assets/images/drops/dropCantorHarmonico.png'
     },
     {
-      title: 'Cartografia Harmônica',
-      description:
-        'Mapear completamente as Correntes Harmônicas e dominar a navegação dimensional.',
-      progress: 30,
+      name: 'Eco Dimensional',
+      description: 'Um fantasma de outra realidade, que atravessa as barreiras do universo. Seus ataques não afetam a matéria, mas sim a alma de seus alvos.',
+      image: 'assets/images/enemy/ecoDimensional.png',
+      dropDescription: 'Essência Etérea: Uma substância que permite a criação de camuflagem interdimensional ou escudos que protegem contra ataques psíquicos.',
+      dropImage: 'assets/images/drops/dropEcoDimensional.png'
     },
   ];
 
   private animationFrameId: number | undefined;
 
-  constructor(private el: ElementRef) {}
+  constructor(private el: ElementRef) { }
 
   ngOnInit(): void {
     this.createStars();
@@ -167,7 +169,7 @@ export class ObjetivoComponent implements OnInit, OnDestroy, AfterViewInit {
         for (let b = a; b < particles.length; b++) {
           const distance = Math.sqrt(
             Math.pow(particles[a].x - particles[b].x, 2) +
-              Math.pow(particles[a].y - particles[b].y, 2)
+            Math.pow(particles[a].y - particles[b].y, 2)
           );
           if (distance < 100) {
             opacityValue = 1 - distance / 100;

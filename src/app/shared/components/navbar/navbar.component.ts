@@ -34,8 +34,8 @@ export class NavbarComponent implements OnInit {
       active: false,
     },
     {
-      id: 'objetivo',
-      name: 'Objetivo',
+      id: 'bestiario',
+      name: 'Bestiário',
       iconUrl: 'assets/icons/objetivo.svg',
       route: '/objetivo',
       active: false,
@@ -61,7 +61,7 @@ export class NavbarComponent implements OnInit {
 
   navItems = this.mainNavItems;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     this.router.events
