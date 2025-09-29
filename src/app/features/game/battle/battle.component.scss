@@ -305,66 +305,23 @@ body {
   justify-content: center;
 }
 
-.player-avatar {
-  position: relative;
-  width: clamp(120px, 13vw, 220px);
-  height: clamp(120px, 13vw, 220px);
-  border-radius: 50%;
-  background-color: rgba(60, 0, 90, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 2px solid rgba(138, 43, 226, 0.6);
-  box-shadow: 0 0 30px rgba(138, 43, 226, 0.6);
-  animation: character-idle 3s ease-in-out infinite;
-
-  .avatar-frame {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 215, 0, 0.5);
-    animation: rotate-frame 10s linear infinite;
-  }
-
-  .class-icon-display {
-    font-size: clamp(50px, 7vw, 100px);
-    text-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-  }
-
-  .race-icon-display {
-    position: absolute;
-    bottom: 0;
-    right: -15px;
-    font-size: clamp(25px, 3.5vw, 50px);
-    background-color: rgba(25, 25, 112, 0.5);
-    border-radius: 50%;
-    border: 2px solid rgba(138, 43, 226, 0.6);
-    width: clamp(45px, 5vw, 80px);
-    height: clamp(45px, 5vw, 80px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
-
 .enemy-visual {
   width: clamp(130px, 14vw, 250px);
   height: clamp(130px, 14vw, 250px);
-  background: radial-gradient(circle, rgba(255, 0, 128, 0.3), rgba(75, 0, 130, 0.2));
   border: 2px solid rgba(255, 0, 128, 0.5);
   border-radius: 50%;
   box-shadow: 0 0 50px rgba(255, 0, 128, 0.5);
   animation: enemy-idle 2.5s ease-in-out infinite;
+  background-color: rgba(10, 10, 46, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 
-  &::before {
-    content: '👾';
-    font-size: clamp(50px, 7vw, 100px);
-    filter: drop-shadow(0 0 20px rgba(255, 0, 128, 0.8));
-    animation: enemy-pulse 1.5s ease-in-out infinite;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
 
@@ -966,12 +923,6 @@ body {
     min-height: 250px;
   }
 
-  .player-avatar,
-  .enemy-visual {
-    width: 120px;
-    height: 120px;
-  }
-
   .action-panel {
     order: 3;
     position: sticky;
@@ -1038,5 +989,87 @@ body {
     }
 
     @include phone-rotated-scroll-layout;
+  }
+}
+
+.player-avatar {
+  position: relative;
+  width: clamp(120px, 13vw, 220px);
+  height: clamp(120px, 13vw, 220px);
+  border-radius: 50%;
+  background-color: rgba(60, 0, 90, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid rgba(138, 43, 226, 0.6);
+  box-shadow: 0 0 30px rgba(138, 43, 226, 0.6);
+  animation: character-idle 3s ease-in-out infinite;
+
+  .avatar-frame {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 215, 0, 0.5);
+    animation: rotate-frame 10s linear infinite;
+  }
+
+  .class-icon-display {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 50%;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .race-icon-display {
+    position: absolute;
+    bottom: -15px;
+    right: -20px;
+    font-size: clamp(25px, 3.5vw, 50px);
+    background-color: rgba(25, 25, 112, 0.5);
+    border-radius: 50%;
+    border: 2px solid rgba(138, 43, 226, 0.6);
+    width: clamp(45px, 5vw, 80px);
+    height: clamp(45px, 5vw, 80px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      padding: 0;
+    }
+  }
+}
+
+.enemy-visual {
+  width: clamp(130px, 14vw, 250px);
+  height: clamp(130px, 14vw, 250px);
+  border: 2px solid rgba(255, 0, 128, 0.5);
+  border-radius: 50%;
+  box-shadow: 0 0 50px rgba(255, 0, 128, 0.5);
+  animation: enemy-idle 2.5s ease-in-out infinite;
+  background-color: rgba(10, 10, 46, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  img {
+    width: 120%;
+    height: 120%;
+    object-fit: cover;
   }
 }

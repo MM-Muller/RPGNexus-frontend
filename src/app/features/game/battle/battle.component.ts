@@ -19,6 +19,7 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   battleConfig?: Battle;
   enemy?: Enemy;
+  enemyImageUrl?: string;
   playerCharacter?: Character;
 
   playerHealth: number = 0;
@@ -40,20 +41,20 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   private battleState: BattleState | null = null;
   private destroy$ = new Subject<void>();
-  
+
   private interval: any;
   private shouldScrollToBottom = false;
   timeLeft: number = 300;
   timerDisplay: string = '5:00';
   private animationFrameId: any;
-  
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private battleConfigService: BattleConfigService,
     private characterService: CharacterService,
     private campaignService: CampaignService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const battleId = this.route.snapshot.paramMap.get('id');
@@ -77,7 +78,7 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
       clearInterval(this.interval);
     }
     if (this.animationFrameId) {
-        clearTimeout(this.animationFrameId);
+      clearTimeout(this.animationFrameId);
     }
     this.saveBattleState();
     this.campaignService.disconnect();
@@ -106,6 +107,7 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.playerCharacter = character;
       this.battleConfig = battle;
       this.enemy = { ...battle.enemy };
+      this.setEnemyImageUrl();
       this.setupPlayerStats();
 
       this.campaignService.connect(character.id, battleId)
@@ -114,7 +116,7 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
           if (this.isContentLoading) {
             this.isContentLoading = false;
           }
-          
+
           switch (message.type) {
             case 'load_state':
               this.loadBattleState(message.payload);
@@ -150,6 +152,17 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
     });
   }
 
+  setEnemyImageUrl(): void {
+    if (this.enemy) {
+      const imageName = this.enemy.name
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, '')
+        + '.png';
+      this.enemyImageUrl = `assets/images/enemy/${imageName.charAt(0).toLowerCase() + imageName.slice(1)}`;
+    }
+  }
+
   setupPlayerStats(): void {
     if (!this.playerCharacter || !this.battleConfig) return;
     this.playerMaxHealth = 200;
@@ -158,10 +171,10 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.enemyMaxHealth = this.battleConfig.enemy.maxHealth;
     this.enemyHealth = this.battleConfig.enemy.health;
   }
-  
+
   sendPlayerAction(): void {
     if (!this.playerCharacter || !this.battleConfig || this.selectedAction.trim() === '' || !this.isPlayerTurn || this.isBattleOver) return;
-    
+
     this.isLoadingAction = true;
     this.isPlayerTurn = false;
     this.isTyping = true;
@@ -171,7 +184,7 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.addDialogEntry(this.playerCharacter.name, playerAction);
     this.selectedAction = '';
     this.forceScrollToBottom();
-    
+
     this.campaignService.sendMessage('player_action', {
       action: playerAction,
       history: this.dialogHistory.map(d => `${d.speaker}: ${d.text}`)
@@ -216,9 +229,9 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.addDialogEntry('Sistema', 'Você venceu a batalha e ganhou experiência!');
       if (this.playerCharacter && this.battleConfig) {
         this.characterService.getCharacterProgress(this.playerCharacter.id).subscribe(progressData => {
-            const progress = progressData.campaign_progress || {};
-            progress[this.battleConfig!.id] = true;
-            this.characterService.updateCharacterProgress(this.playerCharacter!.id, progress).subscribe();
+          const progress = progressData.campaign_progress || {};
+          progress[this.battleConfig!.id] = true;
+          this.characterService.updateCharacterProgress(this.playerCharacter!.id, progress).subscribe();
         });
       }
     } else {
