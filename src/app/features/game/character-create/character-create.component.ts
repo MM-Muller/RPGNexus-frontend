@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, Renderer2, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CharacterService } from 'src/app/core/services/character.service'; 
+import { CharacterService } from 'src/app/core/services/character.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -17,17 +17,17 @@ export class CharacterCreateComponent implements OnInit, AfterViewInit, OnDestro
   private trailInterval: any;
 
   private raceIcons: { [key: string]: string } = {
-    'Humano': '🌍',
-    'Sintético': '🤖',
-    'Híbrido': '🧬',
-    'Expatriado': '🚀'
+    'Humano': 'assets/images/race/humano.png',
+    'Sintético': 'assets/images/race/sintetico.png',
+    'Híbrido': 'assets/images/race/hibrido.png',
+    'Expatriado': 'assets/images/race/expatriado.png'
   };
 
   private classIcons: { [key: string]: string } = {
-    'Cientista': '🔭',
-    'Piloto': '✈️',
-    'Diplomata': '🕊️',
-    'Aventureiro': '⚔️'
+    'Cientista': 'assets/images/class/cientista.png',
+    'Piloto': 'assets/images/class/piloto.png',
+    'Diplomata': 'assets/images/class/diplomata.png',
+    'Aventureiro': 'assets/images/class/aventureiro.png'
   };
 
   constructor(
@@ -36,7 +36,7 @@ export class CharacterCreateComponent implements OnInit, AfterViewInit, OnDestro
     private renderer: Renderer2,
     private el: ElementRef,
     private characterService: CharacterService,
-    private snackBar: MatSnackBar 
+    private snackBar: MatSnackBar
   ) {
     this.characterForm = this.fb.group({
       name: ['', Validators.required],
@@ -53,7 +53,7 @@ export class CharacterCreateComponent implements OnInit, AfterViewInit, OnDestro
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   ngAfterViewInit(): void {
     this.createStars();

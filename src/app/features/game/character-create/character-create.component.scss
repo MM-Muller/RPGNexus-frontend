@@ -16,11 +16,11 @@
   max-width: 900px;
   width: 100%;
   background: rgba(10, 10, 31, 0.6);
-  border: 1px solid $secondary-alpha-30; 
+  border: 1px solid $secondary-alpha-30;
   border-radius: 20px;
   padding: 40px;
   position: relative;
-  box-shadow: 0 0 60px rgba($secondary-color, 0.2), inset 0 0 20px rgba($primary-color, 0.1); 
+  box-shadow: 0 0 60px rgba($secondary-color, 0.2), inset 0 0 20px rgba($primary-color, 0.1);
   backdrop-filter: blur(10px);
   margin-top: -5%;
 }
@@ -34,23 +34,30 @@
 .title {
   font-size: 2.8em;
   font-weight: 900;
-  background: linear-gradient(90deg, $secondary-color, $primary-color, $tertiary-color); 
+  background: linear-gradient(90deg, $secondary-color, $primary-color, $tertiary-color);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-transform: uppercase;
   letter-spacing: 4px;
   animation: glow 3s ease-in-out infinite;
-  text-shadow: 0 0 20px rgba($secondary-color, 0.5); 
+  text-shadow: 0 0 20px rgba($secondary-color, 0.5);
 }
 
 @keyframes glow {
-  0%, 100% { filter: drop-shadow(0 0 10px rgba($secondary-color, 0.8)); } 
-  50% { filter: drop-shadow(0 0 25px rgba($primary-color, 0.8)); } 
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 10px rgba($secondary-color, 0.8));
+  }
+
+  50% {
+    filter: drop-shadow(0 0 25px rgba($primary-color, 0.8));
+  }
 }
 
 .subtitle {
-  color: $primary-color; 
+  color: $primary-color;
   font-size: 0.9em;
   margin-top: 10px;
   font-style: italic;
@@ -60,8 +67,15 @@
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.7; }
-  50% { opacity: 1; }
+
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }
 
 .form-group {
@@ -70,7 +84,7 @@
 
 label {
   display: block;
-  color: $primary-color; 
+  color: $primary-color;
   margin-bottom: 10px;
   font-size: 0.9em;
   text-transform: uppercase;
@@ -83,7 +97,7 @@ textarea {
   width: 100%;
   padding: 15px;
   background: rgba(0, 0, 0, 0.6);
-  border: 1px solid $secondary-color; 
+  border: 1px solid $secondary-color;
   border-radius: 8px;
   color: $text-color;
   font-family: 'Orbitron', monospace;
@@ -92,8 +106,8 @@ textarea {
 
   &:focus {
     outline: none;
-    border-color: $primary-color; 
-    box-shadow: 0 0 15px rgba($primary-color, 0.4); 
+    border-color: $primary-color;
+    box-shadow: 0 0 15px rgba($primary-color, 0.4);
     background: rgba(0, 0, 0, 0.8);
   }
 }
@@ -112,7 +126,7 @@ textarea {
 
 .selection-card {
   background: rgba(10, 10, 31, 0.5);
-  border: 1px solid $secondary-color; 
+  border: 1px solid $secondary-color;
   border-radius: 12px;
   padding: 15px;
   cursor: pointer;
@@ -122,22 +136,25 @@ textarea {
   overflow: hidden;
 
   &:hover {
-    border-color: $primary-color; 
+    border-color: $primary-color;
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba($primary-color, 0.3); 
+    box-shadow: 0 8px 25px rgba($primary-color, 0.3);
   }
 
   &.selected {
-    background: rgba($secondary-color, 0.3); 
-    border-color: $primary-color; 
+    background: rgba($secondary-color, 0.3);
+    border-color: $primary-color;
     box-shadow: 0 0 25px rgba($primary-color, 0.5);
   }
 }
 
 .selection-icon {
-  font-size: 2.5em;
-  margin-bottom: 8px;
-  line-height: 1;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin: 0 auto 0.5rem;
+  border-radius: 50%; // Deixa o ícone redondo
+  transition: all 0.3s ease; // Adiciona uma transição suave
 }
 
 .selection-name {
@@ -152,7 +169,7 @@ textarea {
   border-radius: 12px;
   padding: 20px;
   margin-top: 20px;
-  border: 1px solid $secondary-color; 
+  border: 1px solid $secondary-color;
 }
 
 .attribute-row {
@@ -160,11 +177,14 @@ textarea {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 15px;
-  &:last-child { margin-bottom: 0; }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .attribute-label {
-  color: $primary-color; 
+  color: $primary-color;
   align-items: center;
   gap: 10px;
   flex: 1;
@@ -183,8 +203,8 @@ textarea {
 .attribute-btn {
   width: 30px;
   height: 30px;
-  background: rgba($secondary-color, 0.4); 
-  border: 1px solid rgba($secondary-color, 0.6); 
+  background: rgba($secondary-color, 0.4);
+  border: 1px solid rgba($secondary-color, 0.6);
   color: $text-color;
   border-radius: 5px;
   cursor: pointer;
@@ -192,8 +212,8 @@ textarea {
   font-weight: bold;
 
   &:hover {
-    background: rgba($secondary-color, 0.6); 
-    border-color: $primary-color; 
+    background: rgba($secondary-color, 0.6);
+    border-color: $primary-color;
   }
 }
 
@@ -210,7 +230,7 @@ textarea {
   margin: 15px 0;
   padding: 10px;
   border-radius: 8px;
-  color: $secondary-color; 
+  color: $secondary-color;
   font-weight: bold;
   border: 1px dashed rgba($secondary-color, 0.5);
   letter-spacing: 1px;
@@ -218,19 +238,19 @@ textarea {
 
 .preview-card {
   background: rgba(10, 10, 31, 0.7);
-  border: 1px solid $secondary-color; 
+  border: 1px solid $secondary-color;
   border-radius: 15px;
   padding: 25px;
   margin-top: 30px;
   position: relative;
   overflow: hidden;
   min-height: 250px;
-  box-shadow: 0 0 30px rgba($primary-color, 0.3), inset 0 0 15px rgba($secondary-color, 0.2); 
+  box-shadow: 0 0 30px rgba($primary-color, 0.3), inset 0 0 15px rgba($secondary-color, 0.2);
   backdrop-filter: blur(5px);
 }
 
 .preview-title {
-  color: $primary-color; 
+  color: $primary-color;
   font-size: 1.3em;
   margin-bottom: 15px;
   text-align: center;
@@ -258,11 +278,14 @@ textarea {
   justify-content: space-between;
   align-items: center;
   font-size: 0.9em;
-  &:last-child { margin-bottom: 0; }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .preview-label {
-  color: rgba($primary-color, 0.8); 
+  color: rgba($primary-color, 0.8);
 }
 
 .preview-value {
@@ -319,6 +342,7 @@ textarea {
     background: #333;
     border-color: #555;
     box-shadow: none;
+
     &:hover {
       transform: none;
       box-shadow: none;
@@ -327,11 +351,12 @@ textarea {
 }
 
 .btn-confirm {
-  background: linear-gradient(90deg, $secondary-color, $primary-color); 
+  background: linear-gradient(90deg, $secondary-color, $primary-color);
   border: none;
   box-shadow: 0 0 20px rgba($primary-color, 0.5);
+
   &:hover {
-    box-shadow: 0 5px 30px rgba($primary-color, 0.6); 
+    box-shadow: 0 5px 30px rgba($primary-color, 0.6);
   }
 }
 
@@ -339,6 +364,7 @@ textarea {
   background: transparent;
   border: 2px solid rgba(255, 82, 82, 0.6);
   box-shadow: 0 0 15px rgba(255, 82, 82, 0.4);
+
   &:hover {
     background: rgba(255, 82, 82, 0.2);
     box-shadow: 0 5px 25px rgba(255, 82, 82, 0.5);
@@ -381,13 +407,23 @@ textarea {
 }
 
 @keyframes planetRotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes ringRotate {
-  0% { transform: translate(-50%, -50%) rotateX(60deg) rotateZ(0deg); }
-  100% { transform: translate(-50%, -50%) rotateX(60deg) rotateZ(360deg); }
+  0% {
+    transform: translate(-50%, -50%) rotateX(60deg) rotateZ(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotateX(60deg) rotateZ(360deg);
+  }
 }
 
 .rocket {
@@ -432,14 +468,37 @@ textarea {
 }
 
 @keyframes rocketFly {
-  0% { bottom: 20px; left: 20px; transform: rotate(45deg); }
-  50% { bottom: 60%; left: 50%; transform: rotate(45deg) scale(0.8); }
-  100% { bottom: 50px; left: calc(100% - 180px); transform: rotate(45deg) scale(0.6); }
+  0% {
+    bottom: 20px;
+    left: 20px;
+    transform: rotate(45deg);
+  }
+
+  50% {
+    bottom: 60%;
+    left: 50%;
+    transform: rotate(45deg) scale(0.8);
+  }
+
+  100% {
+    bottom: 50px;
+    left: calc(100% - 180px);
+    transform: rotate(45deg) scale(0.6);
+  }
 }
 
 @keyframes flameFlicker {
-  0%, 100% { transform: translateX(-50%) scaleY(1); opacity: 1; }
-  50% { transform: translateX(-50%) scaleY(1.2); opacity: 0.8; }
+
+  0%,
+  100% {
+    transform: translateX(-50%) scaleY(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateX(-50%) scaleY(1.2);
+    opacity: 0.8;
+  }
 }
 
 .stars {
@@ -461,6 +520,13 @@ textarea {
 }
 
 @keyframes twinkle {
-  0%, 100% { opacity: 0; }
-  50% { opacity: 1; }
+
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
 }

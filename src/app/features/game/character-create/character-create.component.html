@@ -6,53 +6,62 @@
   <form [formGroup]="characterForm" (ngSubmit)="confirmCharacter()">
     <div class="form-group">
       <label for="name">Nome do Personagem</label>
-      <input type="text" id="name" placeholder="Digite o nome do seu explorador cósmico..." formControlName="name" required>
+      <input type="text" id="name" placeholder="Digite o nome do seu explorador cósmico..." formControlName="name"
+        required>
     </div>
-    
+
     <div class="form-group">
       <label>Raça</label>
       <div class="selection-grid">
-        <div class="selection-card" [class.selected]="characterForm.get('race')?.value === 'Humano'" (click)="selectRace('Humano')">
-          <div class="selection-icon">🌍</div>
+        <div class="selection-card" [class.selected]="characterForm.get('race')?.value === 'Humano'"
+          (click)="selectRace('Humano')">
+          <img src="assets/images/race/humano.png" alt="Humano" class="selection-icon">
           <div class="selection-name">Humano</div>
         </div>
-        <div class="selection-card" [class.selected]="characterForm.get('race')?.value === 'Sintético'" (click)="selectRace('Sintético')">
-          <div class="selection-icon">🤖</div>
+        <div class="selection-card" [class.selected]="characterForm.get('race')?.value === 'Sintético'"
+          (click)="selectRace('Sintético')">
+          <img src="assets/images/race/sintetico.png" alt="Sintético" class="selection-icon">
           <div class="selection-name">Sintético</div>
         </div>
-        <div class="selection-card" [class.selected]="characterForm.get('race')?.value === 'Híbrido'" (click)="selectRace('Híbrido')">
-          <div class="selection-icon">🧬</div>
+        <div class="selection-card" [class.selected]="characterForm.get('race')?.value === 'Híbrido'"
+          (click)="selectRace('Híbrido')">
+          <img src="assets/images/race/hibrido.png" alt="Híbrido" class="selection-icon">
           <div class="selection-name">Híbrido</div>
         </div>
-        <div class="selection-card" [class.selected]="characterForm.get('race')?.value === 'Expatriado'" (click)="selectRace('Expatriado')">
-          <div class="selection-icon">🚀</div>
+        <div class="selection-card" [class.selected]="characterForm.get('race')?.value === 'Expatriado'"
+          (click)="selectRace('Expatriado')">
+          <img src="assets/images/race/expatriado.png" alt="Expatriado" class="selection-icon">
           <div class="selection-name">Expatriado</div>
         </div>
       </div>
     </div>
-    
+
     <div class="form-group">
       <label>Classe</label>
       <div class="selection-grid">
-        <div class="selection-card" [class.selected]="characterForm.get('char_class')?.value === 'Cientista'" (click)="selectClass('Cientista')">
-          <div class="selection-icon">🔭</div>
+        <div class="selection-card" [class.selected]="characterForm.get('char_class')?.value === 'Cientista'"
+          (click)="selectClass('Cientista')">
+          <img src="assets/images/class/cientista.png" alt="Cientista" class="selection-icon">
           <div class="selection-name">Cientista</div>
         </div>
-        <div class="selection-card" [class.selected]="characterForm.get('char_class')?.value === 'Piloto'" (click)="selectClass('Piloto')">
-          <div class="selection-icon">✈️</div>
+        <div class="selection-card" [class.selected]="characterForm.get('char_class')?.value === 'Piloto'"
+          (click)="selectClass('Piloto')">
+          <img src="assets/images/class/piloto.png" alt="Piloto" class="selection-icon">
           <div class="selection-name">Piloto</div>
         </div>
-        <div class="selection-card" [class.selected]="characterForm.get('char_class')?.value === 'Diplomata'" (click)="selectClass('Diplomata')">
-          <div class="selection-icon">🕊️</div>
+        <div class="selection-card" [class.selected]="characterForm.get('char_class')?.value === 'Diplomata'"
+          (click)="selectClass('Diplomata')">
+          <img src="assets/images/class/diplomata.png" alt="Diplomata" class="selection-icon">
           <div class="selection-name">Diplomata</div>
         </div>
-        <div class="selection-card" [class.selected]="characterForm.get('char_class')?.value === 'Aventureiro'" (click)="selectClass('Aventureiro')">
-          <div class="selection-icon">⚔️</div>
+        <div class="selection-card" [class.selected]="characterForm.get('char_class')?.value === 'Aventureiro'"
+          (click)="selectClass('Aventureiro')">
+          <img src="assets/images/class/aventureiro.png" alt="Aventureiro" class="selection-icon">
           <div class="selection-name">Aventureiro</div>
         </div>
       </div>
     </div>
-    
+
     <div class="form-group" formGroupName="attributes">
       <label>Atributos</label>
       <div class="attributes">
@@ -79,50 +88,51 @@
           </div>
         </div>
         <div class="attribute-row">
-            <div class="attribute-label">
-              <span class="attribute-icon">🗣️</span>
-              <span>Carisma</span>
-            </div>
-            <div class="attribute-control">
-              <button type="button" class="attribute-btn" (click)="adjustAttribute('charisma', -1)">-</button>
-              <div class="attribute-value">{{ characterForm.get('attributes.charisma')?.value }}</div>
-              <button type="button" class="attribute-btn" (click)="adjustAttribute('charisma', 1)">+</button>
-            </div>
+          <div class="attribute-label">
+            <span class="attribute-icon">🗣️</span>
+            <span>Carisma</span>
           </div>
-          <div class="attribute-row">
-            <div class="attribute-label">
-              <span class="attribute-icon">🎯</span>
-              <span>Destreza</span>
-            </div>
-            <div class="attribute-control">
-              <button type="button" class="attribute-btn" (click)="adjustAttribute('dexterity', -1)">-</button>
-              <div class="attribute-value">{{ characterForm.get('attributes.dexterity')?.value }}</div>
-              <button type="button" class="attribute-btn" (click)="adjustAttribute('dexterity', 1)">+</button>
-            </div>
+          <div class="attribute-control">
+            <button type="button" class="attribute-btn" (click)="adjustAttribute('charisma', -1)">-</button>
+            <div class="attribute-value">{{ characterForm.get('attributes.charisma')?.value }}</div>
+            <button type="button" class="attribute-btn" (click)="adjustAttribute('charisma', 1)">+</button>
           </div>
-          <div class="attribute-row">
-            <div class="attribute-label">
-              <span class="attribute-icon">🌌</span>
-              <span>Intuição</span>
-            </div>
-            <div class="attribute-control">
-              <button type="button" class="attribute-btn" (click)="adjustAttribute('intuition', -1)">-</button>
-              <div class="attribute-value">{{ characterForm.get('attributes.intuition')?.value }}</div>
-              <button type="button" class="attribute-btn" (click)="adjustAttribute('intuition', 1)">+</button>
-            </div>
+        </div>
+        <div class="attribute-row">
+          <div class="attribute-label">
+            <span class="attribute-icon">🎯</span>
+            <span>Destreza</span>
           </div>
-        
+          <div class="attribute-control">
+            <button type="button" class="attribute-btn" (click)="adjustAttribute('dexterity', -1)">-</button>
+            <div class="attribute-value">{{ characterForm.get('attributes.dexterity')?.value }}</div>
+            <button type="button" class="attribute-btn" (click)="adjustAttribute('dexterity', 1)">+</button>
+          </div>
+        </div>
+        <div class="attribute-row">
+          <div class="attribute-label">
+            <span class="attribute-icon">🌌</span>
+            <span>Intuição</span>
+          </div>
+          <div class="attribute-control">
+            <button type="button" class="attribute-btn" (click)="adjustAttribute('intuition', -1)">-</button>
+            <div class="attribute-value">{{ characterForm.get('attributes.intuition')?.value }}</div>
+            <button type="button" class="attribute-btn" (click)="adjustAttribute('intuition', 1)">+</button>
+          </div>
+        </div>
+
         <div class="points-remaining">
           Pontos Restantes: <span>{{ pointsRemaining }}</span>
         </div>
       </div>
     </div>
-    
+
     <div class="form-group">
       <label for="description">História Pessoal</label>
-      <textarea id="description" placeholder="Conte a história do seu personagem..." formControlName="description"></textarea>
+      <textarea id="description" placeholder="Conte a história do seu personagem..."
+        formControlName="description"></textarea>
     </div>
-    
+
     <div class="preview-card">
       <div class="space-scene">
         <div class="space-dust"></div>
@@ -152,16 +162,16 @@
         <div class="preview-row">
           <span class="preview-label">Atributos:</span>
           <span class="preview-value">
-            FOR: {{ characterForm.get('attributes.strength')?.value }} | 
-            INT: {{ characterForm.get('attributes.intelligence')?.value }} | 
-            CAR: {{ characterForm.get('attributes.charisma')?.value }} | 
-            DES: {{ characterForm.get('attributes.dexterity')?.value }} | 
+            FOR: {{ characterForm.get('attributes.strength')?.value }} |
+            INT: {{ characterForm.get('attributes.intelligence')?.value }} |
+            CAR: {{ characterForm.get('attributes.charisma')?.value }} |
+            DES: {{ characterForm.get('attributes.dexterity')?.value }} |
             ITU: {{ characterForm.get('attributes.intuition')?.value }}
           </span>
         </div>
       </div>
     </div>
-    
+
     <div class="action-buttons">
       <button type="submit" class="btn btn-confirm" [disabled]="characterForm.invalid">
         Confirmar Criação
