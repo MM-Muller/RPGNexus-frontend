@@ -157,9 +157,16 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
       const imageName = this.enemy.name
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "")
-        .replace(/\s+/g, '')
-        + '.png';
-      this.enemyImageUrl = `assets/images/enemy/${imageName.charAt(0).toLowerCase() + imageName.slice(1)}`;
+        .split(' ')
+        .map((word, index) => {
+          if (index === 0) {
+            return word.toLowerCase();
+          }
+          return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        })
+        .join('') + '.png';
+
+      this.enemyImageUrl = `assets/images/enemy/${imageName}`;
     }
   }
 
