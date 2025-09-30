@@ -31,6 +31,7 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
   isPlayerTurn: boolean = false;
   isBattleOver = false;
   battleResult = '';
+  xpGained: number = 0;
   isTyping: boolean = false;
   isContentLoading = true;
 
@@ -248,8 +249,15 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     if (playerWon || (this.enemy && this.enemyHealth <= 0)) {
       this.battleResult = 'VITÓRIA!';
-      this.addDialogEntry('Sistema', 'Você venceu a batalha e ganhou experiência!');
+      this.xpGained = 50;
+      this.addDialogEntry('Sistema', `Você venceu a batalha e ganhou ${this.xpGained} de experiência!`);
+
       if (this.playerCharacter && this.battleConfig) {
+        this.characterService.addExperience(this.playerCharacter.id, this.xpGained).subscribe({
+          next: () => console.log('Experiência adicionada com sucesso!'),
+          error: (err) => console.error('Falha ao adicionar experiência:', err)
+        });
+
         this.characterService.getCharacterProgress(this.playerCharacter.id).subscribe(progressData => {
           const progress = progressData.campaign_progress || {};
           progress[this.battleConfig!.id] = true;
