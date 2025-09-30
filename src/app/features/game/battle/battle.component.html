@@ -95,10 +95,11 @@
                         <div *ngFor="let entry of dialogHistory" class="chat-message"
                             [ngClass]="{'player-message': entry.speaker === playerCharacter.name, 'enemy-message': entry.speaker !== playerCharacter.name}">
                             <strong class="chat-speaker">{{ entry.speaker }}:</strong>
-                            <span class="chat-text">ㅤㅤㅤ{{ entry.text }}</span>
+                            <span class="chat-text">{{ entry.text }}</span>
                         </div>
                         <div *ngIf="isTyping" class="chat-message enemy-message">
-                            <strong class="chat-speaker">Narrador:</strong> <span class="typing-indicator"></span>
+                            <strong class="chat-speaker">Narrador:</strong>
+                            <span class="generating-text">Gerando<span class="animated-dots"></span></span>
                         </div>
                     </div>
                     <div class="footer-hud" *ngIf="!isBattleOver">

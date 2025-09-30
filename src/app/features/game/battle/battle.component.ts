@@ -41,6 +41,7 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   private battleState: BattleState | null = null;
   private destroy$ = new Subject<void>();
+  private currentNarrative = '';
 
   private interval: any;
   private shouldScrollToBottom = false;
@@ -121,15 +122,26 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
             case 'load_state':
               this.loadBattleState(message.payload);
               break;
+
             case 'narrative_start':
               this.isLoadingAction = true;
               this.isTyping = true;
               this.dialogHistory = [];
+              this.currentNarrative = '';
               break;
+
+            case 'narrator_turn_start':
+              this.currentNarrative = '';
+              break;
+
             case 'narrative_chunk':
-              this.addDialogEntry('Narrador', message.payload);
+              this.currentNarrative += message.payload;
               break;
+
             case 'narrative_end':
+              if (this.currentNarrative.trim()) {
+                this.addDialogEntry('Narrador', ' ' + this.currentNarrative.trim());
+              }
               this.processEvent(message.payload.event);
               this.isLoadingAction = false;
               this.isTyping = false;
@@ -138,12 +150,15 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
                 this.startTimer();
               }
               break;
+
             case 'suggestions':
               this.actionSuggestions = message.payload.suggestions;
               break;
+
             case 'battle_over':
               this.endBattle(message.payload.victory);
               break;
+
             default:
               console.warn('Tipo de mensagem desconhecida:', message.type);
               break;
