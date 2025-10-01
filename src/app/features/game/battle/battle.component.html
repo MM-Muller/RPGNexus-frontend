@@ -92,10 +92,14 @@
                         <h3 class="chat-title">Registro de Combate</h3>
                     </div>
                     <div class="chat-log" #chatLogContainer>
-                        <div *ngFor="let entry of dialogHistory" class="chat-message"
+                        <div *ngFor="let entry of dialogHistory; trackBy: trackByEntry" class="chat-message"
                             [ngClass]="{'player-message': entry.speaker === playerCharacter.name, 'enemy-message': entry.speaker !== playerCharacter.name}">
                             <strong class="chat-speaker">{{ entry.speaker }}:</strong>
-                            <span class="chat-text">{{ entry.text }}</span>
+                            <div class="chat-text">
+                                <p *ngFor="let paragraph of entry.paragraphs">
+                                    {{ paragraph }}
+                                </p>
+                            </div>
                         </div>
                         <div *ngIf="isTyping" class="chat-message enemy-message">
                             <strong class="chat-speaker">Narrador:</strong>
@@ -179,11 +183,12 @@
         </div>
 
         <div class="action-panel" *ngIf="isActionPanelVisible && !isBattleOver">
-            <button class="action-btn" *ngFor="let suggestion of actionSuggestions"
-                (click)="selectAction(suggestion)">{{ suggestion }}</button>
+            <button class="action-btn" *ngFor="let suggestion of actionSuggestions" (click)="selectAction(suggestion)">
+                {{ suggestion }}
+            </button>
         </div>
-
     </div>
+
     <div class="battle-over-modal" *ngIf="isBattleOver">
         <div class="modal-content">
             <h2 class="modal-title"
@@ -191,8 +196,8 @@
                 {{ battleResult }}
             </h2>
             <p class="modal-text">
-                {{ battleResult === 'VITÓRIA!' ? 'Você superou o desafio e se tornou mais forte.' : 'A jornada é
-                longa. Reagrupe-se e tente novamente.' }}
+                {{ battleResult === 'VITÓRIA!' ? 'Você superou o desafio e se tornou mais forte.' : 'A jornada é longa.
+                Reagrupe-se e tente novamente.' }}
             </p>
             <p class="modal-text" *ngIf="battleResult === 'VITÓRIA!'">Você ganhou {{ xpGained }} de experiência!</p>
 

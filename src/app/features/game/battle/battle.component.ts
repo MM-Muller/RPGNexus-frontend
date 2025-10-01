@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ElementRef, ChangeDetectorRef, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, Subject, takeUntil, map } from 'rxjs';
 import { BattleConfigService } from 'src/app/core/services/battle-config.service';
@@ -14,19 +14,17 @@ import { BattleState } from 'src/app/models/battle-state.model';
   templateUrl: './battle.component.html',
   styleUrls: ['./battle.component.scss']
 })
-export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class BattleComponent implements OnInit, OnDestroy {
   @ViewChild('chatLogContainer') private chatLogContainer!: ElementRef;
 
   battleConfig?: Battle;
   enemy?: Enemy;
   enemyImageUrl?: string;
   playerCharacter?: Character;
-
   playerHealth: number = 0;
   playerMaxHealth: number = 0;
   enemyHealth: number = 0;
   enemyMaxHealth: number = 0;
-
   isLoadingAction = false;
   isPlayerTurn: boolean = false;
   isBattleOver = false;
@@ -35,28 +33,25 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
   unlockedItemUrl: string | null = null;
   isTyping: boolean = false;
   isContentLoading = true;
-
   dialogHistory: DialogLine[] = [];
   selectedAction: string = '';
   actionSuggestions: string[] = [];
   isActionPanelVisible = false;
-
   private battleState: BattleState | null = null;
   private destroy$ = new Subject<void>();
   private currentNarrative = '';
-
   private interval: any;
-  private shouldScrollToBottom = false;
   timeLeft: number = 300;
   timerDisplay: string = '5:00';
-  private animationFrameId: any;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private battleConfigService: BattleConfigService,
     private characterService: CharacterService,
-    private campaignService: CampaignService
+    private campaignService: CampaignService,
+    private cdr: ChangeDetectorRef,
+    private zone: NgZone
   ) { }
 
   ngOnInit(): void {
@@ -67,22 +62,10 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
     }
   }
 
-  ngAfterViewChecked(): void {
-    if (this.shouldScrollToBottom) {
-      this.scrollToBottom();
-      this.shouldScrollToBottom = false;
-    }
-  }
-
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    if (this.interval) {
-      clearInterval(this.interval);
-    }
-    if (this.animationFrameId) {
-      clearTimeout(this.animationFrameId);
-    }
+    if (this.interval) clearInterval(this.interval);
     this.saveBattleState();
     this.campaignService.disconnect();
   }
@@ -91,18 +74,10 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
     const battleId = battleIdFromRoute || 'primordial-nebula';
 
     forkJoin({
-      character: this.characterService.getCharacters().pipe(
-        map((characters: Character[]) => characters.find((c: Character) => c.id === characterId))
-      ),
+      character: this.characterService.getCharacters().pipe(map(chars => chars.find(c => c.id === characterId))),
       battle: this.battleConfigService.getBattle(battleId)
     }).subscribe(({ character, battle }) => {
-      if (!character) {
-        console.error('Personagem não encontrado. Redirecionando...');
-        this.navigateToWorlds(characterId);
-        return;
-      }
-      if (!battle) {
-        console.error('Dados de batalha não encontrados. Redirecionando...');
+      if (!character || !battle) {
         this.navigateToWorlds(characterId);
         return;
       }
@@ -116,57 +91,105 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.campaignService.connect(character.id, battleId)
         .pipe(takeUntil(this.destroy$))
         .subscribe(message => {
-          if (this.isContentLoading) {
-            this.isContentLoading = false;
-          }
+          this.zone.run(() => {
+            if (this.isContentLoading) this.isContentLoading = false;
 
-          switch (message.type) {
-            case 'load_state':
-              this.loadBattleState(message.payload);
-              break;
-
-            case 'narrative_start':
-              this.isLoadingAction = true;
-              this.isTyping = true;
-              this.dialogHistory = [];
-              this.currentNarrative = '';
-              break;
-
-            case 'narrator_turn_start':
-              this.currentNarrative = '';
-              break;
-
-            case 'narrative_chunk':
-              this.currentNarrative += message.payload;
-              break;
-
-            case 'narrative_end':
-              if (this.currentNarrative.trim()) {
-                this.addDialogEntry('Narrador', ' ' + this.currentNarrative.trim());
-              }
-              this.processEvent(message.payload.event);
-              this.isLoadingAction = false;
-              this.isTyping = false;
-              if (!this.isBattleOver) {
-                this.isPlayerTurn = true;
-                this.startTimer();
-              }
-              break;
-
-            case 'suggestions':
-              this.actionSuggestions = message.payload.suggestions;
-              break;
-
-            case 'battle_over':
-              this.endBattle(message.payload.victory);
-              break;
-
-            default:
-              console.warn('Tipo de mensagem desconhecida:', message.type);
-              break;
-          }
+            switch (message.type) {
+              case 'load_state':
+                this.loadBattleState(message.payload);
+                break;
+              case 'narrative_start':
+                this.isLoadingAction = true;
+                this.isTyping = true;
+                this.dialogHistory = [];
+                this.currentNarrative = '';
+                break;
+              case 'narrator_turn_start':
+                this.currentNarrative = '';
+                break;
+              case 'narrative_chunk':
+                this.currentNarrative += message.payload;
+                break;
+              case 'narrative_end':
+                if (this.currentNarrative.trim()) {
+                  this.addDialogEntry('Narrador', this.currentNarrative.trim());
+                }
+                this.processEvent(message.payload.event);
+                this.isLoadingAction = false;
+                this.isTyping = false;
+                if (!this.isBattleOver) {
+                  this.isPlayerTurn = true;
+                  this.startTimer();
+                }
+                this.triggerRenderAndScroll();
+                break;
+              case 'suggestions':
+                this.actionSuggestions = message.payload.suggestions;
+                break;
+              case 'battle_over':
+                this.endBattle(message.payload.victory);
+                break;
+            }
+          });
         });
     });
+  }
+
+  trackByEntry(index: number, entry: DialogLine): number {
+    return index;
+  }
+
+  addDialogEntry(speaker: string, text: string): void {
+    const paragraphs = text.split(/\n+/).filter(p => p.trim() !== '');
+    const newEntry: DialogLine = { speaker, text, paragraphs };
+    this.dialogHistory = [...this.dialogHistory, newEntry];
+  }
+
+  sendPlayerAction(): void {
+    if (!this.playerCharacter || this.selectedAction.trim() === '' || !this.isPlayerTurn) return;
+
+    this.isLoadingAction = true;
+    this.isPlayerTurn = false;
+    this.isTyping = true;
+    clearInterval(this.interval);
+
+    const playerAction = this.selectedAction;
+
+    this.addDialogEntry(this.playerCharacter!.name, playerAction);
+    this.selectedAction = '';
+    this.triggerRenderAndScroll();
+
+    this.campaignService.sendMessage('player_action', {
+      action: playerAction,
+      history: this.dialogHistory.map(d => `${d.speaker}: ${d.text}`)
+    });
+  }
+
+  private triggerRenderAndScroll(): void {
+    this.cdr.detectChanges();
+    setTimeout(() => this.scrollToBottom(), 0);
+  }
+
+  private scrollToBottom(): void {
+    try {
+      if (this.chatLogContainer?.nativeElement) {
+        this.chatLogContainer.nativeElement.scrollTop = this.chatLogContainer.nativeElement.scrollHeight;
+      }
+    } catch (err) { console.error('Erro ao rolar a tela:', err); }
+  }
+
+  private loadBattleState(state: BattleState): void {
+    this.battleState = state;
+    this.dialogHistory = state.history.map(line => ({
+      ...line,
+      paragraphs: line.text.split(/\n+/).filter(p => p.trim() !== '')
+    }));
+    this.playerHealth = state.player_health;
+    this.enemyHealth = state.enemy_health;
+    this.isPlayerTurn = true;
+    this.isBattleOver = false;
+    this.startTimer();
+    this.triggerRenderAndScroll();
   }
 
   setEnemyImageUrl(): void {
@@ -194,25 +217,6 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
 
     this.enemyMaxHealth = this.battleConfig.enemy.maxHealth;
     this.enemyHealth = this.battleConfig.enemy.health;
-  }
-
-  sendPlayerAction(): void {
-    if (!this.playerCharacter || !this.battleConfig || this.selectedAction.trim() === '' || !this.isPlayerTurn || this.isBattleOver) return;
-
-    this.isLoadingAction = true;
-    this.isPlayerTurn = false;
-    this.isTyping = true;
-    clearInterval(this.interval);
-
-    const playerAction = this.selectedAction;
-    this.addDialogEntry(this.playerCharacter.name, playerAction);
-    this.selectedAction = '';
-    this.forceScrollToBottom();
-
-    this.campaignService.sendMessage('player_action', {
-      action: playerAction,
-      history: this.dialogHistory.map(d => `${d.speaker}: ${d.text}`)
-    });
   }
 
   fetchActionSuggestions(): void {
@@ -267,9 +271,7 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
               progress[this.battleConfig!.id] = true;
 
               this.characterService.updateCharacterProgress(this.playerCharacter!.id, progress).subscribe({
-                next: () => {
-                  console.log('Progresso atualizado com sucesso!');
-                },
+                next: () => console.log('Progresso atualizado com sucesso!'),
                 error: (err) => console.error('Falha ao atualizar o progresso:', err)
               });
             });
@@ -288,6 +290,7 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.battleResult = 'DERROTA!';
       this.addDialogEntry('Sistema', 'Você foi derrotado. Tente novamente.');
     }
+    this.triggerRenderAndScroll();
   }
 
   returnToMap(): void {
@@ -307,11 +310,6 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
     this.router.navigate(['/game/worlds', characterId], {
       queryParams: { refresh: 'true' }
     });
-  }
-
-  addDialogEntry(speaker: string, text: string): void {
-    this.dialogHistory.push({ speaker, text });
-    this.shouldScrollToBottom = true;
   }
 
   startTimer(): void {
@@ -348,21 +346,15 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   onInputFocus(): void {
-    setTimeout(() => {
-      this.scrollToBottom();
-    }, 100);
+    setTimeout(() => this.scrollToBottom(), 100);
   }
 
   onInputClick(): void {
-    setTimeout(() => {
-      this.scrollToBottom();
-    }, 50);
+    setTimeout(() => this.scrollToBottom(), 50);
   }
 
   onInputChange(): void {
-    setTimeout(() => {
-      this.scrollToBottom();
-    }, 50);
+    setTimeout(() => this.scrollToBottom(), 50);
   }
 
   toggleActionPanel(): void {
@@ -378,47 +370,20 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
   selectAction(action: string): void {
     this.selectedAction = action;
     this.isActionPanelVisible = false;
-    setTimeout(() => {
-      this.scrollToBottom();
-    }, 100);
-  }
-
-  private forceScrollToBottom(): void {
-    setTimeout(() => {
-      this.scrollToBottom();
-    }, 0);
-  }
-
-  private scrollToBottom(): void {
-    try {
-      if (this.chatLogContainer?.nativeElement) {
-        this.chatLogContainer.nativeElement.scrollTop = this.chatLogContainer.nativeElement.scrollHeight;
-      }
-    } catch (err) {
-      console.error('Erro ao fazer scroll:', err);
-    }
-  }
-
-  private loadBattleState(state: BattleState): void {
-    this.battleState = state;
-    this.dialogHistory = state.history;
-    this.playerHealth = state.player_health;
-    this.enemyHealth = state.enemy_health;
-    this.isPlayerTurn = true;
-    this.isBattleOver = false;
-    this.forceScrollToBottom();
-    this.startTimer();
+    setTimeout(() => this.scrollToBottom(), 100);
   }
 
   private saveBattleState(): void {
     if (this.isBattleOver) return;
     if (!this.playerCharacter || !this.battleConfig) return;
 
+    const historyToSave = this.dialogHistory.map(({ speaker, text }) => ({ speaker, text }));
+
     this.battleState = {
       character_id: this.playerCharacter.id,
       battle_id: this.battleConfig.id,
       battle_theme: this.battleConfig.theme,
-      history: this.dialogHistory,
+      history: historyToSave,
       player_health: this.playerHealth,
       enemy_health: this.enemyHealth,
       last_updated: new Date().toISOString()

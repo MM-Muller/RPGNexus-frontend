@@ -1,6 +1,7 @@
 export interface DialogLine {
   speaker: string;
   text: string;
+  paragraphs?: string[];
 }
 
 export interface Enemy {
