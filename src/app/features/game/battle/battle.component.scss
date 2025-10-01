@@ -1187,3 +1187,29 @@ body {
     }
   }
 }
+
+.unlocked-item {
+  margin-top: 20px;
+  text-align: center;
+
+  .section-title {
+    color: #00ffcc;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+
+  .item-display {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid #00ffcc;
+    border-radius: 8px;
+    padding: 10px;
+    display: inline-block;
+    margin-bottom: 3%;
+
+    .drop-image {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+    }
+  }
+}

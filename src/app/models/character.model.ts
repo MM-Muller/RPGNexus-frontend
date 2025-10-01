@@ -16,10 +16,11 @@ export interface Character {
   race_icon: string;
   class_icon: string;
   user_id: string;
-  
+
   level: number;
   experience: number;
 
   expPercentage?: number;
   campaign_progress: { [worldName: string]: boolean };
+  inventory: string[];
 }

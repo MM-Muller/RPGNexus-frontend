@@ -139,18 +139,9 @@
           <div class="inventory-section">
             <h3 class="section-title">Inventário</h3>
             <div class="inventory-grid">
-              <div class="inventory-slot">
-                <span class="item-icon item-rarity-legendary">⚔️</span>
-                <span class="item-quantity">1</span>
+              <div *ngFor="let slot of inventorySlots" [ngClass]="{'inventory-slot': true, 'empty': !slot}">
+                <img [src]="slot" alt="Drop do Inventário" class="item-icon" *ngIf="slot">
               </div>
-              <div class="inventory-slot empty"></div>
-              <div class="inventory-slot empty"></div>
-              <div class="inventory-slot empty"></div>
-              <div class="inventory-slot empty"></div>
-              <div class="inventory-slot empty"></div>
-              <div class="inventory-slot empty"></div>
-              <div class="inventory-slot empty"></div>
-              <div class="inventory-slot empty"></div>
             </div>
           </div>
         </div>

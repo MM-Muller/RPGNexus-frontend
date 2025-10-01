@@ -46,4 +46,8 @@ export class CharacterService {
   addExperience(characterId: string, experiencePoints: number): Observable<any> {
     return this.http.post(`${this.apiUrl}${characterId}/add-xp`, { experience_points: experiencePoints });
   }
+
+  addItemToInventory(characterId: string, item: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}${characterId}/inventory`, { item });
+  }
 }

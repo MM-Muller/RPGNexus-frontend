@@ -221,7 +221,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 35px auto 20px auto;
+  margin: 35px auto 35px auto;
   border: 2px solid var(--accent-color);
   box-shadow: 0 0 15px rgba(138, 43, 226, 0.6);
   z-index: 2;
@@ -1107,4 +1107,14 @@
   padding-top: 25px;
   border-top: 1px solid rgba(255, 215, 0, 0.15);
   flex-shrink: 0;
+}
+
+.inventory-grid {
+  .inventory-slot {
+    .item-icon {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+    }
+  }
 }

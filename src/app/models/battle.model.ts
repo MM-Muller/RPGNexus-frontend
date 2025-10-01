@@ -7,11 +7,12 @@ export interface Enemy {
   name: string;
   health: number;
   maxHealth: number;
+  dropImage?: string;
 }
 
 export interface Battle {
   id: string;
   title: string;
-  theme: string; 
+  theme: string;
   enemy: Enemy;
 }

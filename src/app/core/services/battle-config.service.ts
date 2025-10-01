@@ -16,7 +16,8 @@ export class BattleConfigService {
         name: 'Guardião Elemental',
         health: 450,
         maxHealth: 450,
-      }
+        dropImage: "assets/images/drops/dropGuardiaoElemental.png"
+      },
     },
     {
       id: 'aurelion-guardian',
@@ -26,6 +27,7 @@ export class BattleConfigService {
         name: 'Sentinela do Vazio',
         health: 500,
         maxHealth: 500,
+        dropImage: "assets/images/drops/dropSentinelaDoVazio.png"
       }
     },
     {
@@ -36,6 +38,7 @@ export class BattleConfigService {
         name: 'Eco Dimensional',
         health: 750,
         maxHealth: 750,
+        dropImage: "assets/images/drops/dropEcoDimensional.png"
       }
     },
     {
@@ -46,6 +49,7 @@ export class BattleConfigService {
         name: 'Arquiteto de Cristal',
         health: 600,
         maxHealth: 600,
+        dropImage: "assets/images/drops/dropArquitetodeCristal.png"
       }
     },
     {
@@ -56,6 +60,7 @@ export class BattleConfigService {
         name: 'Anomalia Convergente',
         health: 850,
         maxHealth: 850,
+        dropImage: "assets/images/drops/dropAnomaliaConvergente.png"
       }
     },
     {
@@ -66,6 +71,7 @@ export class BattleConfigService {
         name: 'Cantor Harmônico',
         health: 550,
         maxHealth: 550,
+        dropImage: "assets/images/drops/dropCantorHarmonico.png"
       }
     },
     {
@@ -76,6 +82,7 @@ export class BattleConfigService {
         name: 'Rainha do Enxame',
         health: 700,
         maxHealth: 700,
+        dropImage: "assets/images/drops/dropRainhadoEnxame.png"
       }
     }
   ];

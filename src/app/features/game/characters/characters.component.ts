@@ -14,6 +14,7 @@ export class CharactersComponent implements OnInit {
   characters: Character[] = [];
   selectedCharacter: Character | null = null;
   isModalVisible = false;
+  inventorySlots: (string | null)[] = [];
 
   constructor(
     private characterService: CharacterService,
@@ -49,6 +50,12 @@ export class CharactersComponent implements OnInit {
   showDetails(character: Character): void {
     this.selectedCharacter = character;
     this.isModalVisible = true;
+
+    const inventory = this.selectedCharacter.inventory || [];
+    this.inventorySlots = Array(9).fill(null);
+    for (let i = 0; i < inventory.length && i < 9; i++) {
+      this.inventorySlots[i] = inventory[i];
+    }
   }
 
   closeModal(): void {

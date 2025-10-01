@@ -183,20 +183,26 @@
                 (click)="selectAction(suggestion)">{{ suggestion }}</button>
         </div>
 
+    </div>
+    <div class="battle-over-modal" *ngIf="isBattleOver">
+        <div class="modal-content">
+            <h2 class="modal-title"
+                [ngClass]="{'victory': battleResult === 'VITÓRIA!', 'defeat': battleResult === 'DERROTA!'}">
+                {{ battleResult }}
+            </h2>
+            <p class="modal-text">
+                {{ battleResult === 'VITÓRIA!' ? 'Você superou o desafio e se tornou mais forte.' : 'A jornada é
+                longa. Reagrupe-se e tente novamente.' }}
+            </p>
+            <p class="modal-text" *ngIf="battleResult === 'VITÓRIA!'">Você ganhou {{ xpGained }} de experiência!</p>
 
-        <div class="battle-over-modal" *ngIf="isBattleOver">
-            <div class="modal-content">
-                <h2 class="modal-title"
-                    [ngClass]="{'victory': battleResult === 'VITÓRIA!', 'defeat': battleResult === 'DERROTA!'}">
-                    {{ battleResult }}
-                </h2>
-                <p class="modal-text">
-                    {{ battleResult === 'VITÓRIA!' ? 'Você superou o desafio e se tornou mais forte.' : 'A jornada é
-                    longa. Reagrupe-se e tente novamente.' }}
-                </p>
-                <p class="modal-text" *ngIf="battleResult === 'VITÓRIA!'">Você ganhou {{ xpGained }} de experiência!</p>
-                <button class="modal-button" (click)="returnToMap()">Voltar ao Mapa Galáctico</button>
+            <div *ngIf="unlockedItemUrl" class="unlocked-item">
+                <h3 class="section-title">Item Desbloqueado!</h3>
+                <div class="item-display">
+                    <img [src]="unlockedItemUrl" alt="Item Desbloqueado" class="drop-image">
+                </div>
             </div>
+            <button class="modal-button" (click)="returnToMap()">Voltar ao Mapa Galáctico</button>
         </div>
     </div>
 </div>

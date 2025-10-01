@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin, Subject, takeUntil, map, of } from 'rxjs';
+import { forkJoin, Subject, takeUntil, map } from 'rxjs';
 import { BattleConfigService } from 'src/app/core/services/battle-config.service';
 import { CharacterService } from 'src/app/core/services/character.service';
 import { CampaignService } from 'src/app/core/services/campaign.service';
@@ -32,6 +32,7 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
   isBattleOver = false;
   battleResult = '';
   xpGained: number = 0;
+  unlockedItemUrl: string | null = null;
   isTyping: boolean = false;
   isContentLoading = true;
 
@@ -252,6 +253,13 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.xpGained = 50;
       this.addDialogEntry('Sistema', `Você venceu a batalha e ganhou ${this.xpGained} de experiência!`);
 
+      if (this.enemy && this.enemy.dropImage) {
+        console.log('Drop encontrado:', this.enemy.dropImage);
+        this.unlockedItemUrl = this.enemy.dropImage;
+      } else {
+        console.error('Nenhum dropImage encontrado para o inimigo:', this.enemy?.name);
+      }
+
       if (this.playerCharacter && this.battleConfig) {
         this.characterService.addExperience(this.playerCharacter.id, this.xpGained).subscribe({
           next: () => console.log('Experiência adicionada com sucesso!'),
@@ -263,6 +271,14 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
           progress[this.battleConfig!.id] = true;
           this.characterService.updateCharacterProgress(this.playerCharacter!.id, progress).subscribe();
         });
+
+        // Adiciona o item ao inventário se a URL do drop existir
+        if (this.unlockedItemUrl) {
+          this.characterService.addItemToInventory(this.playerCharacter.id, this.unlockedItemUrl).subscribe({
+            next: () => console.log('Item adicionado ao inventário!'),
+            error: (err) => console.error('Falha ao adicionar item ao inventário:', err)
+          });
+        }
       }
     } else {
       this.battleResult = 'DERROTA!';
