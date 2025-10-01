@@ -9,7 +9,7 @@ export class BattleConfigService {
 
   private battles: Battle[] = [
     {
-      id: 'primordial-nebula',
+      id: 'nebula-primordial',
       title: '🌟 Conflito na Nebulosa 🌟',
       theme: 'Encontro com uma entidade elemental que protege a Nebulosa Primordial.',
       enemy: {
@@ -20,7 +20,7 @@ export class BattleConfigService {
       },
     },
     {
-      id: 'aurelion-guardian',
+      id: 'sistema-aurelion',
       title: '⚡ Batalha Galáctica ⚡',
       theme: 'Confronto com o guardião dourado de um sistema estelar antigo.',
       enemy: {
@@ -31,7 +31,7 @@ export class BattleConfigService {
       }
     },
     {
-      id: 'purple-vortex',
+      id: 'vortice-purpura',
       title: '🌀 Confronto no Vórtice 🌀',
       theme: 'Encontro com uma entidade de um vórtex dimensional perdido.',
       enemy: {
@@ -42,7 +42,7 @@ export class BattleConfigService {
       }
     },
     {
-      id: 'azurite-constellation',
+      id: 'constelacao-azurite',
       title: '💎 Caçada ao Arquiteto 💎',
       theme: 'Infiltração na fortaleza dos Arquitetos do Vazio para desativar suas defesas.',
       enemy: {
@@ -53,7 +53,7 @@ export class BattleConfigService {
       }
     },
     {
-      id: 'central-nexus',
+      id: 'nexus-central',
       title: '🌌 O Coração do Nexus 🌌',
       theme: 'Batalha pela estabilidade do Nexus Central contra uma anomalia disruptiva.',
       enemy: {
@@ -64,7 +64,7 @@ export class BattleConfigService {
       }
     },
     {
-      id: 'crystal-galaxy',
+      id: 'galaxia-cristalina',
       title: '🎶 Desafio do Som Cósmico 🎶',
       theme: 'Uma disputa de frequência e ressonância contra um Harmônico.',
       enemy: {
@@ -75,7 +75,7 @@ export class BattleConfigService {
       }
     },
     {
-      id: 'star-cluster',
+      id: 'aglomerado-estelar',
       title: '✨ O Enxame Celeste ✨',
       theme: 'Repelindo um enxame de criaturas exóticas e predadoras no aglomerado estelar.',
       enemy: {

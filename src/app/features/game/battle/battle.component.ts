@@ -254,25 +254,29 @@ export class BattleComponent implements OnInit, OnDestroy, AfterViewChecked {
       this.addDialogEntry('Sistema', `Você venceu a batalha e ganhou ${this.xpGained} de experiência!`);
 
       if (this.enemy && this.enemy.dropImage) {
-        console.log('Drop encontrado:', this.enemy.dropImage);
         this.unlockedItemUrl = this.enemy.dropImage;
-      } else {
-        console.error('Nenhum dropImage encontrado para o inimigo:', this.enemy?.name);
       }
 
       if (this.playerCharacter && this.battleConfig) {
         this.characterService.addExperience(this.playerCharacter.id, this.xpGained).subscribe({
-          next: () => console.log('Experiência adicionada com sucesso!'),
+          next: () => {
+            console.log('Experiência adicionada com sucesso!');
+
+            this.characterService.getCharacterProgress(this.playerCharacter!.id).subscribe(progressData => {
+              const progress = progressData.campaign_progress || {};
+              progress[this.battleConfig!.id] = true;
+
+              this.characterService.updateCharacterProgress(this.playerCharacter!.id, progress).subscribe({
+                next: () => {
+                  console.log('Progresso atualizado com sucesso!');
+                },
+                error: (err) => console.error('Falha ao atualizar o progresso:', err)
+              });
+            });
+          },
           error: (err) => console.error('Falha ao adicionar experiência:', err)
         });
 
-        this.characterService.getCharacterProgress(this.playerCharacter.id).subscribe(progressData => {
-          const progress = progressData.campaign_progress || {};
-          progress[this.battleConfig!.id] = true;
-          this.characterService.updateCharacterProgress(this.playerCharacter!.id, progress).subscribe();
-        });
-
-        // Adiciona o item ao inventário se a URL do drop existir
         if (this.unlockedItemUrl) {
           this.characterService.addItemToInventory(this.playerCharacter.id, this.unlockedItemUrl).subscribe({
             next: () => console.log('Item adicionado ao inventário!'),

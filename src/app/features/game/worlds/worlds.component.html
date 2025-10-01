@@ -17,42 +17,30 @@
       <path class="constellation-line" d="M20,70 L40,50 L55,60" />
     </svg>
 
-    <ng-container *ngFor="let world of worlds">
-      <a *ngIf="world.status === 'open' && !isWorldCompleted(world.id) && characterId"
-         class="galaxy-location"
-         [routerLink]="['/game/battle', characterId, world.id]"
-         [style.left]="world.position.left"
-         [style.top]="world.position.top">
-        <div class="galaxy-core">
-          <div class="galaxy-spiral"></div>
-          <div class="galaxy-center"></div>
-        </div>
-        <div class="galaxy-info">
-          <div class="galaxy-name">{{ world.name }}</div>
-          <div class="galaxy-description">{{ world.description }}</div>
-          <div class="play-button">▶ Jogar</div>
-        </div>
-      </a>
+    <div *ngFor="let world of worlds" class="galaxy-location" [style.left]="world.position.left"
+      [style.top]="world.position.top" [ngClass]="{ 
+           'completed': isWorldCompleted(world.id), 
+           'locked': !isWorldUnlocked(world.id) 
+         }" (click)="selectWorld(world.id)">
 
-      <div *ngIf="world.status !== 'open' || isWorldCompleted(world.id)"
-           class="galaxy-location"
-           [ngClass]="{ 'completed': isWorldCompleted(world.id) || world.status === 'completed', 'locked': world.status === 'locked' }"
-           [style.left]="world.position.left"
-           [style.top]="world.position.top">
-        <div class="galaxy-core">
-          <div class="galaxy-spiral"></div>
-          <div class="galaxy-center"></div>
-        </div>
-        <div class="galaxy-info">
-          <div class="galaxy-name">{{ world.name }}</div>
-          <div class="galaxy-description">{{ world.description }}</div>
-          <div class="play-button" [ngClass]="{ 'completed-btn': isWorldCompleted(world.id) || world.status === 'completed', 'locked-btn': world.status === 'locked' }">
-            <span *ngIf="isWorldCompleted(world.id) || world.status === 'completed'">✓ Completo</span>
-            <span *ngIf="world.status === 'locked'">🔒 Bloqueado</span>
-          </div>
+      <div class="galaxy-core">
+        <div class="galaxy-spiral"></div>
+        <div class="galaxy-center"></div>
+      </div>
+      <div class="galaxy-info">
+        <div class="galaxy-name">{{ world.name }}</div>
+        <div class="galaxy-description">{{ world.description }}</div>
+
+        <div class="play-button" [ngClass]="{ 
+               'completed-btn': isWorldCompleted(world.id), 
+               'locked-btn': !isWorldUnlocked(world.id) 
+             }">
+          <span *ngIf="isWorldCompleted(world.id)">✓ Completo</span>
+          <span *ngIf="!isWorldUnlocked(world.id)">🔒 Bloqueado</span>
+          <span *ngIf="isWorldUnlocked(world.id) && !isWorldCompleted(world.id)">▶ Jogar</span>
         </div>
       </div>
-    </ng-container>
+    </div>
 
     <div class="progress-indicator">
       <span class="progress-text">Progresso Total</span>

@@ -14,25 +14,37 @@ export class WorldsComponent implements OnInit, OnDestroy {
   campaignProgress: { [worldName: string]: boolean } = {};
   character?: Character;
 
+  completedWorlds: Set<string> = new Set();
+
   private queryParamsSubscription?: Subscription;
   private paramMapSubscription?: Subscription;
 
+  worldDependencies: { [key: string]: string[] } = {
+    'sistema-aurelion': ['nebula-primordial'],
+    'nexus-central': ['sistema-aurelion'],
+    'vortice-purpura': ['sistema-aurelion'],
+    'aglomerado-estelar': ['nexus-central'],
+    'galaxia-cristalina': ['nexus-central', 'vortice-purpura'],
+    'constelacao-azurite': ['vortice-purpura'],
+    'omega-singularity': ['galaxia-cristalina', 'aglomerado-estelar', 'constelacao-azurite']
+  };
+
   worlds = [
-    { name: 'Nebulosa Primordial', id: 'primordial-nebula', description: 'O berço da civilização estelar', position: { left: '15%', top: '30%' }, status: 'open' },
-    { name: 'Sistema Aurelion', id: 'aurelion-guardian', description: 'Lar dos Guardiões Dourados', position: { left: '35%', top: '25%' }, status: 'open' },
-    { name: 'Vórtice Púrpura', id: 'purple-vortex', description: 'Portal para dimensões perdidas', position: { left: '50%', top: '40%' }, status: 'open' },
-    { name: 'Constelação Azurite', id: 'azurite-constellation', description: 'A fortaleza cristalina dos Arquitetos do Vazio', position: { left: '65%', top: '35%' }, status: 'open' },
-    { name: 'Nexus Central', id: 'central-nexus', description: 'O ponto de convergência de todas as Correntes Harmônicas', position: { left: '40%', top: '50%' }, status: 'open' },
-    { name: 'Galáxia Cristalina', id: 'crystal-galaxy', description: 'Um reino etéreo onde os Harmônicos residem como pura energia', position: { left: '55%', top: '60%' }, status: 'open' },
-    { name: 'Aglomerado Estelar', id: 'star-cluster', description: 'Berçário de novas estrelas e lar de criaturas exóticas', position: { left: '20%', top: '70%' }, status: 'open' },
-    { name: 'Singularidade Omega', id: 'omega-singularity', description: 'Um enigma cósmico de poder inimaginável', position: { left: '80%', top: '55%' }, status: 'locked' }
+    { id: 'nebula-primordial', name: 'Nebula Primordial', description: 'O Começo de Tudo', image: 'assets/images/worlds/1.png', position: { left: '15%', top: '30%' } },
+    { id: 'sistema-aurelion', name: 'Sistema Aurelion', description: 'Onde o Sol Canta', image: 'assets/images/worlds/2.png', position: { left: '35%', top: '25%' } },
+    { id: 'nexus-central', name: 'Nexus Central', description: 'O Coração da Galáxia', image: 'assets/images/worlds/3.png', position: { left: '40%', top: '50%' } },
+    { id: 'vortice-purpura', name: 'Vórtice Púrpura', description: 'Um redemoinho de caos e poder', image: 'assets/images/worlds/4.png', position: { left: '50%', top: '40%' } },
+    { id: 'aglomerado-estelar', name: 'Aglomerado Estelar', description: 'Um berçário de novas estrelas', image: 'assets/images/worlds/5.png', position: { left: '20%', top: '70%' } },
+    { id: 'constelacao-azurite', name: 'Constelação Azurite', description: 'Um caminho de cristais e luz', image: 'assets/images/worlds/6.png', position: { left: '65%', top: '35%' } },
+    { id: 'galaxia-cristalina', name: 'Galáxia Cristalina', description: 'Onde as estrelas são diamantes', image: 'assets/images/worlds/7.png', position: { left: '55%', top: '60%' } },
+    { id: 'omega-singularity', name: 'Singularidade Omega', description: 'Um enigma cósmico de poder inimaginável', image: 'assets/images/worlds/8.png', position: { left: '80%', top: '55%' } }
   ];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private characterService: CharacterService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.queryParamsSubscription = this.route.queryParams.subscribe(params => {
@@ -44,7 +56,7 @@ export class WorldsComponent implements OnInit, OnDestroy {
         }).then(() => {
           window.location.reload();
         });
-        return; 
+        return;
       }
     });
 
@@ -69,21 +81,45 @@ export class WorldsComponent implements OnInit, OnDestroy {
     this.characterService.getCharacterProgress(characterId).subscribe({
       next: (data) => {
         this.campaignProgress = data.campaign_progress || {};
+        this.completedWorlds = new Set(Object.keys(this.campaignProgress).filter(key => this.campaignProgress[key]));
       },
       error: (err) => {
         console.error('Falha ao carregar o progresso do personagem:', err);
       }
     });
   }
-  
+
   isWorldCompleted(worldId: string): boolean {
-    return this.campaignProgress[worldId] || false;
+    return this.completedWorlds.has(worldId);
   }
-  
+
+  isWorldUnlocked(worldId: string): boolean {
+    if (worldId === 'nebula-primordial') {
+      return true;
+    }
+    const dependencies = this.worldDependencies[worldId];
+    if (!dependencies) {
+      return false;
+    }
+    return dependencies.every(dependencyId => this.completedWorlds.has(dependencyId));
+  }
+
   calculateProgress(): number {
-    const completedCount = Object.values(this.campaignProgress).filter(status => status).length;
-    const totalPlayable = this.worlds.filter(w => w.status !== 'locked').length;
+    const totalPlayable = this.worlds.length;
     if (totalPlayable === 0) return 0;
-    return (completedCount / totalPlayable) * 100;
+    return (this.completedWorlds.size / totalPlayable) * 100;
+  }
+
+  selectWorld(worldId: string): void {
+    if (this.isWorldUnlocked(worldId) && !this.isWorldCompleted(worldId)) {
+      console.log(`Navegando para a batalha: Personagem ${this.characterId}, Mundo ${worldId}`);
+      this.router.navigate(['/game/battle', this.characterId, worldId]);
+    }
+    else if (this.isWorldCompleted(worldId)) {
+      console.log('Este mundo já foi concluído!');
+    }
+    else {
+      console.log('Mundo bloqueado!');
+    }
   }
 }
