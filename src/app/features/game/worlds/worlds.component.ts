@@ -112,11 +112,13 @@ export class WorldsComponent implements OnInit, OnDestroy {
 
   selectWorld(worldId: string): void {
     if (this.isWorldUnlocked(worldId) && !this.isWorldCompleted(worldId)) {
-      console.log(`Navegando para a batalha: Personagem ${this.characterId}, Mundo ${worldId}`);
       this.router.navigate(['/game/battle', this.characterId, worldId]);
     }
     else if (this.isWorldCompleted(worldId)) {
-      console.log('Este mundo já foi concluído!');
+      console.log(`Navegando para revisão da batalha: ${worldId}`);
+      this.router.navigate(['/game/battle', this.characterId, worldId], {
+        queryParams: { review: 'true' }
+      });
     }
     else {
       console.log('Mundo bloqueado!');

@@ -106,7 +106,7 @@
                             <span class="generating-text">Gerando<span class="animated-dots"></span></span>
                         </div>
                     </div>
-                    <div class="footer-hud" *ngIf="!isBattleOver">
+                    <div class="footer-hud" *ngIf="!isBattleOver && !isReviewMode">
                         <div class="action-input-container">
                             <button class="action-btn-suggestions" title="Sugestões de Ações"
                                 (click)="toggleActionPanel()">Ações</button>
@@ -182,14 +182,14 @@
             </div>
         </div>
 
-        <div class="action-panel" *ngIf="isActionPanelVisible && !isBattleOver">
+        <div class="action-panel" *ngIf="isActionPanelVisible && !isBattleOver && !isReviewMode">
             <button class="action-btn" *ngFor="let suggestion of actionSuggestions" (click)="selectAction(suggestion)">
                 {{ suggestion }}
             </button>
         </div>
     </div>
 
-    <div class="battle-over-modal" *ngIf="isBattleOver">
+    <div class="battle-over-modal" *ngIf="showEndBattleModal">
         <div class="modal-content">
             <h2 class="modal-title"
                 [ngClass]="{'victory': battleResult === 'VITÓRIA!', 'defeat': battleResult === 'DERROTA!'}">

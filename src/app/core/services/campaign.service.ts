@@ -82,7 +82,12 @@ export class CampaignService {
     });
   }
 
+  getBattleState(characterId: string, battleId: string): Observable<BattleState> {
+    return this.http.get<BattleState>(`${this.apiUrl}/state/${characterId}/${battleId}`);
+  }
+
   getMostRecentBattleState(characterId: string): Observable<BattleState> {
     return this.http.get<BattleState>(`${this.apiUrl}/most-recent-state/${characterId}`);
   }
+
 }

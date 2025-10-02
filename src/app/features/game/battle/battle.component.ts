@@ -25,6 +25,8 @@ export class BattleComponent implements OnInit, OnDestroy {
   playerMaxHealth: number = 0;
   enemyHealth: number = 0;
   enemyMaxHealth: number = 0;
+  showEndBattleModal = false;
+  isReviewMode = false;
   isLoadingAction = false;
   isPlayerTurn: boolean = false;
   isBattleOver = false;
@@ -55,10 +57,17 @@ export class BattleComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.isReviewMode = this.route.snapshot.queryParamMap.get('review') === 'true';
+
     const battleId = this.route.snapshot.paramMap.get('id');
     const characterId = this.route.snapshot.paramMap.get('characterId');
+
     if (characterId) {
-      this.loadCharacterData(characterId, battleId);
+      if (this.isReviewMode) {
+        this.loadBattleForReview(characterId, battleId);
+      } else {
+        this.loadCharacterData(characterId, battleId);
+      }
     }
   }
 
@@ -132,6 +141,41 @@ export class BattleComponent implements OnInit, OnDestroy {
             }
           });
         });
+    });
+  }
+
+  loadBattleForReview(characterId: string, battleId: string | null): void {
+    if (!battleId) {
+      this.navigateToWorlds(characterId);
+      return;
+    }
+
+    this.isContentLoading = true;
+    forkJoin({
+      character: this.characterService.getCharacters().pipe(map(chars => chars.find(c => c.id === characterId))),
+      battleConfig: this.battleConfigService.getBattle(battleId),
+      battleState: this.campaignService.getBattleState(characterId, battleId)
+    }).subscribe(({ character, battleConfig, battleState }) => {
+      if (!character || !battleConfig || !battleState) {
+        this.navigateToWorlds(characterId);
+        return;
+      }
+
+      this.playerCharacter = character;
+      this.battleConfig = battleConfig;
+      this.enemy = { ...battleConfig.enemy };
+      this.setEnemyImageUrl();
+      this.setupPlayerStats();
+
+      this.loadBattleState(battleState);
+
+      this.isBattleOver = true;
+      this.showEndBattleModal = false;
+      this.isPlayerTurn = false;
+      if (this.interval) clearInterval(this.interval);
+
+      this.isContentLoading = false;
+      this.triggerRenderAndScroll();
     });
   }
 
@@ -248,6 +292,8 @@ export class BattleComponent implements OnInit, OnDestroy {
   }
 
   endBattle(playerWon?: boolean): void {
+    if (this.isBattleOver) return;
+    this.showEndBattleModal = true;
     this.isBattleOver = true;
     this.isPlayerTurn = false;
     clearInterval(this.interval);
@@ -291,6 +337,7 @@ export class BattleComponent implements OnInit, OnDestroy {
       this.addDialogEntry('Sistema', 'Você foi derrotado. Tente novamente.');
     }
     this.triggerRenderAndScroll();
+    this.saveBattleState();
   }
 
   returnToMap(): void {
@@ -374,7 +421,6 @@ export class BattleComponent implements OnInit, OnDestroy {
   }
 
   private saveBattleState(): void {
-    if (this.isBattleOver) return;
     if (!this.playerCharacter || !this.battleConfig) return;
 
     const historyToSave = this.dialogHistory.map(({ speaker, text }) => ({ speaker, text }));
