@@ -50,12 +50,88 @@ Estas instruções permitirão que você tenha uma cópia do projeto em operaç�
 
 ### 🐳 Executando com Dev Container (Recomendado)
 
-O projeto é configurado para ser executado de forma simples e rápida com o Dev Container.
+O projeto está configurado para ser executado em um ambiente de desenvolvimento containerizado, o que simplifica a configuração.
 
+```
+/sua-pasta-de-projetos
+├── /RPGNexus-backend/
+├── /RPGNexus-frontend/    <-- (este repositório)
+└── docker-compose.yml     <-- (crie este arquivo na raiz)
+```
+Este é o docker-compose que orquestra todos os serviços necessários para a aplicação. Adicionar o arquivo diretamente no root com os dois repositórios.
+```
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./RPGNexus-backend
+      dockerfile: ./.devcontainer/Dockerfile
+    container_name: rpgnexus_backend
+    volumes:
+      - ./RPGNexus-backend:/workspace:cached
+    command: sleep infinity
+    ports:
+      - "8000:8000"
+    network_mode: host
+    depends_on:
+      - db
+      - chroma
+    env_file:
+      - ./RPGNexus-backend/.env
+    environment:
+      MONGODB_URL: "mongodb://rpg_user:rpg_password123@localhost:27017/?authSource=rpg_textual"
+      CHROMA_HOST: "localhost"
+      CHROMA_PORT: "8001"
+
+  frontend:
+    build:
+      context: ./RPGNexus-frontend
+      dockerfile: ./.devcontainer/Dockerfile
+    container_name: rpgnexus_frontend
+    volumes:
+      - ./RPGNexus-frontend:/workspace:cached
+      - /workspace/node_modules
+    command: sleep infinity
+    ports:
+      - "4200:4200"
+    network_mode: host
+
+  db:
+    build:
+      context: ./RPGNexus-backend
+      dockerfile: mongo.Dockerfile
+    container_name: rpgnexus_db
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password123
+      MONGO_INITDB_DATABASE: rpg_textual
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  chroma:
+    image: chromadb/chroma:0.4.24
+    container_name: rpgnexus_chroma
+    restart: unless-stopped
+    volumes:
+      - chroma_data:/chroma/chroma
+    ports:
+      - "8001:8000"
+
+volumes:
+  mongodb_data:
+  chroma_data:
+```
+
+Em seguida:
 1.  Clone o repositório:
     ```bash
     git clone https://github.com/MM-Muller/RPGNexus-frontend
-    cd rpgnexus-frontend
+    docker-compose up --build -d
+    code -n rpgnexus-frontend
     ```
 2.  Abra o projeto no VS Code.
 3.  Clique em **"Reopen in Container"** quando o VS Code sugerir.
